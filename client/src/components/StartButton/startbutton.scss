@@ -1,0 +1,41 @@
+@use "../../scss/_variables.scss";
+
+.start-button {
+  // Layout
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 3rem;
+  height: 3rem;
+
+  border-radius: 0.5rem;
+  border: 1px solid var(--taskbar-item-border-color);
+  transition: var(--taskbar-item-hover-transition);
+
+  img {
+    width: 100%;
+    height: 100%;
+    max-width: 3rem;
+    max-height: 3rem;
+    object-fit: contain;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  &.horizontal {
+    flex-shrink: 0;
+  }
+
+  &.vertical {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: var(--taskbar-item-hover-bg);
+  }
+}

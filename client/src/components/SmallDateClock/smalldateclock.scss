@@ -1,0 +1,51 @@
+@use "../../scss/_variables";
+
+.small-date-clock {
+  // Layout
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  // Styling
+  color: whitesmoke;
+  border: 1px solid var(--taskbar-item-border-color);
+  font-family: "Segoe UI", sans-serif;
+  border-radius: 0.5rem;
+  transition: var(--taskbar-item-hover-transition);
+
+  // Prevent text selection/dragging
+  user-select: none;
+  -webkit-user-select: none; // Safari/iOS
+  -ms-user-select: none; // Old IE/Edge
+  -moz-user-select: none; // Firefox
+  -webkit-user-drag: none;
+
+  // Utility Classes
+  &.horizontal {
+    font-size: 0.85rem;
+    width: fit-content;
+    min-height: 3rem;
+    padding: 0rem 0.4rem;
+    gap: 0.1rem;
+  }
+
+  &.vertical {
+    font-size: 0.75rem;
+    width: 100%;
+    padding: 0.7rem 0rem;
+    gap: 0.5rem;
+  }
+
+  .time {
+    line-height: 1;
+  }
+
+  .date {
+  }
+
+  &:hover {
+    background-color: var(--taskbar-item-hover-bg);
+  }
+}

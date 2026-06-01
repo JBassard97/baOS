@@ -4,16 +4,24 @@
   position: fixed;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border: 1px solid white;
+  // border: 1px solid white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   &.horizontal {
     height: var(--taskbar-height);
     width: 100%;
+    flex-direction: row;
+
+    padding: 0.2rem 0.5rem;
   }
 
   &.vertical {
     height: 100%;
     width: var(--taskbar-height);
+    flex-direction: column;
+    padding: 0.5rem 0.2rem;
   }
 
   &.bottom {

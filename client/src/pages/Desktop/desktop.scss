@@ -2,7 +2,7 @@
 
 .desktop-main {
   position: fixed;
-  border: 1px solid lime;
+  // border: 1px solid lime;
 
   &.horizontal {
     height: calc(100vh - var(--taskbar-height));
