@@ -16,10 +16,16 @@ function Taskbar({ position = "bottom" }: TaskbarProps) {
   return (
     <div className={`taskbar ${getOrientation(position)} ${position}`}>
       <div className="left-or-top-group">
-        <StartButton orientation={getOrientation(position)} />
+        <StartButton
+          orientation={getOrientation(position)}
+          taskbarPosition={position}
+        />
       </div>
       <div className="right-or-bottom-group">
-        <SmallDateClock orientation={getOrientation(position)} />
+        <SmallDateClock
+          orientation={getOrientation(position)}
+          taskbarPosition={position}
+        />
       </div>
     </div>
   );

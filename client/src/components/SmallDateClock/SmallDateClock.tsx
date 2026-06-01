@@ -1,15 +1,36 @@
 import "./smalldateclock.scss";
+import useTime from "../../hooks/useTime";
+import TooltipProvider from "../../providers/TooltipProvider/TooltipProvider";
 
 interface SmallDateClockProps {
   orientation?: "horizontal" | "vertical";
+  taskbarPosition?: "top" | "bottom" | "left" | "right";
 }
 
-function SmallDateClock({ orientation = "horizontal" }: SmallDateClockProps) {
+function SmallDateClock({
+  orientation = "horizontal",
+  taskbarPosition = "bottom",
+}: SmallDateClockProps) {
+  const now = useTime();
+
+  const time = now.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  const date = now.toLocaleDateString([], {
+    weekday: "short",
+    month: "numeric",
+    day: "numeric",
+  });
+
   return (
-    <div className={`small-date-clock ${orientation}`}>
-      <span className="time">11:35 AM</span>
-      <span className="date">6/1/26</span>
-    </div>
+    <TooltipProvider text="Date & Time" taskbarPosition={taskbarPosition}>
+      <div className={`small-date-clock ${orientation}`}>
+        <span className="time">{time}</span>
+        <span className="date">{date}</span>
+      </div>
+    </TooltipProvider>
   );
 }
 
