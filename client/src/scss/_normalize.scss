@@ -272,3 +272,10 @@
 :where(summary) {
   display: list-item;
 }
+
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
