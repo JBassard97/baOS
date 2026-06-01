@@ -5,7 +5,7 @@ type TaskbarPosition = "top" | "bottom" | "left" | "right";
 
 // config — change this to move the taskbar
 const config: { taskbarPosition: TaskbarPosition } = {
-  taskbarPosition: "right",
+  taskbarPosition: "bottom",
 };
 
 function Desktop() {
