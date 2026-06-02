@@ -25,7 +25,7 @@ export function useBackendStatus() {
         checkBackend();
 
         // then poll every n seconds
-        const n: number = 10
+        const n: number = 60
         interval = setInterval(checkBackend, n * 1000);
 
         return () => clearInterval(interval);

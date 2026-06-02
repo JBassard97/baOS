@@ -7,7 +7,7 @@ export async function ls(path: string) {
     // BACKEND MODE
     // -------------------------
     if (backendAvailable) {
-        const res = await fetch(`/vfs-actions/ls?path=${encodeURIComponent(path)}`);
+        const res = await fetch(`/vfs-actions/ls?path=.${encodeURIComponent(path)}`);
 
         if (!res.ok) throw new Error("Backend ls failed");
 

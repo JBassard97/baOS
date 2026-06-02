@@ -3,6 +3,7 @@ import Taskbar from "../../components/Taskbar/Taskbar";
 import { useSystemStore } from "../../store/useSystemStore";
 import { useBackendStatus } from "../../hooks/useBackendStatus";
 import { ls } from "../../vfs-actions/ls";
+import { touch } from "../../vfs-actions/touch";
 
 type TaskbarPosition = "top" | "bottom" | "left" | "right";
 
@@ -32,6 +33,9 @@ function Desktop() {
         {backendAvailable === true && <p>Local Server Connected!</p>}
         {backendAvailable === false && <p>No Local Server Available</p>}
         <button onClick={async () => ls("/")}>ls</button>
+        <button onClick={async () => touch("test.txt")}>
+          touch test.txt
+        </button>
       </main>
 
       <Taskbar position={taskbarPosition} />
