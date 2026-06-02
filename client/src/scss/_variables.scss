@@ -2,6 +2,7 @@
 
 :root {
   --taskbar-height: 4rem;
+  --taskbar-blur: blur(10px);
   --taskbar-item-hover-bg: rgba(255, 255, 255, 0.1);
   --taskbar-item-border-color: rgba(128, 128, 128, 0.15);
   --taskbar-item-hover-transition: background-color 0.2s

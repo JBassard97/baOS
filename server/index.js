@@ -27,6 +27,36 @@ app.use(cors());
 app.use(express.json());
 app.use(express.raw({ type: "*/*", limit: "50mb" }));
 
+app.get("/vfs-actions/health", (req, res) => {
+  res.json({
+    status: "ok",
+  });
+});
+
+app.get("/vfs-actions/ls", async (req, res) => {
+  try {
+    const dir = req.query.path || "/";
+
+    const fullPath = resolve(dir);
+
+    const entries = await fs.readdir(fullPath, { withFileTypes: true });
+
+    const result = entries.map((entry) => ({
+      name: entry.name,
+      type: entry.isDirectory() ? "dir" : "file",
+    }));
+
+    res.json({
+      path: dir,
+      entries: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+});
+
 // Serve built client — must come after VFS routes
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
 
