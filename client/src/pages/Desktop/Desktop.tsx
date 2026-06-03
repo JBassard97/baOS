@@ -1,5 +1,6 @@
 import "./desktop.scss";
 import Taskbar from "../../components/Taskbar/Taskbar";
+import BackendStatusDisplay from "../../components/BackendStatusDisplay/BackendStatusDisplay";
 import { useSystemStore } from "../../store/useSystemStore";
 import { useBackendStatus } from "../../hooks/useBackendStatus";
 import { ls } from "../../vfs-actions/ls";
@@ -29,13 +30,13 @@ function Desktop() {
           isHorizontal ? "horizontal" : "vertical"
         } ${taskbarPosition}`}
       >
-        {backendAvailable === null && <p>Checking for a Local Server...</p>}
-        {backendAvailable === true && <p>Local Server Connected!</p>}
-        {backendAvailable === false && <p>No Local Server Available</p>}
+        <BackendStatusDisplay
+          backendAvailable={backendAvailable}
+          taskbarPosition={taskbarPosition}
+        />
+
         <button onClick={async () => ls("/")}>ls</button>
-        <button onClick={async () => touch("test.txt")}>
-          touch test.txt
-        </button>
+        <button onClick={async () => touch("yahoo.txt")}>touch test.txt</button>
       </main>
 
       <Taskbar position={taskbarPosition} />

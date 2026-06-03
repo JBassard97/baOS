@@ -1,0 +1,54 @@
+@use "../../scss/variables";
+
+.backend-status-display {
+  color: whitesmoke;
+  font-family: var(--backend-status-display-font-family);
+  background-color: black;
+  font-size: 0.7rem;
+  font-style: italic;
+  width: fit-content;
+  padding: 0.35rem 0.75rem;
+  position: absolute;
+  transition: var(--taskbar-item-hover-transition);
+
+  // Prevent text selection/dragging
+  user-select: none;
+  -webkit-user-select: none; // Safari/iOS
+  -ms-user-select: none; // Old IE/Edge
+  -moz-user-select: none; // Firefox
+  -webkit-user-drag: none;
+
+  &.top {
+    bottom: 0;
+    left: 0;
+    border-top-right-radius: var(--backend-status-display-border-radius);
+    box-shadow: 0 -1px 5px 2px rgba(0, 0, 0, 0.6);
+  }
+
+  &.bottom {
+    top: 0;
+    left: 0;
+    border-bottom-right-radius: var(--backend-status-display-border-radius);
+    box-shadow: 0 1px 5px 2px rgba(0, 0, 0, 0.6);
+  }
+
+  &.right {
+    top: 0;
+    left: 0;
+    border-bottom-right-radius: var(--backend-status-display-border-radius);
+    box-shadow: 0 1px 5px 2px rgba(0, 0, 0, 0.6);
+  }
+
+  &.left {
+    top: 0;
+    right: 0;
+    border-bottom-left-radius: var(--backend-status-display-border-radius);
+    box-shadow: -1px 0 5px 2px rgba(0, 0, 0, 0.6);
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+    color: black;
+  }
+}
