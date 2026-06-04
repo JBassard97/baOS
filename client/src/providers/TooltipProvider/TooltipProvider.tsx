@@ -1,3 +1,4 @@
+import "./tooltipprovider.scss";
 import { useFloating, offset, flip, shift } from "@floating-ui/react";
 import { useState } from "react";
 
@@ -44,6 +45,7 @@ export default function TooltipProvider({
 
       {open && (
         <div
+          className="floating-text"
           ref={refs.setFloating}
           style={{
             ...floatingStyles,

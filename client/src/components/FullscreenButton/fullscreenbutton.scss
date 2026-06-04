@@ -1,4 +1,5 @@
 @use "../../scss/variables";
+@use "../../scss/mixins" as *;
 
 .fullscreen-button {
   display: flex;
@@ -18,11 +19,8 @@
     max-width: 2rem;
     max-height: 2rem;
     object-fit: contain;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-drag: none;
+
+    @include no-select-no-drag;
   }
 
   &.horizontal {

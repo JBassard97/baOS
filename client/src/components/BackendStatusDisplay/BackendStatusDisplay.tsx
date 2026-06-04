@@ -1,14 +1,10 @@
 import "./backendstatusdisplay.scss";
+import { useSystemStore } from "../../store/useSystemStore";
+import { useUIStore } from "../../store/useUIStore";
 
-interface BackendStatusDisplayProps {
-  backendAvailable?: null | false | true;
-  taskbarPosition: "top" | "bottom" | "left" | "right";
-}
-
-function BackendStatusDisplay({
-  backendAvailable = null,
-  taskbarPosition = "bottom",
-}: BackendStatusDisplayProps) {
+function BackendStatusDisplay() {
+  const backendAvailable = useSystemStore((state) => state.backendAvailable);
+  const taskbarPosition = useUIStore((state) => state.taskbarPosition);
   return (
     <div className={`backend-status-display ${taskbarPosition}`}>
       {backendAvailable === null && <p>Searching for a Server...</p>}

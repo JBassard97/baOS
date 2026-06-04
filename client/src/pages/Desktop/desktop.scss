@@ -1,9 +1,12 @@
 @use "../../scss/variables";
 
 .desktop-main {
-  color:white;
+  color: white;
   position: fixed;
-  // border: 1px solid lime;
+  border: 1px solid hotpink;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &.horizontal {
     height: calc(100vh - var(--taskbar-height));
@@ -19,17 +22,21 @@
 
   &.bottom {
     top: 0;
+    padding-top: 2rem;
   }
 
   &.top {
     bottom: 0;
+    padding-bottom: 2rem;
   }
 
   &.left {
     right: 0;
+    padding-top: 2rem;
   }
 
   &.right {
     left: 0;
+    padding-top: 2rem;
   }
 }

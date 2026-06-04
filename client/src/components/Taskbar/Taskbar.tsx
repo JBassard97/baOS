@@ -2,6 +2,7 @@ import "./taskbar.scss";
 import StartButton from "../StartButton/StartButton";
 import SmallDateClock from "../SmallDateClock/SmallDateClock";
 import FullscreenButton from "../FullscreenButton/FullscreenButton";
+import { useUIStore } from "../../store/useUIStore";
 
 interface TaskbarProps {
   position?: "top" | "bottom" | "left" | "right";
@@ -13,7 +14,9 @@ const getOrientation = (position: TaskbarProps["position"]) => {
     : "vertical";
 };
 
-function Taskbar({ position = "bottom" }: TaskbarProps) {
+function Taskbar() {
+  const position = useUIStore((state) => state.taskbarPosition);
+
   return (
     <div className={`taskbar ${getOrientation(position)} ${position}`}>
       <div className="left-or-top-group">

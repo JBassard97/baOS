@@ -1,0 +1,5 @@
+@use "../../scss/mixins" as *;
+
+.floating-text {
+  @include no-select-no-drag;
+}

@@ -1,4 +1,5 @@
 @use "../../scss/variables";
+@use "../../scss/mixins" as *;
 
 .backend-status-display {
   color: whitesmoke;
@@ -11,12 +12,7 @@
   position: absolute;
   transition: var(--taskbar-item-hover-transition);
 
-  // Prevent text selection/dragging
-  user-select: none;
-  -webkit-user-select: none; // Safari/iOS
-  -ms-user-select: none; // Old IE/Edge
-  -moz-user-select: none; // Firefox
-  -webkit-user-drag: none;
+  @include no-select-no-drag;
 
   &.top {
     bottom: 0;

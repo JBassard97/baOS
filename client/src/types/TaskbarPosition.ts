@@ -1,0 +1,1 @@
+export type TaskbarPosition = "top" | "bottom" | "left" | "right";

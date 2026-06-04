@@ -12,7 +12,13 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
 
-        configure(proxy) { proxy.on("error", () => { }) }
+        configure(proxy) {
+          proxy.on("error", () => {
+            console.log(
+              "\x1b[35mIf the Vite server is intentionally running solo, disregard the following AggregateError:\x1b[0m"
+            );
+          });
+        }
       },
     },
   }
