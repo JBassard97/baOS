@@ -6,6 +6,7 @@
   grid-template-columns: repeat(auto-fit, minmax(5rem, 6.5rem));
   gap: clamp(0.5rem, 2%, 1.5rem);
   padding: clamp(0.75rem, 3%, 1rem);
+  position: fixed;
   align-content: start;
   justify-content: center;
 
@@ -20,9 +21,13 @@
   &.left,
   &.bottom {
     padding-top: 2rem;
+    top: 0;
   }
 
   &.top {
     padding-bottom: 2rem;
+    bottom: 0;
   }
+
+  
 }
