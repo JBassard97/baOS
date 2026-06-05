@@ -34,6 +34,7 @@
   }
 
   &.top {
+padding-top: calc(1rem + var(--taskbar-height));
     padding-bottom: 2rem;
     bottom: 0;
   }
