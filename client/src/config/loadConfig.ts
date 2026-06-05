@@ -6,7 +6,8 @@ interface config {
 }
 
 export function loadConfig(config: config): void {
+    const taskbarPosition = useUIStore((state) => state.taskbarPosition);
     const setTaskbarPosition = useUIStore((state) => state.setTaskbarPosition);
-    setTaskbarPosition(config.taskbarPosition);
 
+    if (!taskbarPosition) setTaskbarPosition(config.taskbarPosition);
 }
