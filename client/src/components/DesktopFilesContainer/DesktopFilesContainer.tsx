@@ -13,7 +13,7 @@ export default function DesktopFilesContainer() {
   useEffect(() => {
     (async () => {
       await ensureOpfsExists();
-      const result = await ls("/Desktop");
+      const result = await ls("Desktop");
       console.log("ls output:", result.entries);
       setDesktopEntries(result.entries);
     })();
@@ -23,7 +23,9 @@ export default function DesktopFilesContainer() {
     <div className={`desktop-files-container ${taskbarPosition}`}>
       {DesktopEntries.length > 0 &&
         DesktopEntries.map((entry: { name: string }, index) => (
-          <p key={index}>{entry.name}</p>
+          <div key={index} className="file-entry">
+            <p>{entry.name}</p>
+          </div>
         ))}
     </div>
   );
