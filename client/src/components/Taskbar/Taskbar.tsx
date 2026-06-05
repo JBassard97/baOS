@@ -2,6 +2,7 @@ import "./taskbar.scss";
 import StartButton from "../StartButton/StartButton";
 import SmallDateClock from "../SmallDateClock/SmallDateClock";
 import FullscreenButton from "../FullscreenButton/FullscreenButton";
+import TaskbarPositionSetter from "../TaskbarPositionSetter/TaskbarPositionSetter";
 import { useUIStore } from "../../store/useUIStore";
 
 interface TaskbarProps {
@@ -26,6 +27,7 @@ function Taskbar() {
         />
       </div>
       <div className="right-or-bottom-group">
+        <TaskbarPositionSetter/>
         <FullscreenButton
           orientation={getOrientation(position)}
           taskbarPosition={position}

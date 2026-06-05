@@ -1,0 +1,44 @@
+@use "../../scss/mixins" as *;
+@use "../../scss/variables" as *;
+
+.taskbar-position-setter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--taskbar-item-border-color);
+  transition: var(--taskbar-item-hover-transition);
+  border-radius: 0.5rem;
+  min-width: 3rem;
+  min-height: 3rem;
+  max-width: 3rem;
+  max-height: 3rem;
+  overflow: hidden;
+
+  svg {
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+
+    @include no-select-no-drag;
+
+    polygon {
+      fill: transparent;
+      stroke: var(--taskbar-item-border-color);
+      stroke-width: 1;
+      pointer-events: all;
+      transition: var(--taskbar-item-hover-transition);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &:hover {
+        fill: var(--taskbar-item-hover-bg);
+      }
+    }
+
+    image {
+        pointer-events: none;
+    }
+  }
+}

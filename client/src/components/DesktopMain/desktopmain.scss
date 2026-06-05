@@ -1,0 +1,37 @@
+@use "../../scss/variables";
+
+.desktop-main {
+  color: white;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.horizontal {
+    height: calc(100vh - var(--taskbar-height));
+    width: 100%;
+  }
+
+  &.vertical {
+    height: 100%;
+    width: calc(100vw - var(--taskbar-height));
+  }
+
+  // ? Sending desktop-main in the opposite direction of taskbar
+
+  &.bottom {
+    top: 0;
+  }
+
+  &.top {
+    bottom: 0;
+  }
+
+  &.left {
+    right: 0;
+  }
+
+  &.right {
+    left: 0;
+  }
+}
