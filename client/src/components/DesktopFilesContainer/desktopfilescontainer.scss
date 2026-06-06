@@ -10,12 +10,14 @@
   align-content: start;
   justify-content: center;
 
-  &.top, &.bottom {
+  &.top,
+  &.bottom {
     height: calc(100vh - var(--taskbar-height));
     width: 100%;
   }
 
-  &.right, &.left {
+  &.right,
+  &.left {
     height: 100%;
     width: calc(100vw - var(--taskbar-height));
   }
@@ -26,7 +28,6 @@
     min-width: 0;
   }
 
-  
   &.right,
   &.left,
   &.bottom {
@@ -34,7 +35,7 @@
   }
 
   &.top {
-padding-top: calc(1rem + var(--taskbar-height));
+    // padding-top: calc(1rem + var(--taskbar-height));
     padding-bottom: 2rem;
     bottom: 0;
   }
@@ -44,12 +45,10 @@ padding-top: calc(1rem + var(--taskbar-height));
   }
 
   &.right {
-    left:0;
+    left: 0;
   }
 
   &.left {
     right: 0;
   }
-
-  
 }

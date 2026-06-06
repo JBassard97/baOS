@@ -13,7 +13,7 @@ export default function DesktopFilesContainer() {
   useEffect(() => {
     (async () => {
       await ensureOpfsExists();
-      const result = await ls("Desktop");
+      const result = await ls("/Desktop");
       console.log("ls output:", result.entries);
       setDesktopEntries(result.entries);
     })();
