@@ -12,8 +12,8 @@
   // Styling
   color: whitesmoke;
   border: 1px solid var(--taskbar-item-border-color);
-  font-family: "Segoe UI", sans-serif;
-  border-radius: 0.5rem;
+  font-family: var(--small-clock-font-family);
+  border-radius: var(--taskbar-item-border-radius);
   transition: var(--taskbar-item-hover-transition);
 
   @include no-select-no-drag;
