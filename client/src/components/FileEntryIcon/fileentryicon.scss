@@ -3,7 +3,7 @@
 
 .file-entry {
   height: 125px;
-  //   border: 1px solid magenta;
+  // border: 1px solid magenta;
   border-radius: var(--taskbar-item-border-radius);
   min-width: 0;
   display: flex;
@@ -13,14 +13,28 @@
   font-family: "Segoe UI", sans-serif;
   transition: var(--taskbar-item-hover-transition);
 
-  img {
+  .file-entry-icon {
     @include no-select-no-drag;
   }
 
+  .file-entry-name {
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+  }
+
   @include no-select-no-drag;
+
+  &.selected {
+    background-color: var(--taskbar-item-hover-bg);
+  }
 
   &:hover {
     cursor: pointer;
     background-color: var(--taskbar-item-hover-bg);
   }
+}
+
+.file-entry-menu {
+  color: white;
 }

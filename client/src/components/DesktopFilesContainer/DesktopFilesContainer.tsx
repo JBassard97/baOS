@@ -15,6 +15,7 @@ export default function DesktopFilesContainer() {
   const backendAvailable = useSystemStore((state) => state.backendAvailable);
   const taskbarPosition = useUIStore((state) => state.taskbarPosition);
   const [DesktopEntries, setDesktopEntries] = useState([]);
+  const [selectedEntry, setSelectedEntry] = useState<string | null>(null);
 
   const path: string = "/Desktop";
 
@@ -27,11 +28,23 @@ export default function DesktopFilesContainer() {
     })();
   }, [backendAvailable]);
 
+  useEffect(() => {
+    console.log(selectedEntry);
+  }, [selectedEntry]);
+
   return (
-    <div className={`desktop-files-container ${taskbarPosition}`}>
+    <div
+      className={`desktop-files-container ${taskbarPosition}`}
+      onClick={() => setSelectedEntry(null)}
+    >
       {DesktopEntries.length > 0 &&
-        DesktopEntries.map((entry: FileEntry) => (
-          <FileEntryIcon entry={entry} />
+        DesktopEntries.map((entry: FileEntry, index) => (
+          <FileEntryIcon
+            entry={entry}
+            key={index}
+            isSelected={selectedEntry === entry.name}
+            onSelect={() => setSelectedEntry(entry.name)}
+          />
         ))}
     </div>
   );
