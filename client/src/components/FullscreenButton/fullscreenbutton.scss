@@ -7,7 +7,7 @@
   align-items: center;
   border: 1px solid var(--taskbar-item-border-color);
   transition: var(--taskbar-item-hover-transition);
-  border-radius: 0.5rem;
+  border-radius: var(--taskbar-item-border-radius);
   min-width: 3rem;
   min-height: 3rem;
   max-width: 3rem;
@@ -28,8 +28,8 @@
     width: fit-content;
   }
 
-
   &:hover {
+    cursor: pointer;
     background-color: var(--taskbar-item-hover-bg);
   }
 }

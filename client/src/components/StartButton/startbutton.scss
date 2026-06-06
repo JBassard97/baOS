@@ -36,6 +36,7 @@
   }
 
   &:hover {
+    cursor: pointer;
     background-color: var(--taskbar-item-hover-bg);
   }
 }

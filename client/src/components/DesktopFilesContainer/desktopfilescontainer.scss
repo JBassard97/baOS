@@ -1,7 +1,6 @@
 @use "../../scss/variables";
 
 .desktop-files-container {
-  border: 1px solid red;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(5rem, 6.5rem));
   gap: clamp(0.5rem, 2%, 1.5rem);
@@ -20,15 +19,6 @@
   &.left {
     height: 100%;
     width: calc(100vw - var(--taskbar-height));
-  }
-
-  .file-entry {
-    height: 100px;
-    border: 1px solid magenta;
-    min-width: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   &.right,

@@ -1,0 +1,26 @@
+@use "../../scss/variables";
+@use "../../scss/mixins" as *;
+
+.file-entry {
+  height: 125px;
+  //   border: 1px solid magenta;
+  border-radius: var(--taskbar-item-border-radius);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+  transition: var(--taskbar-item-hover-transition);
+
+  img {
+    @include no-select-no-drag;
+  }
+
+  @include no-select-no-drag;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--taskbar-item-hover-bg);
+  }
+}

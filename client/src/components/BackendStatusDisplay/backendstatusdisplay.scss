@@ -11,6 +11,7 @@
   padding: 0.35rem 0.75rem;
   position: absolute;
   transition: var(--taskbar-item-hover-transition);
+  z-index: 2;
 
   @include no-select-no-drag;
 
