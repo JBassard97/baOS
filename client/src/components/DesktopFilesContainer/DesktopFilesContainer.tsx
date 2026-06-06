@@ -44,7 +44,9 @@ export default function DesktopFilesContainer() {
             entry={entry}
             key={index}
             isSelected={selectedEntry === entry.name}
-            onSelect={() => setSelectedEntry(entry.name)}
+            onSelect={() =>
+              setSelectedEntry(entry.name === selectedEntry ? null : entry.name)
+            }
             parentPath={path}
           />
         ))}

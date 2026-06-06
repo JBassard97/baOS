@@ -29,6 +29,10 @@ export default function FileEntryIcon({
           e.stopPropagation();
           onSelect();
         }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          onSelect();
+        }}
       >
         <img className="file-entry-icon" src={isDir ? folderIcon : fileIcon} />
 
@@ -42,7 +46,12 @@ export default function FileEntryIcon({
           <div className="file-entry-actions">
             <div className="action">Open</div>
             <div className="action">Rename</div>
-            <div className="action" onClick={() => alert(`Path Copied: \n${parentPath}/${entry.name}`)}>
+            <div
+              className="action"
+              onClick={() =>
+                alert(`Path Copied: \n${parentPath}/${entry.name}`)
+              }
+            >
               Copy Path
             </div>
             <div className="action">Delete</div>
