@@ -17,7 +17,8 @@ export default function DesktopFilesContainer() {
   const [DesktopEntries, setDesktopEntries] = useState([]);
   const [selectedEntry, setSelectedEntry] = useState<string | null>(null);
 
-  const path: string = "/Desktop";
+  // Default value = "/Desktop"
+  const path: string = "";
 
   useEffect(() => {
     (async () => {
