@@ -26,6 +26,9 @@
     height: 100px;
     border: 1px solid magenta;
     min-width: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &.right,
@@ -35,7 +38,7 @@
   }
 
   &.top {
-    // padding-top: calc(1rem + var(--taskbar-height));
+    padding-top: var(--taskbar-height);
     padding-bottom: 2rem;
     bottom: 0;
   }
