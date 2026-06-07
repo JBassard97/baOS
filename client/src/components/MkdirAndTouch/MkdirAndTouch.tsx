@@ -1,6 +1,6 @@
 import "./mkdirandtouch.scss";
-import { mkdir } from "../../vfs-actions/mkdir";
-import { touch } from "../../vfs-actions/touch";
+// import { mkdir } from "../../vfs-actions/mkdir";
+// import { touch } from "../../vfs-actions/touch";
 import { useUIStore } from "../../store/useUIStore";
 // import plusIcon from "../../assets/icons/plus-icon.svg";
 // import fileIcon from "../../assets/icons/file-icon.svg";
