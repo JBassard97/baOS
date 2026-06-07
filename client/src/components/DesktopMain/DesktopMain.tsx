@@ -1,5 +1,6 @@
 import "./desktopmain.scss";
 import BackendStatusDisplay from "../BackendStatusDisplay/BackendStatusDisplay";
+import MkdirAndTouch from "../MkdirAndTouch/MkdirAndTouch";
 import DesktopFilesContainer from "../DesktopFilesContainer/DesktopFilesContainer";
 import { isHorizontal } from "../../helpers/isHorizontal";
 import { useUIStore } from "../../store/useUIStore";
@@ -14,6 +15,7 @@ export default function DesktopMain() {
       } ${taskbarPosition}`}
     >
       <BackendStatusDisplay />
+      <MkdirAndTouch />
       <DesktopFilesContainer />
     </main>
   );

@@ -1,10 +1,7 @@
 import "./fileentryicon.scss";
 import fileIcon from "../../assets/icons/file-icon.svg";
 import folderIcon from "../../assets/icons/folder-icon.svg";
-interface FileEntry {
-  name: string;
-  type: string;
-}
+import type { FileEntry } from "../../interfaces/FileEntry";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -37,7 +34,7 @@ export default function FileEntryIcon({
         <img className="file-entry-icon" src={isDir ? folderIcon : fileIcon} />
 
         <p className="file-entry-name">
-          {isDir ? `/${entry.name}` : entry.name}
+          {isDir ? `${entry.name}/` : entry.name}
         </p>
       </div>
 
@@ -49,7 +46,9 @@ export default function FileEntryIcon({
             <div
               className="action"
               onClick={() =>
-                alert(`Path Copied: \n${parentPath}/${entry.name}`)
+                alert(
+                  `Path Copied: \n${parentPath}${isDir ? `${entry.name}/` : entry.name}`,
+                )
               }
             >
               Copy Path

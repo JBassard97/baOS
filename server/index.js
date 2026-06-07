@@ -38,7 +38,6 @@ app.get("/vfs-actions/ls", async (req, res) => {
     const dir = req.query.path || "/";
 
     const fullPath = resolve(dir);
-    
 
     const entries = await fs.readdir(fullPath, { withFileTypes: true });
 
@@ -88,6 +87,40 @@ app.post("/vfs-actions/touch", async (req, res) => {
     });
   } catch (err) {
     console.error("TOUCH ERROR:", err);
+
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+});
+
+app.post("/vfs-actions/mkdir", async (req, res) => {
+  try {
+    const { path: vfsPath } = req.body;
+
+    console.log("MKDIR REQUEST BODY:", req.body);
+
+    if (!vfsPath || !vfsPath.startsWith("/")) {
+      return res.status(400).json({
+        error: "Invalid directory path",
+      });
+    }
+
+    const fullPath = resolve(vfsPath);
+
+    await fs.mkdir(fullPath, {
+      recursive: true,
+    });
+
+    console.log("MKDIR PATH:", vfsPath);
+    console.log("RESOLVED:", fullPath);
+
+    res.json({
+      status: "ok",
+      path: vfsPath,
+    });
+  } catch (err) {
+    console.error("MKDIR ERROR:", err);
 
     res.status(500).json({
       error: err.message,

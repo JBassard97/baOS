@@ -1,0 +1,82 @@
+@use "../../scss/variables";
+
+.mkdir-and-touch {
+  //   border: 1px solid yellow;
+  display: flex;
+  justify-content: space-evenly;
+  width: 45%;
+  height: 1.5rem;
+  position: fixed;
+  overflow: hidden;
+  z-index: 2;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.right {
+    bottom: 0;
+    left: 0;
+    border-top-right-radius: var(--backend-status-display-border-radius);
+    box-shadow: 0 -1px 5px 2px rgba(0, 0, 0, 0.6);
+  }
+  &.left {
+    bottom: 0;
+    right: 0;
+    border-top-left-radius: var(--backend-status-display-border-radius);
+    box-shadow: 0 -1px 5px 2px rgba(0, 0, 0, 0.6);
+  }
+  &.bottom {
+    top: 0;
+    right: 0;
+    border-bottom-left-radius: var(--backend-status-display-border-radius);
+    box-shadow: -1px 0 5px 2px rgba(0, 0, 0, 0.6);
+  }
+  &.top {
+    bottom: 0;
+    right: 0;
+    border-top-left-radius: var(--backend-status-display-border-radius);
+    box-shadow: -1px 0 5px 2px rgba(0, 0, 0, 0.6);
+  }
+
+  .touch-button,
+  .mkdir-button {
+    // border: 1px solid lime;
+    width: 50%;
+    height: 100%;
+    background-color: black;
+    transition: var(--taskbar-item-hover-transition);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.25rem 0;
+
+    &:hover {
+      background-color: whitesmoke;
+      color: black;
+      .file-icon,
+      .folder-icon,
+      .plus-icon {
+        fill: black;
+      }
+    }
+
+    .file-icon,
+    .folder-icon {
+      width: auto;
+      height: 100%;
+    }
+
+    .plus-icon {
+      height: 60%;
+    }
+
+    .plus-icon,
+    .file-icon,
+    .folder-icon {
+      width: auto;
+      transition: var(--taskbar-item-hover-transition);
+    }
+  }
+}

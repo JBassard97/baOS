@@ -8,8 +8,8 @@ function BackendStatusDisplay() {
   return (
     <div className={`backend-status-display ${taskbarPosition}`}>
       {backendAvailable === null && <p>Searching for a Server...</p>}
-      {backendAvailable === true && <p>Full-Stack Mode: Using VFS</p>}
-      {backendAvailable === false && <p>Client-Only Mode: Using OPFS</p>}
+      {backendAvailable === true && <p>Server Mode: Using VFS</p>}
+      {backendAvailable === false && <p>Client Mode: Using OPFS</p>}
     </div>
   );
 }

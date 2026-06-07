@@ -1,0 +1,1 @@
+export const VFS_ROOT: string = "/" as const; // `as const` locks "/" in
