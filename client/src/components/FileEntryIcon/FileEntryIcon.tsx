@@ -6,14 +6,18 @@ import type { FileEntry } from "../../interfaces/FileEntry";
 interface FileEntryIconProps {
   entry: FileEntry;
   isSelected: boolean;
+  showActions: boolean;
   onSelect: () => void;
+  onContextMenuOpen: (x: number, y: number) => void;
   parentPath: string;
 }
 
 export default function FileEntryIcon({
   entry,
   isSelected,
+  showActions,
   onSelect,
+  onContextMenuOpen,
   parentPath,
 }: FileEntryIconProps) {
   const isDir = entry.type === "dir";
@@ -26,9 +30,15 @@ export default function FileEntryIcon({
           e.stopPropagation();
           onSelect();
         }}
+        onDoubleClick={() => {
+          alert(
+            `Attempted to open: \n${parentPath}${isDir ? `${entry.name}/` : entry.name}`,
+          );
+        }}
         onContextMenu={(e) => {
           e.preventDefault();
-          onSelect();
+          e.stopPropagation();
+          onContextMenuOpen(e.clientX, e.clientY);
         }}
       >
         <img className="file-entry-icon" src={isDir ? folderIcon : fileIcon} />
@@ -39,7 +49,7 @@ export default function FileEntryIcon({
       </div>
 
       <div className="actions-section">
-        {isSelected && (
+        {showActions && (
           <div className="file-entry-actions">
             <div className="action">Open</div>
             <div className="action">Rename</div>
