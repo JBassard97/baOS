@@ -5,11 +5,10 @@ import BackgroundLayer from "../../components/BackgroundLayer/BackgroundLayer";
 import { useBackendStatus } from "../../hooks/useBackendStatus";
 import { loadConfig } from "../../config/loadConfig";
 import type { TaskbarPosition } from "../../types/TaskbarPosition";
-import serene from "../../assets/backgrounds/serene.png";
+// import DevPanel from "../../components/DevPanel";
 
 const config = {
   taskbarPosition: "bottom" as TaskbarPosition,
-  currentBackground: serene,
 };
 
 function Desktop() {
@@ -21,6 +20,7 @@ function Desktop() {
       <BackgroundLayer />
       <DesktopMain />
       <Taskbar />
+      {/* <DevPanel /> */}
     </div>
   );
 }

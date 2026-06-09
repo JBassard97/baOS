@@ -1,3 +1,5 @@
+import serene from "../assets/backgrounds/serene.png";
+
 const DEFAULT_DIRS = [
     "Desktop",
     "Documents",
@@ -5,6 +7,12 @@ const DEFAULT_DIRS = [
     "Videos",
     "Music",
 ];
+
+async function fileFromAsset(url: string, filename: string) {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    return new File([blob], filename, { type: blob.type });
+}
 
 export async function ensureOpfsExists() {
     const root = await navigator.storage.getDirectory();
@@ -16,6 +24,33 @@ export async function ensureOpfsExists() {
             })
         )
     );
+
+    const images = await root.getDirectoryHandle("Images", { create: true });
+
+    const backgrounds = await images.getDirectoryHandle("Backgrounds", {
+        create: true,
+    });
+
+    // -----------------------------
+    // SEED DEFAULT WALLPAPER
+    // -----------------------------
+    const defaultWallpaperName = "serene.png";
+
+    try {
+        await backgrounds.getFileHandle(defaultWallpaperName);
+    } catch {
+        const file = await fileFromAsset(serene, defaultWallpaperName);
+
+        const handle = await backgrounds.getFileHandle(defaultWallpaperName, {
+            create: true,
+        });
+
+        const writable = await handle.createWritable();
+        await writable.write(file);
+        await writable.close();
+
+        console.log("Seeded default wallpaper: serene.png");
+    }
 
     const desktop = await root.getDirectoryHandle("Desktop", {
         create: true,

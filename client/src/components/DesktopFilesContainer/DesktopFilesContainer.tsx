@@ -5,6 +5,7 @@ import { useSystemStore } from "../../store/useSystemStore";
 import { useUIStore } from "../../store/useUIStore";
 import { useDesktopStore } from "../../store/useDesktopStore";
 import { useEffect, useState } from "react";
+import { useSetBackground } from "../../hooks/useSetBackground";
 import FileEntryIcon from "../FileEntryIcon/FileEntryIcon";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { VFS_ROOT } from "../../constants/constants";
@@ -23,6 +24,8 @@ export default function DesktopFilesContainer() {
   const setContextMenuEntry = useDesktopStore(
     (state) => state.setContextMenuEntry,
   );
+
+  const { pickBackground } = useSetBackground();
 
   const [contextMenu, setContextMenu] = useState<{
     visible: boolean;
@@ -106,7 +109,9 @@ export default function DesktopFilesContainer() {
         >
           <div className="context-item">New File</div>
           <div className="context-item">New Folder</div>
-          <div className="context-item">Set Background</div>
+          <div className="context-item" onClick={pickBackground}>
+            Set Background
+          </div>
         </div>
       )}
     </div>

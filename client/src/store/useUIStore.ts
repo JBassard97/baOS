@@ -14,7 +14,7 @@ export const useUIStore = create<UIStore>()(
     persist(
         (set) => ({
             taskbarPosition: "bottom",
-            currentBackground: "",
+            currentBackground: "serene.png",
 
             setTaskbarPosition: (position) =>
                 set({ taskbarPosition: position }),
