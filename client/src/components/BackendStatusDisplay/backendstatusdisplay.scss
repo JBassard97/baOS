@@ -8,11 +8,12 @@
   font-size: 0.6rem;
   font-style: italic;
   display: flex;
-justify-content: center;
-align-items: center;
+  justify-content: center;
+  align-items: center;
   min-height: 1.5rem;
   height: fit-content;
   width: 45%;
+  max-width: 20rem;
   padding: 0.35rem 0.6rem;
   position: absolute;
   transition: var(--taskbar-item-hover-transition);
