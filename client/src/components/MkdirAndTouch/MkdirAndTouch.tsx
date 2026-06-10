@@ -2,20 +2,56 @@ import "./mkdirandtouch.scss";
 // import { mkdir } from "../../vfs-actions/mkdir";
 // import { touch } from "../../vfs-actions/touch";
 import { useUIStore } from "../../store/useUIStore";
-// import plusIcon from "../../assets/icons/plus-icon.svg";
-// import fileIcon from "../../assets/icons/file-icon.svg";
-// import folderIcon from "../../assets/icons/folder-icon.svg";
+import { useDesktopStore } from "../../store/useDesktopStore";
 
 export default function MkdirAndTouch() {
   const taskbarPosition = useUIStore((state) => state.taskbarPosition);
+  const setCreatingDesktopEntry = useDesktopStore(
+    (state) => state.setCreatingDesktopEntry,
+  );
+  const setSelectedEntry = useDesktopStore((state) => state.setSelectedEntry);
+  const setContextMenuEntry = useDesktopStore(
+    (state) => state.setContextMenuEntry,
+  );
+  const setDesktopContextMenu = useDesktopStore(
+    (state) => state.setDesktopContextMenu,
+  );
 
   return (
     <div className={`mkdir-and-touch ${taskbarPosition}`}>
-      <div className="touch-button">
+      <div
+        className="touch-button"
+        onClick={() => {
+          setSelectedEntry(null);
+          setContextMenuEntry(null);
+          setDesktopContextMenu({ visible: false, x: 0, y: 0, entry: null });
+          setCreatingDesktopEntry({
+            isCreatingDesktopEntry: true,
+            type: "file",
+          });
+        }}
+      >
         <PlusIcon />
         <FileIcon />
       </div>
-      <div className="mkdir-button">
+      <div
+        className="mkdir-button"
+        onClick={() => {
+          setSelectedEntry(null);
+          setContextMenuEntry(null);
+          setDesktopContextMenu({
+            visible: false,
+            x: 0,
+            y: 0,
+            entry: null,
+          });
+
+          setCreatingDesktopEntry({
+            isCreatingDesktopEntry: true,
+            type: "dir",
+          });
+        }}
+      >
         <PlusIcon />
         <FolderIcon />
       </div>
