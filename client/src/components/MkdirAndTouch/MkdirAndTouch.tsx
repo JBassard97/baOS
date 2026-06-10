@@ -17,18 +17,22 @@ export default function MkdirAndTouch() {
     (state) => state.setDesktopContextMenu,
   );
 
+  function startMakingDesktopEntry(creatingType: "file" | "dir") {
+    setSelectedEntry(null);
+    setContextMenuEntry(null);
+    setDesktopContextMenu({ visible: false, x: 0, y: 0, entry: null });
+    setCreatingDesktopEntry({
+      isCreatingDesktopEntry: true,
+      creatingType: creatingType,
+    });
+  }
+
   return (
     <div className={`mkdir-and-touch ${taskbarPosition}`}>
       <div
         className="touch-button"
         onClick={() => {
-          setSelectedEntry(null);
-          setContextMenuEntry(null);
-          setDesktopContextMenu({ visible: false, x: 0, y: 0, entry: null });
-          setCreatingDesktopEntry({
-            isCreatingDesktopEntry: true,
-            type: "file",
-          });
+          startMakingDesktopEntry("file");
         }}
       >
         <PlusIcon />
@@ -37,19 +41,7 @@ export default function MkdirAndTouch() {
       <div
         className="mkdir-button"
         onClick={() => {
-          setSelectedEntry(null);
-          setContextMenuEntry(null);
-          setDesktopContextMenu({
-            visible: false,
-            x: 0,
-            y: 0,
-            entry: null,
-          });
-
-          setCreatingDesktopEntry({
-            isCreatingDesktopEntry: true,
-            type: "dir",
-          });
+          startMakingDesktopEntry("dir");
         }}
       >
         <PlusIcon />

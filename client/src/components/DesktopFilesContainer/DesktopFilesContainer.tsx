@@ -1,7 +1,7 @@
 import "./desktopfilescontainer.scss";
 import { ls } from "../../vfs-actions/ls";
-// import { touch } from "../../vfs-actions/touch";
-// import { mkdir } from "../../vfs-actions/mkdir";
+import { touch } from "../../vfs-actions/touch";
+import { mkdir } from "../../vfs-actions/mkdir";
 import { ensureOpfsExists } from "../../vfs-actions/ensureOpfsExists";
 import { useSystemStore } from "../../store/useSystemStore";
 import { useUIStore } from "../../store/useUIStore";
@@ -34,7 +34,7 @@ export default function DesktopFilesContainer() {
 
   const { pickBackground } = useSetBackground();
 
-  const { isCreatingDesktopEntry, type } = useDesktopStore(
+  const { isCreatingDesktopEntry, creatingType } = useDesktopStore(
     (state) => state.creatingDesktopEntry,
   );
   const setCreatingDesktopEntry = useDesktopStore(
@@ -49,25 +49,63 @@ export default function DesktopFilesContainer() {
   );
 
   const [tempEntryName, setTempEntryName] = useState<string>("");
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    console.log("Submitted:", tempEntryName);
-    // try {
-    // } catch {}
+
+  function startMakingDesktopEntry(creatingType: "file" | "dir") {
+    setSelectedEntry(null);
+    setContextMenuEntry(null);
+    setDesktopContextMenu({ visible: false, x: 0, y: 0, entry: null });
+    setCreatingDesktopEntry({
+      isCreatingDesktopEntry: true,
+      creatingType: creatingType,
+    });
+  }
+
+  const loadDesktopEntries = async () => {
+    if (backendAvailable === null) return;
+    await ensureOpfsExists();
+    const result = await ls(path);
+    console.log("ls output:", result.entries);
+    setDesktopEntries(result.entries);
   };
 
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    console.log({ tempEntryName, creatingType });
 
+    if (tempEntryName.trim() === "" || isCreatingDesktopEntry === false) {
+      console.log("Invalid touch or mkdir name");
+      return;
+    }
+
+    try {
+      if (creatingType === "dir") {
+        const result = await mkdir(`${path}${tempEntryName}`);
+        console.log("result of mkdir:", result);
+      } else if (creatingType === "file") {
+        const result = await touch(`${path}${tempEntryName}`);
+        console.log("result of touch:", result);
+      }
+
+      // Reset states and reload
+      setCreatingDesktopEntry({
+        isCreatingDesktopEntry: false,
+        creatingType: null,
+      });
+      setTempEntryName("");
+      loadDesktopEntries();
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      if (backendAvailable !== null) {
-        await ensureOpfsExists();
-        const result = await ls(path);
-        console.log("ls output:", result.entries);
-        setDesktopEntries(result.entries);
-      }
-    })();
+    loadDesktopEntries();
   }, [backendAvailable]);
+
+  const sortedEntries = [...desktopEntries].sort((a, b) =>
+    a.name.localeCompare(b.name),
+  );
 
   return (
     <div
@@ -81,7 +119,10 @@ export default function DesktopFilesContainer() {
           y: 0,
           entry: null,
         });
-        setCreatingDesktopEntry({ isCreatingDesktopEntry: false, type: null });
+        setCreatingDesktopEntry({
+          isCreatingDesktopEntry: false,
+          creatingType: null,
+        });
         setTempEntryName("");
       }}
       onContextMenu={(e) => {
@@ -91,7 +132,7 @@ export default function DesktopFilesContainer() {
         setContextMenuEntry(null);
         setCreatingDesktopEntry({
           isCreatingDesktopEntry: false,
-          type: null,
+          creatingType: null,
         });
         setDesktopContextMenu({
           visible: true,
@@ -101,13 +142,13 @@ export default function DesktopFilesContainer() {
         });
         setCreatingDesktopEntry({
           isCreatingDesktopEntry: false,
-          type: null,
+          creatingType: null,
         });
         setTempEntryName("");
       }}
     >
-      {desktopEntries.length > 0 &&
-        desktopEntries.map((entry: FileEntry, index) => (
+      {sortedEntries.length > 0 &&
+        sortedEntries.map((entry: FileEntry, index) => (
           <FileEntryIcon
             key={index}
             entry={entry}
@@ -126,7 +167,7 @@ export default function DesktopFilesContainer() {
               });
               setCreatingDesktopEntry({
                 isCreatingDesktopEntry: false,
-                type: null,
+                creatingType: null,
               });
               setTempEntryName("");
             }}
@@ -141,7 +182,7 @@ export default function DesktopFilesContainer() {
               });
               setCreatingDesktopEntry({
                 isCreatingDesktopEntry: false,
-                type: null,
+                creatingType: null,
               });
               setTempEntryName("");
             }}
@@ -163,7 +204,7 @@ export default function DesktopFilesContainer() {
             zIndex: 1,
           }}
         >
-          <img src={type === "dir" ? folderIcon : fileIcon} />
+          <img src={creatingType === "dir" ? folderIcon : fileIcon} />
           <form onSubmit={handleSubmit}>
             <input
               style={{
@@ -190,8 +231,22 @@ export default function DesktopFilesContainer() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="context-item">New File</div>
-          <div className="context-item">New Folder</div>
+          <div
+            className="context-item"
+            onClick={() => {
+              startMakingDesktopEntry("file");
+            }}
+          >
+            New File
+          </div>
+          <div
+            className="context-item"
+            onClick={() => {
+              startMakingDesktopEntry("dir");
+            }}
+          >
+            New Folder
+          </div>
           <div className="context-item" onClick={pickBackground}>
             Set Background
           </div>

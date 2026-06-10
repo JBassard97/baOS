@@ -3,7 +3,7 @@ import type { FileEntry } from "../interfaces/FileEntry";
 
 interface CreatingDesktopEntry {
     isCreatingDesktopEntry: boolean;
-    type: "file" | "dir" | null;
+    creatingType: "file" | "dir" | null;
 }
 
 interface DesktopContextMenu {
@@ -34,7 +34,7 @@ export const useDesktopStore = create<DesktopStore>((set) => ({
     selectedEntry: null,
     contextMenuEntry: null,
     desktopEntries: [],
-    creatingDesktopEntry: { isCreatingDesktopEntry: false, type: null },
+    creatingDesktopEntry: { isCreatingDesktopEntry: false, creatingType: null },
     desktopContextMenu: { visible: false, x: 0, y: 0, entry: null },
 
     setSelectedEntry: (value) =>
