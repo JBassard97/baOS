@@ -175,6 +175,7 @@ export default function DesktopFilesContainer() {
               value={tempEntryName}
               onChange={(e) => setTempEntryName(e.target.value)}
               autoFocus
+enterKeyHint="done"
             />
           </form>
         </div>
