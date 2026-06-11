@@ -1,0 +1,19 @@
+@use "../../scss/variables";
+
+.windows-container {
+    // background-color: red;
+  pointer-events: none; // TODO: ADD `pointer-events:auto` to children
+  z-index: 2; // Above DesktopFilesContainer & BackendStatusDisplay
+
+  &.top,
+  &.bottom {
+    height: calc(100vh - var(--taskbar-height));
+    width: 100%;
+  }
+
+  &.right,
+  &.left {
+    height: 100%;
+    width: calc(100vw - var(--taskbar-height));
+  }
+}

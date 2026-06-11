@@ -1,5 +1,8 @@
 import "./windowscontainer.scss";
+import { useUIStore } from "../../store/useUIStore";
 
 export default function WindowsContainer() {
-  return <div className={`windows-container`}></div>;
+  const taskbarPosition = useUIStore((s) => s.taskbarPosition);
+
+  return <div className={`windows-container ${taskbarPosition}`}></div>;
 }
