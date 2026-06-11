@@ -4,6 +4,7 @@ import MkdirAndTouch from "../MkdirAndTouch/MkdirAndTouch";
 import DesktopFilesContainer from "../DesktopFilesContainer/DesktopFilesContainer";
 import { isHorizontal } from "../../helpers/isHorizontal";
 import { useUIStore } from "../../store/useUIStore";
+// import DevPanel from "../DevPanel";
 
 export default function DesktopMain() {
   const taskbarPosition = useUIStore((state) => state.taskbarPosition);
@@ -17,6 +18,7 @@ export default function DesktopMain() {
       <BackendStatusDisplay />
       <MkdirAndTouch />
       <DesktopFilesContainer />
+      {/* <DevPanel/> */}
     </main>
   );
 }

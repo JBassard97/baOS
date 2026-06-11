@@ -2,6 +2,7 @@ import "./desktopfilescontainer.scss";
 import { ls } from "../../vfs-actions/ls";
 import { touch } from "../../vfs-actions/touch";
 import { mkdir } from "../../vfs-actions/mkdir";
+import { rm } from "../../vfs-actions/rm";
 import { ensureOpfsExists } from "../../vfs-actions/ensureOpfsExists";
 import { useSystemStore } from "../../store/useSystemStore";
 import { useUIStore } from "../../store/useUIStore";
@@ -66,6 +67,16 @@ export default function DesktopFilesContainer() {
     const result = await ls(path);
     console.log("ls output:", result.entries);
     setDesktopEntries(result.entries);
+  };
+
+  const handleDelete = async (entryPath: string) => {
+    try {
+      await rm(`${path}${entryPath}`);
+      loadDesktopEntries();
+    } catch (error) {
+      console.error(error);
+      return;
+    }
   };
 
   const handleSubmit = async (e: any) => {
@@ -155,6 +166,7 @@ export default function DesktopFilesContainer() {
             isSelected={selectedEntry === entry.name}
             showActions={contextMenuEntry === entry.name}
             parentPath={path}
+            onDelete={async () => handleDelete(entry.name)}
             onSelect={() => {
               setSelectedEntry(
                 entry.name === selectedEntry ? null : entry.name,

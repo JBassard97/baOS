@@ -9,6 +9,7 @@ interface FileEntryIconProps {
   showActions: boolean;
   onSelect: () => void;
   onContextMenuOpen: (x: number, y: number) => void;
+  onDelete: () => void;
   parentPath: string;
 }
 
@@ -18,6 +19,7 @@ export default function FileEntryIcon({
   showActions,
   onSelect,
   onContextMenuOpen,
+  onDelete,
   parentPath,
 }: FileEntryIconProps) {
   const isDir = entry.type === "dir";
@@ -63,7 +65,9 @@ export default function FileEntryIcon({
             >
               Copy Path
             </div>
-            <div className="action">Delete</div>
+            <div className="action" onClick={onDelete}>
+              Delete
+            </div>
           </div>
         )}
       </div>

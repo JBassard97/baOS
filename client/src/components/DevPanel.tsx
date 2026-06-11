@@ -15,6 +15,7 @@ export default function DevPanel() {
       }}
     >
       <button onClick={resetOpfs}>Reset OPFS</button>
+      <button onClick={() => localStorage.clear()}>Reset State</button>
     </div>
   );
 }

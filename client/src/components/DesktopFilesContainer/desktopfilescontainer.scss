@@ -9,6 +9,7 @@
   position: fixed;
   align-content: start;
   justify-content: center;
+  padding-bottom: 10rem;
 
   &.top,
   &.bottom {
@@ -30,7 +31,7 @@
 
   &.top {
     padding-top: var(--taskbar-height);
-    padding-bottom: 2rem;
+    // padding-bottom: 2rem;
     bottom: 0;
   }
 
@@ -44,6 +45,23 @@
 
   &.left {
     right: 0;
+  }
+
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar-track-piece {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(137, 137, 137, 0.315);
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(245, 245, 245, 0.9);
   }
 
   .context-menu {
