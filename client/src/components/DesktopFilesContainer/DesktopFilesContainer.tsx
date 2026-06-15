@@ -9,6 +9,7 @@ import { useUIStore } from "../../store/useUIStore";
 import { useDesktopStore } from "../../store/useDesktopStore";
 import { useEffect, useState } from "react";
 import { useSetBackground } from "../../hooks/useSetBackground";
+import { getValidFileName } from "../../helpers/getValidFileName";
 import FileEntryIcon from "../FileEntryIcon/FileEntryIcon";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { VFS_ROOT } from "../../constants/constants";
@@ -93,7 +94,8 @@ export default function DesktopFilesContainer() {
         const result = await mkdir(`${path}${tempEntryName}`);
         console.log("result of mkdir:", result);
       } else if (creatingType === "file") {
-        const result = await touch(`${path}${tempEntryName}`);
+        const validFileName = getValidFileName(tempEntryName);
+        const result = await touch(`${path}${validFileName}`);
         console.log("result of touch:", result);
       }
 

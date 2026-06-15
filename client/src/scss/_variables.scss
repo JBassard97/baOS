@@ -3,8 +3,7 @@
 :root {
   --taskbar-height: 4rem;
   --taskbar-blur: blur(15px);
-  --taskbar-item-hover-bg: rgba(104, 185, 225, 0.6);
-  // --taskbar-item-hover-bg: rgba(255, 255, 255, 0.2);
+  --taskbar-item-hover-bg: rgba(199, 104, 225, 0.6);
   --taskbar-item-border-radius: 0.5rem;
   --taskbar-item-border-color: rgba(128, 128, 128, 0.3);
   --taskbar-item-hover-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -14,4 +13,6 @@
   --backend-status-display-border-radius: 1rem;
 
   --small-clock-font-family: "Segoe UI", sans-serif;
+
+  --file-entry-actions-box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.4);
 }
