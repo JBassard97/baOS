@@ -1,7 +1,6 @@
 import "./fileentryicon.scss";
-import fileIcon from "../../assets/icons/file-icon.svg";
-import folderIcon from "../../assets/icons/folder-icon.svg";
 import type { FileEntry } from "../../interfaces/FileEntry";
+import { getFileIcon } from "../../helpers/getFileIcon";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -43,7 +42,7 @@ export default function FileEntryIcon({
           onContextMenuOpen(e.clientX, e.clientY);
         }}
       >
-        <img className="file-entry-icon" src={isDir ? folderIcon : fileIcon} />
+        <img className="file-entry-icon" src={getFileIcon(entry.name, isDir)} />
 
         <p className="file-entry-name">
           {isDir ? `${entry.name}/` : entry.name}

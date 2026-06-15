@@ -13,8 +13,7 @@ import { getValidFileName } from "../../helpers/getValidFileName";
 import FileEntryIcon from "../FileEntryIcon/FileEntryIcon";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { VFS_ROOT } from "../../constants/constants";
-import fileIcon from "../../assets/icons/file-icon.svg";
-import folderIcon from "../../assets/icons/folder-icon.svg";
+import { getFileIcon } from "../../helpers/getFileIcon";
 
 export default function DesktopFilesContainer() {
   const DESKTOP_PATH = "Desktop/";
@@ -51,6 +50,15 @@ export default function DesktopFilesContainer() {
   );
 
   const [tempEntryName, setTempEntryName] = useState<string>("");
+
+  const hideDesktopContextMenu = () => {
+    setDesktopContextMenu({
+      visible: false,
+      x: 0,
+      y: 0,
+      entry: null,
+    });
+  };
 
   function startMakingDesktopEntry(creatingType: "file" | "dir") {
     setSelectedEntry(null);
@@ -126,12 +134,7 @@ export default function DesktopFilesContainer() {
       onClick={() => {
         setSelectedEntry(null);
         setContextMenuEntry(null);
-        setDesktopContextMenu({
-          visible: false,
-          x: 0,
-          y: 0,
-          entry: null,
-        });
+        hideDesktopContextMenu();
         setCreatingDesktopEntry({
           isCreatingDesktopEntry: false,
           creatingType: null,
@@ -173,12 +176,7 @@ export default function DesktopFilesContainer() {
               setSelectedEntry(
                 entry.name === selectedEntry ? null : entry.name,
               );
-              setDesktopContextMenu({
-                visible: false,
-                x: 0,
-                y: 0,
-                entry: null,
-              });
+              hideDesktopContextMenu();
               setCreatingDesktopEntry({
                 isCreatingDesktopEntry: false,
                 creatingType: null,
@@ -188,12 +186,7 @@ export default function DesktopFilesContainer() {
             onContextMenuOpen={() => {
               setSelectedEntry(entry.name);
               setContextMenuEntry(entry.name);
-              setDesktopContextMenu({
-                visible: false,
-                x: 0,
-                y: 0,
-                entry: null,
-              });
+              hideDesktopContextMenu();
               setCreatingDesktopEntry({
                 isCreatingDesktopEntry: false,
                 creatingType: null,
@@ -218,7 +211,7 @@ export default function DesktopFilesContainer() {
             zIndex: 1,
           }}
         >
-          <img src={creatingType === "dir" ? folderIcon : fileIcon} />
+          <img src={getFileIcon(tempEntryName, creatingType === "dir")} />
           <form onSubmit={handleSubmit}>
             <input
               style={{
@@ -262,7 +255,13 @@ export default function DesktopFilesContainer() {
           >
             New Folder
           </div>
-          <div className="context-item" onClick={pickBackground}>
+          <div
+            className="context-item"
+            onClick={() => {
+              pickBackground();
+              hideDesktopContextMenu();
+            }}
+          >
             Set Background
           </div>
         </div>

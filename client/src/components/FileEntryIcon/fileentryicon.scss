@@ -33,9 +33,13 @@
   @include no-select-no-drag;
 
   &.selected {
-    background-color: var(--taskbar-item-hover-bg);
+    background-color: var(--taskbar-item-selected-bg);
     .file-entry-name {
       overflow: visible;
+    }
+
+    &:hover {
+      background-color: var(--taskbar-item-selected-bg);
     }
   }
 
