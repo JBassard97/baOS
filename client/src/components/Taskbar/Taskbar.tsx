@@ -3,7 +3,9 @@ import StartButton from "../StartButton/StartButton";
 import SmallDateClock from "../SmallDateClock/SmallDateClock";
 import FullscreenButton from "../FullscreenButton/FullscreenButton";
 import TaskbarPositionSetter from "../TaskbarPositionSetter/TaskbarPositionSetter";
+import TaskbarItem from "../TaskbarItem/TaskbarItem";
 import { useUIStore } from "../../store/useUIStore";
+import fileManagerIcon from "../../assets/icons/file-manager.svg";
 
 interface TaskbarProps {
   position?: "top" | "bottom" | "left" | "right";
@@ -25,9 +27,15 @@ function Taskbar() {
           orientation={getOrientation(position)}
           taskbarPosition={position}
         />
+        <TaskbarItem
+          icon={fileManagerIcon}
+          title={"File Manager"}
+          isMinimized={false}
+          children={<h3>File Manager</h3>}
+        />
       </div>
       <div className="right-or-bottom-group">
-        <TaskbarPositionSetter/>
+        <TaskbarPositionSetter />
         <FullscreenButton
           orientation={getOrientation(position)}
           taskbarPosition={position}

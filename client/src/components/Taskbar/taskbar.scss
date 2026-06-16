@@ -17,6 +17,7 @@
 
     padding: 0.2rem 0.5rem;
 
+    .left-or-top-group,
     .right-or-bottom-group {
       flex-direction: row;
     }
@@ -28,6 +29,7 @@
     flex-direction: column;
     padding: 0.5rem 0.2rem;
 
+    .left-or-top-group,
     .right-or-bottom-group {
       flex-direction: column;
     }
