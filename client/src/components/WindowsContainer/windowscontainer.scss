@@ -4,9 +4,10 @@
   // background-color: red;
   pointer-events: none;
   z-index: 2; // Above DesktopFilesContainer & BackendStatusDisplay
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  position: relative;
 
   &.top,
   &.bottom {

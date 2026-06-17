@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: column;
   transition: var(--taskbar-item-hover-transition);
+  position: absolute;
 
   &.fullscreen {
     width: 100%;

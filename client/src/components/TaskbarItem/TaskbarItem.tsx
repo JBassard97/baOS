@@ -22,6 +22,7 @@ export default function TaskbarItem({
   const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
   const minimizeWindow = useWindowStore((s) => s.minimizeWindow);
   const restoreWindow = useWindowStore((s) => s.restoreWindow);
+  const focusWindow = useWindowStore((s) => s.focusWindow);
   const activeWindows = useWindowStore((s) => s.activeWindows);
 
   const existingWindow = activeWindows.find((window) => window.title === title);
@@ -34,6 +35,7 @@ export default function TaskbarItem({
           if (existingWindow) {
             if (existingWindow.isMinimized) {
               restoreWindow(existingWindow.id);
+              focusWindow(existingWindow.id);
             } else {
               minimizeWindow(existingWindow.id);
             }
@@ -46,6 +48,7 @@ export default function TaskbarItem({
               children: children,
               title: title,
               isMinimized: isMinimized,
+              isFocused: true,
             });
           }
         }}

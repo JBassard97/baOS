@@ -8,28 +8,42 @@ import minimizeIcon from "../../assets/icons/minimize.svg";
 import { useWindowStore } from "../../store/useWindowStore";
 
 interface WindowProps {
+  index: number;
   id: string;
   icon: string;
   title: string;
   children: ReactNode | null;
   isMinimized: boolean;
+  isFocused: boolean;
 }
 
 export default function Window({
+  index,
   id,
   icon,
   title,
   children,
   isMinimized,
+  isFocused,
 }: WindowProps) {
   const taskbarPosition = useUIStore((s) => s.taskbarPosition);
+  const activeWindows = useWindowStore((s) => s.activeWindows);
   const removeActiveWindow = useWindowStore((s) => s.removeActiveWindow);
   const minimizeWindow = useWindowStore((s) => s.minimizeWindow);
+  const focusWindow = useWindowStore((s) => s.focusWindow);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   return (
     <div
-      className={`window ${taskbarPosition} ${isFullScreen ? "fullscreen" : ""} ${isMinimized ? "minimized" : ""}`}
+      className={`window ${taskbarPosition} ${isFullScreen ? "fullscreen" : ""} ${isMinimized ? "minimized" : ""} ${isFocused ? "focused" : ""}`}
+      style={{
+        top: `${index * 2}rem`,
+        left: `${index * 2}rem`,
+        zIndex: isFocused ? activeWindows.length : index,
+      }}
+      onClick={() => {
+        focusWindow(id);
+      }}
     >
       <div className="window-title-bar">
         <div className="window-info">
@@ -50,7 +64,10 @@ export default function Window({
           </div>
           <div
             className="window-fullscreen"
-            onClick={() => setIsFullScreen(!isFullScreen)}
+            onClick={() => {
+              setIsFullScreen(!isFullScreen);
+              focusWindow(id);
+            }}
           >
             <img src={isFullScreen ? exitFullscreenIcon : fullscreenIcon} />
           </div>
