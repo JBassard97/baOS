@@ -7,6 +7,7 @@ import { ensureOpfsExists } from "../../vfs-actions/ensureOpfsExists";
 import { useSystemStore } from "../../store/useSystemStore";
 import { useUIStore } from "../../store/useUIStore";
 import { useDesktopStore } from "../../store/useDesktopStore";
+import { useWindowStore } from "../../store/useWindowStore";
 import { useEffect, useState } from "react";
 import { useSetBackground } from "../../hooks/useSetBackground";
 import { getValidFileName } from "../../helpers/getValidFileName";
@@ -48,6 +49,8 @@ export default function DesktopFilesContainer() {
   const setDesktopContextMenu = useDesktopStore(
     (state) => state.setDesktopContextMenu,
   );
+
+  const unfocusAllWindows = useWindowStore((s) => s.unfocusAllWindows);
 
   const [tempEntryName, setTempEntryName] = useState<string>("");
 
@@ -140,6 +143,7 @@ export default function DesktopFilesContainer() {
           creatingType: null,
         });
         setTempEntryName("");
+        unfocusAllWindows();
       }}
       onContextMenu={(e) => {
         e.preventDefault();
@@ -161,6 +165,7 @@ export default function DesktopFilesContainer() {
           creatingType: null,
         });
         setTempEntryName("");
+        unfocusAllWindows();
       }}
     >
       {sortedEntries.length > 0 &&

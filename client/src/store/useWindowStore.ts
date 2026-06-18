@@ -18,6 +18,7 @@ type WindowStore = {
     minimizeWindow: (id: string) => void;
     restoreWindow: (id: string) => void;
     focusWindow: (id: string) => void;
+    unfocusAllWindows: () => void;
 };
 
 export const useWindowStore = create<WindowStore>((set) => ({
@@ -70,6 +71,14 @@ export const useWindowStore = create<WindowStore>((set) => ({
             activeWindows: state.activeWindows.map((window) => ({
                 ...window,
                 isFocused: window.id === id,
+            })),
+        })),
+
+    unfocusAllWindows: () =>
+        set((state) => ({
+            activeWindows: state.activeWindows.map((window) => ({
+                ...window,
+                isFocused: false,
             })),
         })),
 }));

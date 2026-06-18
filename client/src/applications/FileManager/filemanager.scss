@@ -1,9 +1,94 @@
+@use "../../scss/variables";
+
 .file-manager {
   width: 100%;
   height: 100%;
   background-color: darkslateblue;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
 
-  #path-input {
-    width: 100%;
+  .form-container {
+    #path-input {
+      width: 100%;
+    }
+
+    .status-bar {
+      font-family: monospace;
+    }
+  }
+
+  .entries-container {
+    // border: 1px solid pink;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar-track-piece {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(137, 137, 137, 0.315);
+      border-radius: 999px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(245, 245, 245, 0.9);
+    }
+
+    .file-manager-entry {
+      border-top: 3px solid var(--taskbar-item-border-color);
+      // border: 1px solid red;
+      height: 3.5rem;
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      transition: var(--taskbar-item-hover-transition);
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        .entry-text .entry-name {
+          text-decoration: underline;
+          color: whitesmoke;
+        }
+      }
+
+      img {
+        // border: 1px solid yellow;
+        width: 3rem;
+        height: 3rem;
+      }
+
+      .entry-text {
+        height: 3rem;
+        // border: 1px solid blue;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0 0.25rem;
+
+        .entry-name {
+          color: lightgray;
+          font-size: 1.3rem;
+          font-family:
+            "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        }
+
+        .entry-type {
+          font-style: italic;
+          color: lightgray;
+          font-size: 0.6rem;
+          font-family: monospace;
+        }
+      }
+    }
   }
 }
