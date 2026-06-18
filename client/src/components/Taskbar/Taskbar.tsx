@@ -8,6 +8,7 @@ import { useUIStore } from "../../store/useUIStore";
 import fileManagerIcon from "../../assets/icons/file-manager.svg";
 import DevPanel from "../DevPanel";
 import devPanelIcon from "../../assets/icons/nut.svg";
+import FileManager from "../../applications/FileManager/FileManager";
 
 interface TaskbarProps {
   position?: "top" | "bottom" | "left" | "right";
@@ -33,7 +34,7 @@ function Taskbar() {
           icon={fileManagerIcon}
           title={"File Manager"}
           isMinimized={false}
-          children={<h3>File Manager</h3>}
+          children={<FileManager />}
         />
         <TaskbarItem
           icon={devPanelIcon}

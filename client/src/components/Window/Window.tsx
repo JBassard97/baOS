@@ -37,8 +37,8 @@ export default function Window({
     <div
       className={`window ${taskbarPosition} ${isFullScreen ? "fullscreen" : ""} ${isMinimized ? "minimized" : ""} ${isFocused ? "focused" : ""}`}
       style={{
-        top: `${index * 2}rem`,
-        left: `${index * 2}rem`,
+        top: isFullScreen ? 0 : `${index * 2}rem`,
+        left: isFullScreen ? 0 : `${index * 2}rem`,
         zIndex: isFocused ? activeWindows.length : index,
       }}
       onClick={() => {
