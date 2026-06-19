@@ -1,6 +1,9 @@
 import "./fileentryicon.scss";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { getFileIcon } from "../../helpers/getFileIcon";
+import { useWindowStore } from "../../store/useWindowStore";
+import FileManager from "../../applications/FileManager/FileManager";
+import fileManagerIcon from "../../assets/icons/file-manager.svg";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -22,6 +25,8 @@ export default function FileEntryIcon({
   parentPath,
 }: FileEntryIconProps) {
   const isDir = entry.type === "dir";
+  const activeWindows = useWindowStore((s) => s.activeWindows);
+  const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
 
   return (
     <div style={{ position: "relative" }}>
@@ -32,9 +37,21 @@ export default function FileEntryIcon({
           onSelect();
         }}
         onDoubleClick={() => {
-          alert(
-            `Attempted to open: \n${parentPath}${isDir ? `${entry.name}/` : entry.name}`,
-          );
+          // alert(
+          //   `Attempted to open: \n${parentPath}${isDir ? `${entry.name}/` : entry.name}`,
+          // );
+          addActiveWindow({
+            isMinimized: false,
+            id: String(activeWindows.length),
+            isFocused: true,
+            children: (
+              <FileManager
+                startPath={`${parentPath}${isDir ? `${entry.name}/` : entry.name}`}
+              />
+            ),
+            title: "File Manager",
+            icon: fileManagerIcon,
+          });
         }}
         onContextMenu={(e) => {
           e.preventDefault();
@@ -42,7 +59,10 @@ export default function FileEntryIcon({
           onContextMenuOpen(e.clientX, e.clientY);
         }}
       >
-        <img className="file-entry-icon" src={getFileIcon(entry.name, isDir)} />
+        <img
+          className="file-entry-icon"
+          src={getFileIcon(entry.name, isDir)}
+        />
 
         <p className="file-entry-name">
           {isDir ? `${entry.name}/` : entry.name}

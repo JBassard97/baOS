@@ -32,6 +32,7 @@ const iconMap: Record<string, string> = {
 }
 
 export function getFileIcon(fileName: string, isDir: boolean) {
+
     if (isDir) return folderIcon;
 
     let output = fileIcon;

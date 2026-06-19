@@ -3,7 +3,10 @@
 
 .window {
   // border: 1px solid var(--taskbar-item-hover-bg);
+  // resize: both;
   background: transparent;
+  // min-width: 20rem;
+  // min-height: 20rem;
   width: 20rem;
   height: 20rem;
   border-radius: var(--backend-status-display-border-radius);

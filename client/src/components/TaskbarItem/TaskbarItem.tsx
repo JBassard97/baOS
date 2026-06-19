@@ -5,7 +5,6 @@ import type { ReactNode } from "react";
 import { useWindowStore } from "../../store/useWindowStore";
 
 interface WindowProps {
-  //   id: string;
   icon: string;
   title: string;
   children: ReactNode | null;
@@ -25,35 +24,50 @@ export default function TaskbarItem({
   const focusWindow = useWindowStore((s) => s.focusWindow);
   const activeWindows = useWindowStore((s) => s.activeWindows);
 
-  const existingWindow = activeWindows.find((window) => window.title === title);
+  const existingWindows = activeWindows.filter(
+    (window) => window.title === title,
+  );
 
   return (
     <TooltipProvider text={title} taskbarPosition={taskbarPosition}>
       <div
-        className={`taskbar-item ${existingWindow && existingWindow.isMinimized ? "minimized-active" : existingWindow ? "active" : ""}`}
+        className={`taskbar-item ${
+          existingWindows.some((window) => window.isMinimized)
+            ? "minimized-active"
+            : existingWindows.length > 0
+              ? "active"
+              : ""
+        }`}
         onClick={() => {
-          if (existingWindow) {
-            if (existingWindow.isMinimized) {
-              restoreWindow(existingWindow.id);
-              focusWindow(existingWindow.id);
-            } else {
-              minimizeWindow(existingWindow.id);
-            }
+          if (existingWindows.length > 0) {
+            existingWindows.forEach((window) => {
+              if (window.isMinimized) {
+                restoreWindow(window.id);
+                focusWindow(window.id);
+              } else {
+                minimizeWindow(window.id);
+              }
+            });
           }
 
-          if (!existingWindow) {
+          if (existingWindows.length === 0) {
             addActiveWindow({
               id: String(activeWindows.length),
-              icon: icon,
-              children: children,
-              title: title,
-              isMinimized: isMinimized,
+              icon,
+              children,
+              title,
+              isMinimized,
               isFocused: true,
             });
           }
         }}
       >
         <img src={icon} />
+        {existingWindows.length > 0 && (
+          <div className="existing-windows-display">
+            {existingWindows.length}
+          </div>
+        )}
       </div>
     </TooltipProvider>
   );

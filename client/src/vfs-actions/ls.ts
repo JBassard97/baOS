@@ -1,4 +1,6 @@
 import { useSystemStore } from "../store/useSystemStore";
+import { isImageFile } from "../helpers/isImageFile";
+import { isVideoFile } from "../helpers/isVideoFile";
 
 export async function ls(path: string) {
     const backendAvailable = useSystemStore.getState().backendAvailable;
@@ -32,10 +34,32 @@ export async function ls(path: string) {
     const entries = [];
 
     for await (const [name, handle] of current.entries()) {
-        entries.push({
+        const entry: {
+            name: string;
+            type: "dir" | "file";
+            size?: number;
+            previewUrl?: string;
+            previewType?: "image" | "video";
+        } = {
             name,
             type: handle.kind === "directory" ? "dir" : "file",
-        });
+        };
+
+        if (handle.kind === "file") {
+            const fileHandle = handle as FileSystemFileHandle;
+            const file = await fileHandle.getFile();
+
+            entry.size = file.size;
+
+            if (isImageFile(name) || isVideoFile(name)) {
+                const blobUrl = URL.createObjectURL(file);
+
+                entry.previewUrl = blobUrl;
+                entry.previewType = isVideoFile(name) ? "video" : "image";
+            }
+        }
+
+        entries.push(entry);
     }
 
     console.log("opfs ls:", { path, entries })
