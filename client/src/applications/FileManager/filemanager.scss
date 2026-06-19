@@ -10,17 +10,111 @@
   position: relative;
 
   .form-container {
+    height: fit-content;
+    .options-bar {
+      background: black;
+      width: 100%;
+      height: 1.5rem;
+      color: whitesmoke;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      font-family: var(--small-clock-font-family);
+
+      .option {
+        height: 100%;
+        width: fit-content;
+        border: 1px solid var(--taskbar-item-border-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 0.5rem;
+        transition: var(--taskbar-item-hover-transition);
+        font-size: 0.85rem;
+
+        .plus-icon {
+          height: 60%;
+          width: 0.6rem;
+          transition: var(--taskbar-item-hover-transition);
+        }
+
+        .folder-icon,
+        .file-icon {
+          height: 100%;
+          width: 1rem;
+          transition: var(--taskbar-item-hover-transition);
+        }
+
+        &:hover {
+          cursor: pointer;
+          background-color: whitesmoke;
+          color: black;
+
+          .plus-icon,
+          .folder-icon,
+          .file-icon {
+            fill: black;
+          }
+        }
+      }
+    }
+
     #path-input {
+      height: 1.5rem;
       width: 100%;
     }
 
     .status-bar {
+      height: 1.5rem;
+      width: 100%;
+      // border: 1px solid red;
       font-family: monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .entries-found {
+        color: rgba(211, 211, 211, 0.774);
+        width: fit-content;
+        font-style: italic;
+      }
+
+      div {
+        height: 100%;
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        padding: 0 0.25rem;
+        gap: 0.25rem;
+
+        .go-back,
+        .go-home {
+          border: 1px solid var(--taskbar-item-border-color);
+          height: 90%;
+          aspect-ratio: 1;
+          border-radius: 0.3rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: var(--taskbar-item-hover-transition);
+
+          img {
+            height: 100%;
+            width: 100%;
+          }
+
+          &:hover {
+            cursor: pointer;
+            background-color: var(--taskbar-item-hover-bg);
+          }
+        }
+      }
     }
   }
 
   .entries-container {
     // border: 1px solid pink;
+    padding: 1rem 0 2rem;
     flex: 1;
     min-height: 0;
     overflow-y: auto;
@@ -44,7 +138,6 @@
 
     .file-manager-entry {
       border-top: 3px solid var(--taskbar-item-border-color);
-      // border: 1px solid red;
       height: 4.5rem;
       display: flex;
       align-items: center;
