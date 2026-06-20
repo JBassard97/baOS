@@ -1,3 +1,4 @@
+import { emitFileSystemChanged } from "../events/eventBus";
 import { useSystemStore } from "../store/useSystemStore";
 
 export async function rm(path: string) {
@@ -89,6 +90,8 @@ export async function rm(path: string) {
         path,
         status: "ok",
     };
+
+    emitFileSystemChanged();
 
     console.log("opfs rm:", result);
 

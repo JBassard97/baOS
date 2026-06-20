@@ -1,4 +1,5 @@
 import { useSystemStore } from "../store/useSystemStore";
+import { emitFileSystemChanged } from "../events/eventBus";
 
 export async function mkdir(path: string) {
     const backendAvailable = useSystemStore.getState().backendAvailable;
@@ -47,6 +48,8 @@ export async function mkdir(path: string) {
         path,
         status: "ok",
     };
+
+    emitFileSystemChanged();
 
     console.log("opfs mkdir:", result);
 

@@ -1,5 +1,5 @@
 export function formatBytes(bytes: number): string {
-    if (bytes === 0) return "0 B";
+    if (bytes == 0) return "0B";
 
     const k = 1024;
     const sizes = ["B", "KB", "MB", "GB", "TB"];
@@ -16,5 +16,5 @@ export function formatBytes(bytes: number): string {
             ? value.toString()
             : value.toFixed(1);
 
-    return `${formatted} ${sizes[i]}`;
+    return `${formatted}${sizes[i]}`;
 }

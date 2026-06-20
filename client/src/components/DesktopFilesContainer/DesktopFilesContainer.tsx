@@ -10,6 +10,7 @@ import { useDesktopStore } from "../../store/useDesktopStore";
 import { useWindowStore } from "../../store/useWindowStore";
 import { useEffect, useState } from "react";
 import { useSetBackground } from "../../hooks/useSetBackground";
+import { useFileSystemChanged } from "../../hooks/useFileSystemChanged";
 import { getValidFileName } from "../../helpers/getValidFileName";
 import FileEntryIcon from "../FileEntryIcon/FileEntryIcon";
 import type { FileEntry } from "../../interfaces/FileEntry";
@@ -130,6 +131,8 @@ export default function DesktopFilesContainer() {
   const sortedEntries = [...desktopEntries].sort((a, b) =>
     a.name.localeCompare(b.name),
   );
+
+  useFileSystemChanged(loadDesktopEntries);
 
   return (
     <div

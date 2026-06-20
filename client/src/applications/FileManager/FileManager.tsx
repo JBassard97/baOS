@@ -2,10 +2,14 @@ import "./filemanager.scss";
 import { useState, useEffect } from "react";
 import { VFS_ROOT } from "../../constants/constants";
 import { ls } from "../../vfs-actions/ls";
+import { touch } from "../../vfs-actions/touch";
+import { mkdir } from "../../vfs-actions/mkdir";
 import { getFileIcon } from "../../helpers/getFileIcon";
+import { getValidFileName } from "../../helpers/getValidFileName";
 import { formatBytes } from "../../helpers/formatBytes";
 import homeIcon from "../../assets/icons/home.svg";
 import backIcon from "../../assets/icons/go-back.svg";
+import { useFileSystemChanged } from "../../hooks/useFileSystemChanged";
 
 export default function FileManager({
   startPath,
@@ -20,7 +24,45 @@ export default function FileManager({
     startPath ? startPath : VFS_ROOT,
   );
 
-  async function fetchPath(path: string) {
+  const [creatingEntryType, setCreatingEntryType] = useState<
+    "file" | "dir" | null
+  >(null);
+
+  const [creatingEntryName, setCreatingEntryName] = useState<string>("");
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    if (creatingEntryName.trim() === "") {
+      return;
+    }
+
+    if (creatingEntryType === null) return;
+
+    try {
+      if (creatingEntryType === "dir") {
+        const result = await mkdir(
+          `${pathFound}${getValidFileName(creatingEntryName)}`,
+        );
+        console.log(result);
+      } else if (creatingEntryType === "file") {
+        const result = await touch(
+          `${pathFound}${getValidFileName(creatingEntryName)}`,
+        );
+        console.log(result);
+      }
+
+      setCreatingEntryType(null);
+      setCreatingEntryName("");
+      setPathInputState(pathFound);
+      fetchPath(pathFound);
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  };
+
+  const fetchPath = async (path: string): Promise<void> => {
     try {
       const result = await ls(path);
       if (result.entries) {
@@ -32,21 +74,23 @@ export default function FileManager({
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchPath(pathInputState);
   }, [pathInputState]);
 
+  useFileSystemChanged(() => fetchPath(pathFound));
+
   return (
     <div className="file-manager">
       <div className="form-container">
         <div className="options-bar">
-          <p className="option">
+          <p className="option" onClick={() => setCreatingEntryType("file")}>
             <PlusIcon />
             <FileIcon />
           </p>
-          <p className="option">
+          <p className="option" onClick={() => setCreatingEntryType("dir")}>
             <PlusIcon />
             <FolderIcon />
           </p>
@@ -55,7 +99,6 @@ export default function FileManager({
 
         <input
           type="text"
-          name="path-input"
           id="path-input"
           value={pathInputState}
           onChange={(e) => setPathInputState(e.target.value)}
@@ -130,12 +173,34 @@ export default function FileManager({
                   </p>
                 </div>
                 <div className="entry-details-bar">
-                  <p>Type:"{entry.type}"</p>
-                  {entry.size && <p>{formatBytes(entry.size)}</p>}
+                  <p>"{entry.type}"</p>
+                  {entry.size >= 0 && <p>{formatBytes(entry.size)}</p>}
                 </div>
               </div>
             ),
           )}
+
+        {creatingEntryType !== null && (
+          <div className="file-manager-entry">
+            <img
+              src={getFileIcon(creatingEntryName, creatingEntryType === "dir")}
+            />
+            <div className="entry-text">
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  value={creatingEntryName}
+                  onChange={(e) => setCreatingEntryName(e.target.value)}
+                  autoFocus
+                  enterKeyHint="done"
+                />
+              </form>
+            </div>
+            <div className="entry-details-bar">
+              <p>Type:"{creatingEntryType}"</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

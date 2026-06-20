@@ -1,4 +1,5 @@
 import { useSystemStore } from "../store/useSystemStore";
+import { emitFileSystemChanged } from "../events/eventBus";
 
 export async function touch(path: string, content?: string) {
 
@@ -57,6 +58,8 @@ export async function touch(path: string, content?: string) {
         path,
         status: "ok",
     };
+
+    emitFileSystemChanged();
 
     console.log("opfs touch:", result);
 
