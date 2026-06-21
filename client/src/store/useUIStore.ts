@@ -8,6 +8,9 @@ type UIStore = {
 
     currentBackground: string;
     setCurrentBackground: (src: string) => void;
+
+    startMenuOpen: boolean;
+    setStartMenuOpen: (value: boolean) => void;
 };
 
 export const useUIStore = create<UIStore>()(
@@ -15,10 +18,12 @@ export const useUIStore = create<UIStore>()(
         (set) => ({
             taskbarPosition: "bottom",
             currentBackground: "serene.png",
+            startMenuOpen: false,
 
             setTaskbarPosition: (position) =>
                 set({ taskbarPosition: position }),
-            setCurrentBackground: (src) => set({ currentBackground: src })
+            setCurrentBackground: (src) => set({ currentBackground: src }),
+            setStartMenuOpen: (value) => set({ startMenuOpen: value })
         }),
         {
             name: "ui-store",

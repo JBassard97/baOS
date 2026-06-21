@@ -8,6 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: var(--taskbar-item-hover-transition);
   @include no-select-no-drag;
 
   &.horizontal {
@@ -21,6 +22,10 @@
     .right-or-bottom-group {
       flex-direction: row;
     }
+
+    &.open {
+      height: 100%;
+    }
   }
 
   &.vertical {
@@ -33,22 +38,38 @@
     .right-or-bottom-group {
       flex-direction: column;
     }
+
+    &.open {
+      width: 100%;
+    }
   }
 
   &.bottom {
     bottom: 0;
+    &.open {
+      align-items: flex-start;
+    }
   }
 
   &.top {
     top: 0;
+    &.open {
+      align-items: flex-end;
+    }
   }
 
   &.left {
     left: 0;
+    &.open {
+      align-items: flex-end;
+    }
   }
 
   &.right {
     right: 0;
+    &.open {
+      align-items: flex-start;
+    }
   }
 
   .left-or-top-group,

@@ -39,4 +39,11 @@
     cursor: pointer;
     background-color: var(--taskbar-item-hover-bg);
   }
+
+  &.open {
+    background-color: var(--taskbar-item-selected-bg);
+    &:hover {
+      background-color: var(--taskbar-item-selected-bg);
+    }
+  }
 }

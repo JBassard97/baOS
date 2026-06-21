@@ -41,9 +41,7 @@ export default function FileManager({
 
     try {
       if (creatingEntryType === "dir") {
-        const result = await mkdir(
-          `${pathFound}${getValidFileName(creatingEntryName)}`,
-        );
+        const result = await mkdir(`${pathFound}${creatingEntryName}`);
         console.log(result);
       } else if (creatingEntryType === "file") {
         const result = await touch(
@@ -76,6 +74,11 @@ export default function FileManager({
     }
   };
 
+  const stopCreatingEntry = () => {
+    setCreatingEntryType(null);
+    setCreatingEntryName("");
+  };
+
   useEffect(() => {
     fetchPath(pathInputState);
   }, [pathInputState]);
@@ -102,6 +105,7 @@ export default function FileManager({
           id="path-input"
           value={pathInputState}
           onChange={(e) => setPathInputState(e.target.value)}
+          onClick={stopCreatingEntry}
         />
         <div className="status-bar">
           <p className="entries-found">Entries Found: {entriesFound.length}</p>
@@ -118,17 +122,24 @@ export default function FileManager({
                 setPathInputState(
                   lastSlash <= 0 ? "/" : `${trimmed.slice(0, lastSlash)}/`,
                 );
+                stopCreatingEntry();
               }}
             >
               <img src={backIcon} />
             </div>
-            <div className="go-home" onClick={() => setPathInputState("/")}>
+            <div
+              className="go-home"
+              onClick={() => {
+                setPathInputState("/");
+                stopCreatingEntry();
+              }}
+            >
               <img src={homeIcon} />
             </div>
           </div>
         </div>
       </div>
-      <div className="entries-container">
+      <div className="entries-container" onClick={stopCreatingEntry}>
         {entriesFound.length > 0 &&
           entriesFound.map(
             (
@@ -145,6 +156,7 @@ export default function FileManager({
                 key={index}
                 className="file-manager-entry"
                 onClick={() => {
+                  stopCreatingEntry();
                   if (entry.type === "dir") {
                     setPathInputState(`${pathFound}${entry.name}/`);
                   }

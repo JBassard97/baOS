@@ -21,10 +21,13 @@ const getOrientation = (position: TaskbarProps["position"]) => {
 };
 
 function Taskbar() {
-  const position = useUIStore((state) => state.taskbarPosition);
+  const position = useUIStore((s) => s.taskbarPosition);
+  const startMenuOpen = useUIStore((s) => s.startMenuOpen);
 
   return (
-    <div className={`taskbar ${getOrientation(position)} ${position}`}>
+    <div
+      className={`taskbar ${getOrientation(position)} ${position} ${startMenuOpen && "open"}`}
+    >
       <div className="left-or-top-group">
         <StartButton
           orientation={getOrientation(position)}
