@@ -3,20 +3,24 @@ import TooltipProvider from "../../providers/TooltipProvider/TooltipProvider";
 import fullscreenIcon from "../../assets/icons/fullscreen.svg";
 import exitFullscreenIcon from "../../assets/icons/exit-fullscreen.svg";
 import { useState, useEffect } from "react";
+import { useUIStore } from "../../store";
+import { getOrientation } from "../../helpers";
 
-function FullscreenButton({
-  orientation,
-  taskbarPosition,
-}: {
-  orientation: "horizontal" | "vertical";
-  taskbarPosition: "top" | "bottom" | "left" | "right";
-}) {
+function FullscreenButton() {
+  const taskbarPosition = useUIStore((s) => s.taskbarPosition);
+  const orientation = getOrientation(taskbarPosition);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreenSupported, setIsFullscreenSupported] = useState(true);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
     };
+
+    const supported =
+      typeof document.documentElement.requestFullscreen === "function" &&
+      typeof document.exitFullscreen === "function";
+    setIsFullscreenSupported(supported);
 
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     return () =>
@@ -34,6 +38,9 @@ function FullscreenButton({
       console.error("Fullscreen request failed:", err);
     }
   };
+
+  // If the client can't fullscreen then hide the whole component
+  if (!isFullscreenSupported) return null;
 
   return (
     <TooltipProvider

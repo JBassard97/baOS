@@ -4,18 +4,18 @@ import { touch } from "../../vfs-actions/touch";
 import { mkdir } from "../../vfs-actions/mkdir";
 import { rm } from "../../vfs-actions/rm";
 import { ensureOpfsExists } from "../../vfs-actions/ensureOpfsExists";
-import { useSystemStore } from "../../store/useSystemStore";
-import { useUIStore } from "../../store/useUIStore";
-import { useDesktopStore } from "../../store/useDesktopStore";
-import { useWindowStore } from "../../store/useWindowStore";
+import {
+  useUIStore,
+  useSystemStore,
+  useDesktopStore,
+  useWindowStore,
+} from "../../store";
 import { useEffect, useState } from "react";
-import { useSetBackground } from "../../hooks/useSetBackground";
-import { useFileSystemChanged } from "../../hooks/useFileSystemChanged";
-import { getValidFileName } from "../../helpers/getValidFileName";
+import { useFileSystemChanged, useSetBackground } from "../../hooks";
 import FileEntryIcon from "../FileEntryIcon/FileEntryIcon";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { VFS_ROOT } from "../../constants/constants";
-import { getFileIcon } from "../../helpers/getFileIcon";
+import { getFileIcon, getValidFileName } from "../../helpers";
 
 export default function DesktopFilesContainer() {
   const DESKTOP_PATH = "Desktop/";

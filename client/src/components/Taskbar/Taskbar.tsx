@@ -14,16 +14,23 @@ import { getOrientation } from "../../helpers";
 function Taskbar() {
   const position = useUIStore((s) => s.taskbarPosition);
   const startMenuOpen = useUIStore((s) => s.startMenuOpen);
+  const setStartMenuOpen = useUIStore((s) => s.setStartMenuOpen);
+
+  const closeStartMenuIfOpen = () => {
+    if (startMenuOpen) setStartMenuOpen(false);
+  };
 
   return (
     <div
       className={`taskbar ${getOrientation(position)} ${position} ${startMenuOpen && "open"}`}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          closeStartMenuIfOpen();
+        }
+      }}
     >
       <div className="left-or-top-group">
-        <StartButton
-          orientation={getOrientation(position)}
-          taskbarPosition={position}
-        />
+        <StartButton />
         <TaskbarItem
           icon={fileManagerIcon}
           title={"File Manager"}
@@ -39,10 +46,7 @@ function Taskbar() {
       </div>
       <div className="right-or-bottom-group">
         <TaskbarPositionSetter />
-        <FullscreenButton
-          orientation={getOrientation(position)}
-          taskbarPosition={position}
-        />
+        <FullscreenButton />
         <SmallDateClock />
       </div>
     </div>

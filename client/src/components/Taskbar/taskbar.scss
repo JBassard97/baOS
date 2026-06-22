@@ -7,7 +7,8 @@
   backdrop-filter: var(--taskbar-blur);
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  padding: 0.5rem;
+  // align-items: center;
   transition: var(--taskbar-item-hover-transition);
   @include no-select-no-drag;
 
@@ -15,8 +16,6 @@
     height: var(--taskbar-height);
     width: 100%;
     flex-direction: row;
-
-    padding: 0.2rem 0.5rem;
 
     .left-or-top-group,
     .right-or-bottom-group {
@@ -32,7 +31,6 @@
     height: 100%;
     width: var(--taskbar-height);
     flex-direction: column;
-    padding: 0.5rem 0.2rem;
 
     .left-or-top-group,
     .right-or-bottom-group {
@@ -46,30 +44,34 @@
 
   &.bottom {
     bottom: 0;
-    &.open {
-      align-items: flex-start;
-    }
+    align-items: flex-start;
+    // &.open {
+    //   align-items: flex-start;
+    // }
   }
 
   &.top {
     top: 0;
-    &.open {
-      align-items: flex-end;
-    }
+    align-items: flex-end;
+    // &.open {
+    //   align-items: flex-end;
+    // }
   }
 
   &.left {
     left: 0;
-    &.open {
-      align-items: flex-end;
-    }
+    align-items: flex-end;
+    // &.open {
+    //   align-items: flex-end;
+    // }
   }
 
   &.right {
     right: 0;
-    &.open {
-      align-items: flex-start;
-    }
+    align-items: flex-start;
+    // &.open {
+    //   align-items: flex-start;
+    // }
   }
 
   .left-or-top-group,

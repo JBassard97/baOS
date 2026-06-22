@@ -3,8 +3,8 @@ import BackendStatusDisplay from "../BackendStatusDisplay/BackendStatusDisplay";
 import MkdirAndTouch from "../MkdirAndTouch/MkdirAndTouch";
 import DesktopFilesContainer from "../DesktopFilesContainer/DesktopFilesContainer";
 import WindowsContainer from "../WindowsContainer/WindowsContainer";
-import { isHorizontal } from "../../helpers/isHorizontal";
-import { useUIStore } from "../../store/useUIStore";
+import { isHorizontal } from "../../helpers";
+import { useUIStore } from "../../store";
 // import DevPanel from "../DevPanel";
 
 export default function DesktopMain() {
@@ -20,7 +20,6 @@ export default function DesktopMain() {
       <MkdirAndTouch />
       <DesktopFilesContainer />
       <WindowsContainer />
-      {/* <DevPanel/> */}
     </main>
   );
 }

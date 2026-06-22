@@ -5,13 +5,13 @@ import { ls } from "../../vfs-actions/ls";
 import { touch } from "../../vfs-actions/touch";
 import { rm } from "../../vfs-actions/rm";
 import { mkdir } from "../../vfs-actions/mkdir";
-import { getFileIcon } from "../../helpers/getFileIcon";
-import { getValidFileName } from "../../helpers/getValidFileName";
-import { formatBytes } from "../../helpers/formatBytes";
+import { getValidFileName, getFileIcon, formatBytes } from "../../helpers";
 import homeIcon from "../../assets/icons/home.svg";
 import backIcon from "../../assets/icons/go-back.svg";
-import { useFileSystemChanged } from "../../hooks/useFileSystemChanged";
+import fileManagerIcon from "../../assets/icons/file-manager.svg";
+import { useFileSystemChanged } from "../../hooks";
 import { PlusIcon, FileIcon, FolderIcon } from "../../icon-components";
+import { useWindowStore } from "../../store";
 
 export default function FileManager({
   startPath,
@@ -33,6 +33,9 @@ export default function FileManager({
   const [creatingEntryName, setCreatingEntryName] = useState<string>("");
 
   const [contextMenuOpen, setContextMenuOpen] = useState<number | null>(null);
+
+  const activeWindows = useWindowStore((s) => s.activeWindows);
+  const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -108,6 +111,7 @@ export default function FileManager({
               } else {
                 stopCreatingEntry();
               }
+              setContextMenuOpen(null);
             }}
           >
             <PlusIcon />
@@ -121,12 +125,20 @@ export default function FileManager({
               } else {
                 stopCreatingEntry();
               }
+              setContextMenuOpen(null);
             }}
           >
             <PlusIcon />
             <FolderIcon />
           </p>
-          <p className="option">Upload...</p>
+          <p
+            className="option"
+            onClick={() => {
+              setContextMenuOpen(null);
+            }}
+          >
+            Upload...
+          </p>
         </div>
 
         <input
@@ -134,7 +146,10 @@ export default function FileManager({
           id="path-input"
           value={pathInputState}
           onChange={(e) => setPathInputState(e.target.value)}
-          onClick={stopCreatingEntry}
+          onClick={() => {
+            stopCreatingEntry();
+            setContextMenuOpen(null);
+          }}
         />
         <div className="status-bar">
           <p className="entries-found">Entries Found: {entriesFound.length}</p>
@@ -151,6 +166,7 @@ export default function FileManager({
                 setPathInputState(
                   lastSlash <= 0 ? "/" : `${trimmed.slice(0, lastSlash)}/`,
                 );
+                setContextMenuOpen(null);
                 stopCreatingEntry();
               }}
             >
@@ -160,6 +176,7 @@ export default function FileManager({
               className="go-home"
               onClick={() => {
                 setPathInputState("/");
+                setContextMenuOpen(null);
                 stopCreatingEntry();
               }}
             >
@@ -168,7 +185,13 @@ export default function FileManager({
           </div>
         </div>
       </div>
-      <div className="entries-container" onClick={stopCreatingEntry}>
+      <div
+        className="entries-container"
+        onClick={() => {
+          stopCreatingEntry();
+          setContextMenuOpen(null);
+        }}
+      >
         {entriesFound.length > 0 &&
           entriesFound.map(
             (
@@ -227,6 +250,44 @@ export default function FileManager({
 
                   {contextMenuOpen === index && (
                     <div className="file-manager-context-menu">
+                      {/* Dir options */}
+                      {entry.type === "dir" && (
+                        <>
+                          <div
+                            className="option"
+                            onClick={(e) => {
+                              setContextMenuOpen(null);
+                              e.currentTarget.click();
+                            }}
+                          >
+                            Navigate
+                          </div>
+                          <div
+                            className="option"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setContextMenuOpen(null);
+                              addActiveWindow({
+                                isMinimized: false,
+                                id: String(activeWindows.length),
+                                isFocused: true,
+                                children: (
+                                  <FileManager
+                                    startPath={`${pathFound}${entry.name}/`}
+                                  />
+                                ),
+                                title: "File Manager",
+                                icon: fileManagerIcon,
+                              });
+                              return;
+                            }}
+                          >
+                            Open in new File Manager
+                          </div>
+                        </>
+                      )}
+                      {/* Always appears */}
                       <div
                         className="option"
                         onClick={() => {

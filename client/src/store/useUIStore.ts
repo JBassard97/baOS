@@ -27,6 +27,8 @@ export const useUIStore = create<UIStore>()(
         }),
         {
             name: "ui-store",
+            // partialize lets you explicitly choose which fields get saved
+            partialize: ({ taskbarPosition, currentBackground }) => ({ taskbarPosition, currentBackground })
         }
     )
 );

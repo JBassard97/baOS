@@ -1,7 +1,6 @@
 import "./backgroundlayer.scss";
-import { useUIStore } from "../../store/useUIStore";
+import { useUIStore } from "../../store";
 import { useEffect, useState } from "react";
-import { ls } from "../../vfs-actions/ls";
 
 export default function BackgroundLayer() {
   const currentBackground = useUIStore((state) => state.currentBackground);
@@ -31,12 +30,6 @@ export default function BackgroundLayer() {
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [currentBackground]);
-
-  useEffect(() => {
-    (async () => {
-      await ls("/Images/Backgrounds/");
-    })();
-  }, []);
 
   const isVideo = /\.(mp4|webm|ogg)$/i.test(currentBackground);
 
