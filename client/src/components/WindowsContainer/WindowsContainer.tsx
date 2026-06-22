@@ -1,6 +1,5 @@
 import "./windowscontainer.scss";
-import { useUIStore } from "../../store/useUIStore";
-import { useWindowStore } from "../../store/useWindowStore";
+import { useUIStore, useWindowStore } from "../../store";
 import Window from "../Window/Window";
 
 export default function WindowsContainer() {

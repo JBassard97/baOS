@@ -1,8 +1,7 @@
 import TooltipProvider from "../../providers/TooltipProvider/TooltipProvider";
-import { useUIStore } from "../../store/useUIStore";
+import { useUIStore, useWindowStore } from "../../store";
 import "./taskbaritem.scss";
 import type { ReactNode } from "react";
-import { useWindowStore } from "../../store/useWindowStore";
 
 interface WindowProps {
   icon: string;

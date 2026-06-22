@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-function useTime(updateMs = 1000) {
+export function useTime(updateMs = 1000) {
     const [now, setNow] = useState(() => new Date());
 
     useEffect(() => {
@@ -14,4 +14,3 @@ function useTime(updateMs = 1000) {
     return now;
 }
 
-export default useTime;

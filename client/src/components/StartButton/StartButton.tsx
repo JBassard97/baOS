@@ -1,7 +1,7 @@
 import "./startbutton.scss";
 import baoIcon from "../../assets/icons/baosNeon.png";
 import TooltipProvider from "../../providers/TooltipProvider/TooltipProvider";
-import { useUIStore } from "../../store/useUIStore";
+import { useUIStore } from "../../store";
 
 interface StartButtonProps {
   orientation?: "horizontal" | "vertical";

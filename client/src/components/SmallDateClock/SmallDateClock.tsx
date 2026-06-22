@@ -1,16 +1,13 @@
 import "./smalldateclock.scss";
-import useTime from "../../hooks/useTime";
+import { useTime } from "../../hooks/useTime";
 import TooltipProvider from "../../providers/TooltipProvider/TooltipProvider";
+import { useUIStore } from "../../store";
+import { getOrientation } from "../../helpers";
 
-interface SmallDateClockProps {
-  orientation?: "horizontal" | "vertical";
-  taskbarPosition?: "top" | "bottom" | "left" | "right";
-}
+function SmallDateClock() {
+  const taskbarPosition = useUIStore((s) => s.taskbarPosition);
+  const orientation = getOrientation(taskbarPosition);
 
-function SmallDateClock({
-  orientation = "horizontal",
-  taskbarPosition = "bottom",
-}: SmallDateClockProps) {
   const now = useTime();
 
   const time = now.toLocaleTimeString([], {

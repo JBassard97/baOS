@@ -1,11 +1,10 @@
 import "./window.scss";
-import { useUIStore } from "../../store/useUIStore";
+import { useUIStore, useWindowStore } from "../../store";
 import { useState, type ReactNode } from "react";
 import fullscreenIcon from "../../assets/icons/fullscreen.svg";
 import exitFullscreenIcon from "../../assets/icons/exit-fullscreen.svg";
 import closeIcon from "../../assets/icons/close-x.svg";
 import minimizeIcon from "../../assets/icons/minimize.svg";
-import { useWindowStore } from "../../store/useWindowStore";
 
 interface WindowProps {
   index: number;

@@ -1,5 +1,5 @@
 import "./taskbarpositionsetter.scss";
-import { useUIStore } from "../../store/useUIStore";
+import { useUIStore } from "../../store";
 import TooltipProvider from "../../providers/TooltipProvider/TooltipProvider";
 import leftChevronIcon from "../../assets/icons/chevron-left.svg";
 import rightChevronIcon from "../../assets/icons/chevron-right.svg";
