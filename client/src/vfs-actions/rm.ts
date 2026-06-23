@@ -23,27 +23,22 @@ export async function rm(path: string) {
 
     // Recursive delete function for directories
     async function deleteRecursive(
-        handle: FileSystemFileHandle | FileSystemDirectoryHandle,
+        dirHandle: FileSystemDirectoryHandle,
+        parentHandle: FileSystemDirectoryHandle,
     ): Promise<void> {
-        if (handle.kind === "file") {
-            // It's a file, just delete it
-            await current.removeEntry(handle.name);
-        } else if (handle.kind === "directory") {
-            // It's a directory, delete contents first
-            const dirHandle = handle as FileSystemDirectoryHandle;
-            for await (const entry of dirHandle.entries()) {
-                const [, childHandle] = entry;
-                if (childHandle.kind === "file") {
-                    await dirHandle.removeEntry(childHandle.name);
-                } else {
-                    // Recursively delete subdirectories
-                    await deleteRecursive(childHandle);
-                    await dirHandle.removeEntry(childHandle.name);
-                }
+        for await (const [, childHandle] of dirHandle.entries()) {
+            if (childHandle.kind === "file") {
+                await dirHandle.removeEntry(childHandle.name);
+            } else {
+                // Recurse, passing dirHandle as the new parent
+                await deleteRecursive(
+                    childHandle as FileSystemDirectoryHandle,
+                    dirHandle,
+                );
             }
-            // Delete the now-empty directory
-            await current.removeEntry(targetName);
         }
+        // Now remove the emptied directory from its actual parent
+        await parentHandle.removeEntry(dirHandle.name);
     }
 
     try {
@@ -53,7 +48,7 @@ export async function rm(path: string) {
         // Not a file, try directory
         try {
             const targetHandle = await current.getDirectoryHandle(targetName);
-            await deleteRecursive(targetHandle);
+            await deleteRecursive(targetHandle, current);
         } catch {
             throw new Error(`Path not found: ${path}`);
         }
