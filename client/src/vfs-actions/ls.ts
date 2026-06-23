@@ -1,26 +1,6 @@
-import { useSystemStore } from "../store/useSystemStore";
-import { isImageFile } from "../helpers/isImageFile";
-import { isVideoFile } from "../helpers/isVideoFile";
+import { isImageFile, isVideoFile } from "../helpers";
 
 export async function ls(path: string) {
-    const backendAvailable = useSystemStore.getState().backendAvailable;
-
-    // -------------------------
-    // BACKEND MODE
-    // -------------------------
-    if (backendAvailable) {
-        const res = await fetch(`/vfs-actions/ls?path=.${encodeURIComponent(path)}`);
-
-        if (!res.ok) throw new Error("Backend ls failed");
-
-        const data = await res.json()
-        console.log(data)
-        return data;
-    }
-
-    // -------------------------
-    // OPFS MODE (fallback)
-    // -------------------------
     const root = await navigator.storage.getDirectory();
 
     const segments = path.split("/").filter(Boolean);

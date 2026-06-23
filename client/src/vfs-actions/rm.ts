@@ -1,34 +1,7 @@
 import { emitFileSystemChanged } from "../events/eventBus";
-import { useSystemStore } from "../store/useSystemStore";
 
 export async function rm(path: string) {
-    const backendAvailable = useSystemStore.getState().backendAvailable;
 
-    // -------------------------
-    // BACKEND MODE
-    // -------------------------
-    if (backendAvailable) {
-        const res = await fetch("/vfs-actions/rm", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                path,
-            }),
-        });
-
-        if (!res.ok) throw new Error("Backend rm failed");
-
-        const data = await res.json();
-        console.log("backend rm:", data);
-
-        return data;
-    }
-
-    // -------------------------
-    // OPFS MODE
-    // -------------------------
     const root = await navigator.storage.getDirectory();
 
     const segments = path.split("/").filter(Boolean);

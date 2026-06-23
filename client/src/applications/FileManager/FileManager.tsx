@@ -5,13 +5,24 @@ import { ls } from "../../vfs-actions/ls";
 import { touch } from "../../vfs-actions/touch";
 import { rm } from "../../vfs-actions/rm";
 import { mkdir } from "../../vfs-actions/mkdir";
+import { mv } from "../../vfs-actions/mv";
+import {
+  uploadFilesToVFS,
+  uploadFolderToVFS,
+} from "../../vfs-actions/uploadToVfs";
 import { getValidFileName, getFileIcon, formatBytes } from "../../helpers";
 import homeIcon from "../../assets/icons/home.svg";
 import backIcon from "../../assets/icons/go-back.svg";
 import fileManagerIcon from "../../assets/icons/file-manager.svg";
 import { useFileSystemChanged } from "../../hooks";
-import { PlusIcon, FileIcon, FolderIcon } from "../../icon-components";
-import { useWindowStore } from "../../store";
+import {
+  PlusIcon,
+  FileIcon,
+  FolderIcon,
+  DownloadIcon,
+} from "../../icon-components";
+import { useWindowStore, useUIStore } from "../../store";
+import { isVideoFile, isImageFile } from "../../helpers";
 
 export default function FileManager({
   startPath,
@@ -21,7 +32,7 @@ export default function FileManager({
   const [pathInputState, setPathInputState] = useState<string>(
     startPath ? startPath : VFS_ROOT,
   );
-  const [entriesFound, setEntriesFound] = useState([]);
+  const [entriesFound, setEntriesFound] = useState<any[]>([]);
   const [pathFound, setPathFound] = useState<string>(
     startPath ? startPath : VFS_ROOT,
   );
@@ -36,6 +47,19 @@ export default function FileManager({
 
   const activeWindows = useWindowStore((s) => s.activeWindows);
   const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
+
+  const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
+
+  const setAsBackground = async (parentPath: string, fileName: string) => {
+    if (parentPath !== "/Images/Backgrounds/") {
+      const result = await mv(
+        `${parentPath}${fileName}`,
+        `/Images/Backgrounds/${fileName}`,
+      );
+      console.log(result);
+    }
+    setCurrentBackground(fileName);
+  };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -103,42 +127,60 @@ export default function FileManager({
     <div className="file-manager">
       <div className="form-container">
         <div className="options-bar">
-          <p
-            className="option"
-            onClick={() => {
-              if (creatingEntryType !== "file") {
-                setCreatingEntryType("file");
-              } else {
+          <div>
+            <p
+              className="option"
+              onClick={() => {
+                if (creatingEntryType !== "file") {
+                  setCreatingEntryType("file");
+                } else {
+                  stopCreatingEntry();
+                }
+                setContextMenuOpen(null);
+              }}
+            >
+              <PlusIcon />
+              <FileIcon />
+            </p>
+            <p
+              className="option"
+              onClick={() => {
+                uploadFilesToVFS(pathFound).then(() => fetchPath(pathFound));
                 stopCreatingEntry();
-              }
-              setContextMenuOpen(null);
-            }}
-          >
-            <PlusIcon />
-            <FileIcon />
-          </p>
-          <p
-            className="option"
-            onClick={() => {
-              if (creatingEntryType !== "dir") {
-                setCreatingEntryType("dir");
-              } else {
+                setContextMenuOpen(null);
+              }}
+            >
+              <DownloadIcon />
+              <FileIcon />
+            </p>
+          </div>
+          <div>
+            <p
+              className="option"
+              onClick={() => {
+                if (creatingEntryType !== "dir") {
+                  setCreatingEntryType("dir");
+                } else {
+                  stopCreatingEntry();
+                }
+                setContextMenuOpen(null);
+              }}
+            >
+              <PlusIcon />
+              <FolderIcon />
+            </p>
+            <p
+              className="option"
+              onClick={() => {
+                uploadFolderToVFS(pathFound).then(() => fetchPath(pathFound));
                 stopCreatingEntry();
-              }
-              setContextMenuOpen(null);
-            }}
-          >
-            <PlusIcon />
-            <FolderIcon />
-          </p>
-          <p
-            className="option"
-            onClick={() => {
-              setContextMenuOpen(null);
-            }}
-          >
-            Upload...
-          </p>
+                setContextMenuOpen(null);
+              }}
+            >
+              <DownloadIcon />
+              <FolderIcon />
+            </p>
+          </div>
         </div>
 
         <input
@@ -204,9 +246,8 @@ export default function FileManager({
               },
               index,
             ) => (
-              <>
+              <div key={index}>
                 <div
-                  key={index}
                   className="file-manager-entry"
                   onClick={() => {
                     stopCreatingEntry();
@@ -250,6 +291,32 @@ export default function FileManager({
 
                   {contextMenuOpen === index && (
                     <div className="file-manager-context-menu">
+                      {/* File options */}
+                      {entry.type === "file" && (
+                        <>
+                          <div
+                            className="option"
+                            onClick={() => {
+                              setContextMenuOpen(null);
+                              // TODO: OPEN FILE HERE
+                            }}
+                          >
+                            Open
+                          </div>
+                          {(isImageFile(entry.name) ||
+                            isVideoFile(entry.name)) && (
+                            <div
+                              className="option"
+                              onClick={() => {
+                                setContextMenuOpen(null);
+                                setAsBackground(pathFound, entry.name);
+                              }}
+                            >
+                              Set as Background
+                            </div>
+                          )}
+                        </>
+                      )}
                       {/* Dir options */}
                       {entry.type === "dir" && (
                         <>
@@ -300,7 +367,7 @@ export default function FileManager({
                     </div>
                   )}
                 </div>
-              </>
+              </div>
             ),
           )}
 

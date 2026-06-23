@@ -21,6 +21,12 @@
       justify-content: flex-start;
       align-items: center;
       font-family: var(--small-clock-font-family);
+      gap: 0.7rem;
+
+      div {
+        height: 100%;
+        display: flex;
+      }
 
       .option {
         height: 100%;
@@ -40,6 +46,12 @@
           transition: var(--taskbar-item-hover-transition);
         }
 
+        .download-icon {
+          height: 90%;
+          width: 0.8rem;
+          transition: var(--taskbar-item-hover-transition);
+        }
+
         .folder-icon,
         .file-icon {
           height: 100%;
@@ -54,7 +66,8 @@
 
           .plus-icon,
           .folder-icon,
-          .file-icon {
+          .file-icon,
+          .download-icon {
             fill: black;
           }
         }
@@ -116,7 +129,7 @@
 
   .entries-container {
     // border: 1px solid pink;
-    padding: 1rem 0 2rem;
+    padding: 1rem 0 5rem;
     flex: 1;
     min-height: 0;
     overflow-y: auto;
