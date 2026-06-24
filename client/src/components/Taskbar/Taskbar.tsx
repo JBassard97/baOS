@@ -6,6 +6,7 @@ import TaskbarPositionSetter from "../TaskbarPositionSetter/TaskbarPositionSette
 import TaskbarItem from "../TaskbarItem/TaskbarItem";
 import { useUIStore } from "../../store";
 import fileManagerIcon from "../../assets/icons/file-manager.svg";
+import baosIcon from "../../assets/icons/baosNeon.png";
 import DevPanel from "../DevPanel";
 import devPanelIcon from "../../assets/icons/nut.svg";
 import FileManager from "../../applications/FileManager/FileManager";
@@ -29,26 +30,48 @@ function Taskbar() {
         }
       }}
     >
-      <div className="left-or-top-group">
-        <StartButton />
-        <TaskbarItem
-          icon={fileManagerIcon}
-          title={"File Manager"}
-          isMinimized={false}
-          children={<FileManager />}
-        />
-        <TaskbarItem
-          icon={devPanelIcon}
-          title={"Dev Panel"}
-          isMinimized={false}
-          children={<DevPanel />}
-        />
+      <div className="taskbar-main">
+        <div className="left-or-top-group">
+          <StartButton />
+          <TaskbarItem
+            icon={fileManagerIcon}
+            title={"File Manager"}
+            isMinimized={false}
+            children={<FileManager />}
+          />
+          <TaskbarItem
+            icon={devPanelIcon}
+            title={"Dev Panel"}
+            isMinimized={false}
+            children={<DevPanel />}
+          />
+        </div>
+        <div className="right-or-bottom-group">
+          <TaskbarPositionSetter />
+          <FullscreenButton />
+          <SmallDateClock />
+        </div>
       </div>
-      <div className="right-or-bottom-group">
-        <TaskbarPositionSetter />
-        <FullscreenButton />
-        <SmallDateClock />
-      </div>
+      {startMenuOpen && (
+        <div className="start-menu">
+          <div className="start-menu-title-bar">
+            <span className="start-menu-title">
+              <img src={baosIcon} />
+              Start Menu
+            </span>
+          </div>
+          <div className="start-menu-section">
+            <div className="section-title-bar">
+              <span>Utilities</span>
+            </div>
+          </div>
+          <div className="start-menu-section">
+            <div className="section-title-bar">
+              <span>IDK yet</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
