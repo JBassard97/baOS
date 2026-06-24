@@ -242,4 +242,16 @@
       }
     }
   }
+
+  .storage-estimate-display {
+    width: 100%;
+    height: 1rem;
+    background-color: black;
+    color: rgb(231, 231, 231);
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.7rem;
+    font-family: var(--small-clock-font-family);
+  }
 }

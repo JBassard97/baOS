@@ -50,6 +50,16 @@ export default function FileManager({
 
   const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
 
+  const [storageEstimate, setStorageEstimate] = useState<{
+    quota: number;
+    usage: number;
+  }>({ quota: 0, usage: 0 });
+
+  const updateStorateEstimate = async (): Promise<void> => {
+    const { quota = 0, usage = 0 } = await navigator.storage.estimate();
+    setStorageEstimate({ quota: quota, usage: usage });
+  };
+
   const setAsBackground = async (parentPath: string, fileName: string) => {
     if (parentPath !== "/Images/Backgrounds/") {
       const result = await mv(
@@ -119,9 +129,13 @@ export default function FileManager({
 
   useEffect(() => {
     fetchPath(pathInputState);
+    updateStorateEstimate();
   }, [pathInputState]);
 
-  useFileSystemChanged(() => fetchPath(pathFound));
+  useFileSystemChanged(() => {
+    fetchPath(pathFound);
+    updateStorateEstimate();
+  });
 
   return (
     <div className="file-manager">
@@ -392,6 +406,12 @@ export default function FileManager({
             </div>
           </div>
         )}
+      </div>
+      <div className="storage-estimate-display">
+        Usage: {formatBytes(storageEstimate.usage)}/
+        {formatBytes(storageEstimate.quota)} (~
+        {Math.ceil((storageEstimate.usage / storageEstimate.quota) * 100)}
+        %)
       </div>
     </div>
   );
