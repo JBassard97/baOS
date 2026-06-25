@@ -9,6 +9,7 @@ type TooltipProviderProps = {
   text: string;
   placement?: Placement;
   taskbarPosition?: Placement;
+  dontShowTooltip?: boolean;
 };
 
 const oppositePlacement: Record<Placement, Placement> = {
@@ -23,6 +24,7 @@ export default function TooltipProvider({
   text,
   placement,
   taskbarPosition = "bottom",
+  dontShowTooltip = false,
 }: TooltipProviderProps) {
   const [open, setOpen] = useState(false);
 
@@ -43,7 +45,7 @@ export default function TooltipProvider({
     >
       {children}
 
-      {open && (
+      {open && !dontShowTooltip && (
         <div
           className="floating-text"
           ref={refs.setFloating}

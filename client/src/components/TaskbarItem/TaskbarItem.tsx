@@ -7,14 +7,16 @@ interface WindowProps {
   icon: string;
   title: string;
   children: ReactNode | null;
-  isMinimized: boolean;
+  isMinimized?: boolean;
+  dontShowTooltip?: boolean;
 }
 
 export default function TaskbarItem({
   icon,
   title,
   children,
-  isMinimized,
+  isMinimized = false,
+  dontShowTooltip = false,
 }: WindowProps) {
   const taskbarPosition = useUIStore((s) => s.taskbarPosition);
   const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
@@ -28,7 +30,11 @@ export default function TaskbarItem({
   );
 
   return (
-    <TooltipProvider text={title} taskbarPosition={taskbarPosition}>
+    <TooltipProvider
+      text={title}
+      taskbarPosition={taskbarPosition}
+      dontShowTooltip={dontShowTooltip}
+    >
       <div
         className={`taskbar-item ${
           existingWindows.some((window) => window.isMinimized)

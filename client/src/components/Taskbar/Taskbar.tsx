@@ -6,6 +6,7 @@ import TaskbarPositionSetter from "../TaskbarPositionSetter/TaskbarPositionSette
 import TaskbarItem from "../TaskbarItem/TaskbarItem";
 import { useUIStore } from "../../store";
 import fileManagerIcon from "../../assets/icons/file-manager.svg";
+import terminalIcon from "../../assets/icons/terminal.svg";
 import baosIcon from "../../assets/icons/baosNeon.png";
 import DevPanel from "../DevPanel";
 import devPanelIcon from "../../assets/icons/nut.svg";
@@ -36,13 +37,11 @@ function Taskbar() {
           <TaskbarItem
             icon={fileManagerIcon}
             title={"File Manager"}
-            isMinimized={false}
             children={<FileManager />}
           />
           <TaskbarItem
             icon={devPanelIcon}
             title={"Dev Panel"}
-            isMinimized={false}
             children={<DevPanel />}
           />
         </div>
@@ -64,11 +63,32 @@ function Taskbar() {
             <div className="section-title-bar">
               <span>Utilities</span>
             </div>
+            <div className="section-container">
+              <div>
+                <TaskbarItem
+                  icon={fileManagerIcon}
+                  title={"File Manager"}
+                  children={<FileManager />}
+                  dontShowTooltip={true}
+                />
+                <p className="item-name">File Manager</p>
+              </div>
+              <div>
+                <TaskbarItem
+                  icon={terminalIcon}
+                  title={"Terminal"}
+                  children={<h1>Terminal </h1>}
+                  dontShowTooltip={true}
+                />
+                <p className="item-name">Terminal</p>
+              </div>
+            </div>
           </div>
           <div className="start-menu-section">
             <div className="section-title-bar">
               <span>IDK yet</span>
             </div>
+            <div className="section-container"></div>
           </div>
         </div>
       )}
