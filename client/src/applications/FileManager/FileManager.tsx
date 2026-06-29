@@ -5,7 +5,7 @@ import { ls } from "../../vfs-actions/ls";
 import { touch } from "../../vfs-actions/touch";
 import { rm } from "../../vfs-actions/rm";
 import { mkdir } from "../../vfs-actions/mkdir";
-import { mv } from "../../vfs-actions/mv";
+// import { mv } from "../../vfs-actions/mv";
 import {
   uploadFilesToVFS,
   uploadFolderToVFS,
@@ -58,17 +58,6 @@ export default function FileManager({
   const updateStorateEstimate = async (): Promise<void> => {
     const { quota = 0, usage = 0 } = await navigator.storage.estimate();
     setStorageEstimate({ quota: quota, usage: usage });
-  };
-
-  const setAsBackground = async (parentPath: string, fileName: string) => {
-    if (parentPath !== "/Images/Backgrounds/") {
-      const result = await mv(
-        `${parentPath}${fileName}`,
-        `/Images/Backgrounds/${fileName}`,
-      );
-      console.log(result);
-    }
-    setCurrentBackground(fileName);
   };
 
   const handleSubmit = async (e: any) => {
@@ -323,7 +312,9 @@ export default function FileManager({
                               className="option"
                               onClick={() => {
                                 setContextMenuOpen(null);
-                                setAsBackground(pathFound, entry.name);
+                                setCurrentBackground(
+                                  `${pathFound}${entry.name}`,
+                                );
                               }}
                             >
                               Set as Background

@@ -1,9 +1,10 @@
 import "./fileentryicon.scss";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { getFileIcon } from "../../helpers";
-import { useWindowStore } from "../../store";
+import { useWindowStore, useUIStore } from "../../store";
 import FileManager from "../../applications/FileManager/FileManager";
 import fileManagerIcon from "../../assets/icons/file-manager.svg";
+import { isImageFile, isVideoFile } from "../../helpers";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -25,6 +26,7 @@ export default function FileEntryIcon({
   parentPath,
 }: FileEntryIconProps) {
   const isDir = entry.type === "dir";
+  const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
   const activeWindows = useWindowStore((s) => s.activeWindows);
   const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
 
@@ -123,6 +125,19 @@ export default function FileEntryIcon({
             >
               Copy Path
             </div>
+            {/* ONLY FOR IMAGE AND VID FILES */}
+            {isImageFile(entry.name) ||
+              (isVideoFile(entry.name) && (
+                <div
+                  className="action"
+                  onClick={() =>
+                    setCurrentBackground(`${parentPath}${entry.name}`)
+                  }
+                >
+                  Set Background
+                </div>
+              ))}
+            {/* ALWAYS SHOWS */}
             <div className="action" onClick={onDelete}>
               Delete
             </div>

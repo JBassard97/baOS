@@ -1,11 +1,13 @@
 import "./backgroundlayer.scss";
 import { useUIStore } from "../../store";
 import { useEffect, useState } from "react";
+import { getFileFromPath } from "../../vfs-actions/getFileFromPath";
+import { isVideoFile } from "../../helpers";
 
 export default function BackgroundLayer() {
   const currentBackground = useUIStore((state) => state.currentBackground);
 
-  const [src, setSrc] = useState<string>("serene.png");
+  const [src, setSrc] = useState<string>("/Images/Backgrounds/serene.png");
 
   useEffect(() => {
     if (!currentBackground) return;
@@ -13,15 +15,7 @@ export default function BackgroundLayer() {
     let objectUrl: string;
 
     (async () => {
-      const root = await navigator.storage.getDirectory();
-
-      const images = await root.getDirectoryHandle("Images");
-      const backgrounds = await images.getDirectoryHandle("Backgrounds");
-
-      console.log("currentBackground:", currentBackground);
-      const fileHandle = await backgrounds.getFileHandle(currentBackground);
-      const file = await fileHandle.getFile();
-
+      const file = await getFileFromPath(currentBackground);
       objectUrl = URL.createObjectURL(file);
       setSrc(objectUrl);
     })();
@@ -31,7 +25,7 @@ export default function BackgroundLayer() {
     };
   }, [currentBackground]);
 
-  const isVideo = /\.(mp4|webm|ogg)$/i.test(currentBackground);
+  const isVideo = isVideoFile(currentBackground);
 
   return (
     <div className="background-layer">
