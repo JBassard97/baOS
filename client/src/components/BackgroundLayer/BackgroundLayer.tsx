@@ -5,17 +5,26 @@ import { getFileFromPath } from "../../vfs-actions/getFileFromPath";
 import { isVideoFile } from "../../helpers";
 
 export default function BackgroundLayer() {
+  const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
   const currentBackground = useUIStore((state) => state.currentBackground);
-
-  const [src, setSrc] = useState<string>("/Images/Backgrounds/serene.png");
+  const DEFAULT_BG_PATH = "/Images/Backgrounds/serene.png";
+  const [src, setSrc] = useState<string>("");
 
   useEffect(() => {
     if (!currentBackground) return;
 
     let objectUrl: string;
+    let file: File;
 
     (async () => {
-      const file = await getFileFromPath(currentBackground);
+      try {
+        file = await getFileFromPath(currentBackground);
+      } catch {
+        // ! Fallback when the currentBackground file is deleted
+        file = await getFileFromPath(DEFAULT_BG_PATH);
+        setCurrentBackground(DEFAULT_BG_PATH);
+      }
+
       objectUrl = URL.createObjectURL(file);
       setSrc(objectUrl);
     })();
