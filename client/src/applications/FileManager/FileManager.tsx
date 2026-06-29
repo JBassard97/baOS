@@ -350,6 +350,7 @@ export default function FileManager({
                               e.stopPropagation();
                               setContextMenuOpen(null);
                               addActiveWindow({
+                                isFullscreen: false,
                                 isMinimized: false,
                                 id: String(activeWindows.length),
                                 isFocused: true,

@@ -7,9 +7,7 @@ export default function WindowsContainer() {
   const activeWindows = useWindowStore((s) => s.activeWindows);
 
   return (
-    <div
-      className={`windows-container ${taskbarPosition}`}
-    >
+    <div className={`windows-container ${taskbarPosition}`}>
       {activeWindows.length > 0 &&
         activeWindows.map((window, index) => (
           <Window
@@ -19,6 +17,7 @@ export default function WindowsContainer() {
             icon={window.icon}
             title={window.title}
             isMinimized={window.isMinimized}
+            isFullscreen={window.isFullscreen}
             isFocused={window.isFocused}
             children={window.children}
           />

@@ -19,6 +19,8 @@
 
   .file-entry-icon {
     @include no-select-no-drag;
+    max-width: 80%;
+    max-height: 50%;
   }
 
   .file-entry-name {

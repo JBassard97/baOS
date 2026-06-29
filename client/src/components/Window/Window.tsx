@@ -13,6 +13,7 @@ interface WindowProps {
   title: string;
   children: ReactNode | null;
   isMinimized: boolean;
+  isFullscreen: boolean;
   isFocused: boolean;
 }
 
@@ -23,6 +24,7 @@ export default function Window({
   title,
   children,
   isMinimized,
+  isFullscreen,
   isFocused,
 }: WindowProps) {
   const taskbarPosition = useUIStore((s) => s.taskbarPosition);
@@ -30,14 +32,14 @@ export default function Window({
   const removeActiveWindow = useWindowStore((s) => s.removeActiveWindow);
   const minimizeWindow = useWindowStore((s) => s.minimizeWindow);
   const focusWindow = useWindowStore((s) => s.focusWindow);
-  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+  const [isFullScreenLocal, setIsFullScreen] = useState<boolean>(isFullscreen);
 
   return (
     <div
-      className={`window ${taskbarPosition} ${isFullScreen ? "fullscreen" : ""} ${isMinimized ? "minimized" : ""} ${isFocused ? "focused" : ""}`}
+      className={`window ${taskbarPosition} ${isFullScreenLocal ? "fullscreen" : ""} ${isMinimized ? "minimized" : ""} ${isFocused ? "focused" : ""}`}
       style={{
-        top: isFullScreen ? 0 : `${index * 2}rem`,
-        left: isFullScreen ? 0 : `${index * 2}rem`,
+        top: isFullScreenLocal ? 0 : `${index * 2}rem`,
+        left: isFullScreenLocal ? 0 : `${index * 2}rem`,
         zIndex: isFocused ? activeWindows.length : index,
       }}
       onClick={() => {
@@ -64,11 +66,13 @@ export default function Window({
           <div
             className="window-fullscreen"
             onClick={() => {
-              setIsFullScreen(!isFullScreen);
+              setIsFullScreen(!isFullScreenLocal);
               focusWindow(id);
             }}
           >
-            <img src={isFullScreen ? exitFullscreenIcon : fullscreenIcon} />
+            <img
+              src={isFullScreenLocal ? exitFullscreenIcon : fullscreenIcon}
+            />
           </div>
           <div className="window-close" onClick={() => removeActiveWindow(id)}>
             <img src={closeIcon} />

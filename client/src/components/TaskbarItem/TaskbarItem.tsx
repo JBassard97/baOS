@@ -8,6 +8,7 @@ interface WindowProps {
   title: string;
   children: ReactNode | null;
   isMinimized?: boolean;
+  isFullscreen?: boolean;
   dontShowTooltip?: boolean;
 }
 
@@ -16,6 +17,7 @@ export default function TaskbarItem({
   title,
   children,
   isMinimized = false,
+  isFullscreen = false,
   dontShowTooltip = false,
 }: WindowProps) {
   const taskbarPosition = useUIStore((s) => s.taskbarPosition);
@@ -62,6 +64,7 @@ export default function TaskbarItem({
               children,
               title,
               isMinimized,
+              isFullscreen,
               isFocused: true,
             });
           }

@@ -7,6 +7,7 @@ import TaskbarItem from "../TaskbarItem/TaskbarItem";
 import { useUIStore } from "../../store";
 import fileManagerIcon from "../../assets/icons/file-manager.svg";
 import terminalIcon from "../../assets/icons/terminal.svg";
+import settingsIcon from "../../assets/icons/settings-icon.svg";
 import baosIcon from "../../assets/icons/baosNeon.png";
 import DevPanel from "../DevPanel";
 import devPanelIcon from "../../assets/icons/nut.svg";
@@ -54,10 +55,27 @@ function Taskbar() {
       {startMenuOpen && (
         <div className="start-menu">
           <div className="start-menu-title-bar">
-            <span className="start-menu-title">
-              <img src={baosIcon} />
-              Start Menu
-            </span>
+            <div className="left-section">
+              <span className="start-menu-title">
+                <img src={baosIcon} />
+                Start Menu
+              </span>
+            </div>
+            <div className="right-section">
+              <div
+              // onClick={() => {
+              //   setStartMenuOpen(false);
+              // }}
+              >
+                <TaskbarItem
+                  icon={settingsIcon}
+                  title="Settings"
+                  children={<></>}
+                  // isMinimized={true}
+                  isFullscreen={true}
+                />
+              </div>
+            </div>
           </div>
           <div className="start-menu-section">
             <div className="section-title-bar">
@@ -77,7 +95,7 @@ function Taskbar() {
                 <TaskbarItem
                   icon={terminalIcon}
                   title={"Terminal"}
-                  children={<h1>Terminal </h1>}
+                  children={<h1>Terminal</h1>}
                   dontShowTooltip={true}
                 />
                 <p className="item-name">Terminal</p>

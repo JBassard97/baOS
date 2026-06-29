@@ -6,6 +6,7 @@ export interface AppWindow {
     children: ReactNode | null;
     isMinimized: boolean;
     isFocused: boolean;
+    isFullscreen: boolean;
     title: string;
     icon: string;
 }

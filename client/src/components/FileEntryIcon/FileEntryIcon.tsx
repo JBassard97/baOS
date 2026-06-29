@@ -39,6 +39,7 @@ export default function FileEntryIcon({
         onDoubleClick={() => {
           if (isDir) {
             addActiveWindow({
+              isFullscreen: false,
               isMinimized: false,
               id: String(activeWindows.length),
               isFocused: true,
@@ -60,7 +61,24 @@ export default function FileEntryIcon({
           onContextMenuOpen(e.clientX, e.clientY);
         }}
       >
-        <img className="file-entry-icon" src={getFileIcon(entry.name, isDir)} />
+        {/* ICON */}
+        {entry.previewType === "video" ? (
+          <video
+            className="file-entry-icon"
+            src={entry.previewUrl}
+            loop
+            muted
+            playsInline
+            autoPlay
+          />
+        ) : (
+          <img
+            className="file-entry-icon"
+            src={
+              entry.previewUrl ?? getFileIcon(entry.name, entry.type === "dir")
+            }
+          />
+        )}
 
         <p className="file-entry-name">
           {isDir ? `${entry.name}/` : entry.name}
@@ -70,7 +88,30 @@ export default function FileEntryIcon({
       <div className="actions-section">
         {showActions && (
           <div className="file-entry-actions">
-            <div className="action">Open</div>
+            <div
+              className="action"
+              onClick={() => {
+                if (isDir) {
+                  addActiveWindow({
+                    isFullscreen: false,
+                    isMinimized: false,
+                    id: String(activeWindows.length),
+                    isFocused: true,
+                    children: (
+                      <FileManager
+                        startPath={`${parentPath}${isDir ? `${entry.name}/` : entry.name}`}
+                      />
+                    ),
+                    title: "File Manager",
+                    icon: fileManagerIcon,
+                  });
+                } else {
+                  alert(`Attempted to open: \n${parentPath}${entry.name}`);
+                }
+              }}
+            >
+              Open
+            </div>
             <div className="action">Rename</div>
             <div
               className="action"
