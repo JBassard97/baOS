@@ -100,7 +100,7 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    // overflow: hidden;
     gap: 0.5rem;
 
     .start-menu-title-bar {
@@ -129,6 +129,7 @@
       }
 
       .right-section {
+        
         font-style: normal;
         height: 100%;
         display: flex;
