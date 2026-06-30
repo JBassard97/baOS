@@ -39,7 +39,9 @@ export default function Window({
       className={`window ${taskbarPosition} ${isFullScreenLocal ? "fullscreen" : ""} ${isMinimized ? "minimized" : ""} ${isFocused ? "focused" : ""}`}
       style={{
         top: isFullScreenLocal ? 0 : `${index * 2}rem`,
-        left: isFullScreenLocal ? 0 : `${index * 2}rem`,
+        left: isFullScreenLocal ? 0 : `${index * 0}rem`,
+
+        // left: isFullScreenLocal ? 0 : `${index * 2}rem`,
         zIndex: isFocused ? activeWindows.length : index,
       }}
       onClick={() => {
