@@ -38,7 +38,7 @@ export function useSetBackground() {
             await writable.close();
 
             // 5. Save path in Zustand (your "OS state")
-            const path = file.name;
+            const path = `/Images/Backgrounds/${file.name}`;
             setCurrentBackground(path);
         };
 
