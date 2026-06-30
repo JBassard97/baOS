@@ -9,6 +9,7 @@ import { mkdir } from "../../vfs-actions/mkdir";
 import {
   uploadFilesToVFS,
   uploadFolderToVFS,
+  uploadFromDrop,
 } from "../../vfs-actions/uploadToVfs";
 import { getValidFileName, getFileIcon, formatBytes } from "../../helpers";
 import homeIcon from "../../assets/icons/home.svg";
@@ -232,6 +233,17 @@ export default function FileManager({
       </div>
       <div
         className="entries-container"
+        onDragOver={(e) => {
+          e.preventDefault();
+        }}
+        onDrop={async (e) => {
+          e.preventDefault();
+          try {
+            await uploadFromDrop(e.dataTransfer, pathFound);
+          } catch (err) {
+            console.error(err);
+          }
+        }}
         onClick={() => {
           stopCreatingEntry();
           setContextMenuOpen(null);

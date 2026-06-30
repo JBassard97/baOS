@@ -126,17 +126,16 @@ export default function FileEntryIcon({
               Copy Path
             </div>
             {/* ONLY FOR IMAGE AND VID FILES */}
-            {isImageFile(entry.name) ||
-              (isVideoFile(entry.name) && (
-                <div
-                  className="action"
-                  onClick={() =>
-                    setCurrentBackground(`${parentPath}${entry.name}`)
-                  }
-                >
-                  Set Background
-                </div>
-              ))}
+            {(isImageFile(entry.name) || isVideoFile(entry.name)) && (
+              <div
+                className="action"
+                onClick={() =>
+                  setCurrentBackground(`${parentPath}${entry.name}`)
+                }
+              >
+                Set as Background
+              </div>
+            )}
             {/* ALWAYS SHOWS */}
             <div className="action" onClick={onDelete}>
               Delete

@@ -21,7 +21,7 @@ async function uploadEntry(entry: FileSystemEntry, parentPath: string): Promise<
         const filePath = `${parentPath}${validName}`;
         const content = await file.arrayBuffer();
 
-        await touch(filePath, content); // pass content if your touch supports it
+        await touch(filePath, content);
     } else if (entry.isDirectory) {
         const dirPath = `${parentPath}${entry.name}/`;
         await mkdir(dirPath);

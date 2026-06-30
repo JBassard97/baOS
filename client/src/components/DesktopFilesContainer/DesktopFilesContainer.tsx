@@ -16,6 +16,11 @@ import FileEntryIcon from "../FileEntryIcon/FileEntryIcon";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { VFS_ROOT } from "../../constants/constants";
 import { getFileIcon, getValidFileName } from "../../helpers";
+import {
+  uploadFilesToVFS,
+  uploadFolderToVFS,
+  uploadFromDrop,
+} from "../../vfs-actions/uploadToVfs";
 
 export default function DesktopFilesContainer() {
   const DESKTOP_PATH = "Desktop/";
@@ -63,6 +68,21 @@ export default function DesktopFilesContainer() {
       entry: null,
     });
   };
+
+  function startUploadingDesktopEntry(uploadingType: "file" | "dir") {
+    setSelectedEntry(null);
+    setContextMenuEntry(null);
+    setDesktopContextMenu({ visible: false, x: 0, y: 0, entry: null });
+    setCreatingDesktopEntry({
+      isCreatingDesktopEntry: false,
+      creatingType: null,
+    });
+    if (uploadingType === "file") {
+      uploadFilesToVFS("/Desktop/");
+    } else if (uploadingType === "dir") {
+      uploadFolderToVFS("/Desktop/");
+    }
+  }
 
   function startMakingDesktopEntry(creatingType: "file" | "dir") {
     setSelectedEntry(null);
@@ -137,6 +157,25 @@ export default function DesktopFilesContainer() {
   return (
     <div
       className={`desktop-files-container ${taskbarPosition}`}
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
+      onDrop={async (e) => {
+        e.preventDefault();
+
+        try {
+          setSelectedEntry(null);
+          setContextMenuEntry(null);
+          setDesktopContextMenu({ visible: false, x: 0, y: 0, entry: null });
+          setCreatingDesktopEntry({
+            isCreatingDesktopEntry: false,
+            creatingType: null,
+          });
+          await uploadFromDrop(e.dataTransfer, "/Desktop/");
+        } catch (err) {
+          console.error(err);
+        }
+      }}
       onClick={() => {
         setSelectedEntry(null);
         setContextMenuEntry(null);
@@ -258,10 +297,26 @@ export default function DesktopFilesContainer() {
           <div
             className="context-item"
             onClick={() => {
+              startUploadingDesktopEntry("file");
+            }}
+          >
+            Upload File
+          </div>
+          <div
+            className="context-item"
+            onClick={() => {
               startMakingDesktopEntry("dir");
             }}
           >
             New Folder
+          </div>
+          <div
+            className="context-item"
+            onClick={() => {
+              startUploadingDesktopEntry("dir");
+            }}
+          >
+            Upload Folder
           </div>
           <div
             className="context-item"
