@@ -91,6 +91,10 @@ export default function Terminal() {
         if (commandHistory.length === 0) return "";
         return commandHistory.join("\n");
 
+      case "echo":
+        if (parts.length === 1) return "";
+        return parts.slice(1).join(" ");
+
       case "ls":
         const { entries } = await ls(currentPath);
         if (entries.length === 0) return "";
