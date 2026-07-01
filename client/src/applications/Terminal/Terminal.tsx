@@ -206,7 +206,10 @@ export default function Terminal() {
             setInputState(e.target.value);
           }}
           enterKeyHint="done"
-          autoFocus
+          autoCapitalize="none"
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
         />
       </form>
     </div>
