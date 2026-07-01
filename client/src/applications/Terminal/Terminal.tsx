@@ -64,7 +64,7 @@ export default function Terminal() {
     command: string,
   ): Promise<string | ReactNode | null> => {
     console.log(`Running command: ${command}`);
-    setCommandHistory([...commandHistory, command]);
+    setCommandHistory((prev) => [...prev, command]);
 
     const parts = command.trim().split(/\s+/);
 
@@ -84,7 +84,8 @@ export default function Terminal() {
         if (parts.length > 1)
           return (
             <span style={{ color: "red" }}>
-              Error: "history" command accepts no arguments
+              Error: "history" command accepts 0 arguments but got{" "}
+              {parts.length - 1}.
             </span>
           );
         if (commandHistory.length === 0) return "";
@@ -130,6 +131,14 @@ export default function Terminal() {
         }
 
       case "cd":
+        if (parts.length > 2) {
+          return (
+            <span style={{ color: "red" }}>
+              Error: "cd" command accepts 0 or 1 arguments but got{" "}
+              {parts.length - 1}.
+            </span>
+          );
+        }
         if (!parts[1] || parts[1] === "~" || parts[1] === "/") {
           setCurrentPath("/");
           return "";
