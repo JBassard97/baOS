@@ -5,6 +5,7 @@ import { doesDirExist } from "../../vfs-actions/doesDirExist";
 import { touch } from "../../vfs-actions/touch";
 import { mkdir } from "../../vfs-actions/mkdir";
 import { ls } from "../../vfs-actions/ls";
+import { rm } from "../../vfs-actions/rm";
 
 interface HistoryEntry {
   time: string;
@@ -60,6 +61,21 @@ export default function Terminal() {
     });
   }, [history]);
 
+  const COMMANDS: Record<string, { description: string }> = {
+    pwd: { description: "Print working directory" },
+    ls: { description: "List directory contents" },
+    cd: { description: "Change directory" },
+    touch: { description: "Create file(s)" },
+    mkdir: { description: "Create directory(ies)" },
+    rm: { description: "Remove files or directories" },
+    echo: { description: "Print text to output" },
+    date: { description: "Show current date and time" },
+    curl: { description: "Fetch a URL via HTTP GET" },
+    clear: { description: "Clear terminal history" },
+    history: { description: "Show command history" },
+    help: { description: "Show commands and descriptions" },
+  };
+
   const runCommand = async (
     command: string,
   ): Promise<string | ReactNode | null> => {
@@ -83,10 +99,9 @@ export default function Terminal() {
       case "history":
         if (parts.length > 1)
           return (
-            <span style={{ color: "red" }}>
-              Error: "history" command accepts 0 arguments but got{" "}
-              {parts.length - 1}.
-            </span>
+            <ErrorMessage
+              message={`"history" command accepts 0 arguments but got ${parts.length - 1}`}
+            />
           );
         if (commandHistory.length === 0) return "";
         return commandHistory.join("\n");
@@ -94,6 +109,45 @@ export default function Terminal() {
       case "echo":
         if (parts.length === 1) return "";
         return parts.slice(1).join(" ");
+
+      case "date":
+        if (parts.length > 1) {
+          return (
+            <ErrorMessage
+              message={`"date" command accepts 0 arguments but got ${parts.length - 1}`}
+            />
+          );
+        }
+
+        return new Date().toString();
+
+      case "help":
+        if (parts.length > 1) {
+          return (
+            <ErrorMessage
+              message={`"help" command accepts 0 arguments but got ${parts.length - 1}`}
+            />
+          );
+        }
+
+        return (
+          <table className="help-table">
+            <thead>
+              <tr>
+                <th>COMMAND</th>
+                <th>DESCRIPTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(COMMANDS).map(([cmd, info]) => (
+                <tr key={cmd}>
+                  <td className="help-cmd">{cmd}</td>
+                  <td>{info.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        );
 
       case "ls":
         const { entries } = await ls(currentPath);
@@ -112,9 +166,23 @@ export default function Terminal() {
           </div>
         );
 
+      case "rm":
+        if (!parts[1]) {
+          return <ErrorMessage message="No file or directory name provided" />;
+        } else if (parts.length > 2) {
+          return (
+            <ErrorMessage
+              message={`"rm" command accepts 1 arguments but got ${parts.length - 1}`}
+            />
+          );
+        } else {
+          await rm(`${currentPath}${parts[1]}`);
+          return "";
+        }
+
       case "touch":
         if (!parts[1]) {
-          return "Error: No filename provided.";
+          return <ErrorMessage message="No file name provided" />;
         } else {
           const remainingParts = parts.slice(1);
           for (const part of remainingParts) {
@@ -125,13 +193,41 @@ export default function Terminal() {
 
       case "mkdir":
         if (!parts[1]) {
-          return "Error: No directory name provided.";
+          return <ErrorMessage message="No directory name provided" />;
         } else {
           const remainingParts = parts.slice(1);
           for (const part of remainingParts) {
             await mkdir(`${currentPath}${part}`);
           }
           return "";
+        }
+
+      case "curl":
+        if (!parts[1]) {
+          return <ErrorMessage message="No URL provided" />;
+        } else if (parts.length > 2) {
+          if (parts.length !== 2) {
+            return (
+              <ErrorMessage message='"curl" requires exactly 1 URL argument' />
+            );
+          }
+        }
+        try {
+          let url = parts[1];
+          if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = `https://${url}`;
+          }
+
+          const response = await fetch(url);
+          const text = await response.text();
+          return text;
+        } catch (err) {
+          console.error(err);
+          return (
+            <span style={{ color: "red" }}>
+              Error: {err instanceof Error ? err.message : String(err)}
+            </span>
+          );
         }
 
       case "cd":
@@ -164,7 +260,9 @@ export default function Terminal() {
         return "";
 
       default:
-        return `Command not found: ${parts[0]}`;
+        return (
+          <span style={{ color: "red" }}>Command not found: "{parts[0]}"</span>
+        );
     }
   };
 
@@ -236,4 +334,8 @@ function PathDisplay({ path, time }: { path: string; time: string }) {
       <span className="path-display-path">{path}</span>
     </div>
   );
+}
+
+function ErrorMessage({ message }: { message: string }) {
+  return <span style={{ color: "red" }}>Error: {message}</span>;
 }
