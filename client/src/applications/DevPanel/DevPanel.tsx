@@ -1,4 +1,4 @@
-import { resetOpfs } from "../vfs-actions/resetOpfs";
+import { resetOpfs } from "../../vfs-actions/resetOpfs";
 
 export default function DevPanel() {
   return (

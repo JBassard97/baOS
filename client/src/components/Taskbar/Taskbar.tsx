@@ -9,8 +9,9 @@ import fileManagerIcon from "../../assets/icons/file-manager.svg";
 import terminalIcon from "../../assets/icons/terminal.svg";
 import settingsIcon from "../../assets/icons/settings-icon.svg";
 import baosIcon from "../../assets/icons/baosNeon.png";
-import DevPanel from "../DevPanel";
+import DevPanel from "../../applications/DevPanel/DevPanel";
 import devPanelIcon from "../../assets/icons/nut.svg";
+import Terminal from "../../applications/Terminal/Terminal";
 import FileManager from "../../applications/FileManager/FileManager";
 import { getOrientation } from "../../helpers";
 
@@ -95,7 +96,7 @@ function Taskbar() {
                 <TaskbarItem
                   icon={terminalIcon}
                   title={"Terminal"}
-                  children={<h1>Terminal</h1>}
+                  children={<Terminal />}
                   dontShowTooltip={true}
                 />
                 <p className="item-name">Terminal</p>

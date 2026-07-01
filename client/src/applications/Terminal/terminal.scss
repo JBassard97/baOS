@@ -1,0 +1,94 @@
+@use "../../scss/variables";
+
+.terminal {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  font-family: monospace;
+
+  .terminal-main {
+    flex-grow: 1;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar-track-piece {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(137, 137, 137, 0.315);
+      border-radius: 999px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(245, 245, 245, 0.9);
+    }
+    .history-entry {
+      //   border: 1px solid blue;
+      margin: 0.5rem 0;
+      height: fit-content;
+      width: 100%;
+
+      .history-input,
+      .history-output {
+        padding: 0rem 0.5rem;
+        width: 100%;
+        height: fit-content;
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+
+      .history-output {
+        white-space: pre-wrap;
+      }
+    }
+  }
+
+  form {
+    // border: 1px solid lime;
+
+    .terminal-input {
+      font-family: monospace;
+      height: 1.5rem;
+      padding: 0 0.5rem;
+      width: 100%;
+      color: white;
+      background-color: black;
+      position: relative;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.path-display {
+  height: 1.5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--taskbar-item-border-color);
+  span {
+    height: 100%;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0.5rem;
+    color: black;
+    // border: 1px solid white;
+    &.path-display-time {
+      background-color: magenta;
+    }
+    &.path-display-path {
+      background-color: lime;
+      word-wrap: break-word;
+      word-break: break-all;
+    }
+  }
+}
