@@ -6,6 +6,10 @@ import { touch } from "../../vfs-actions/touch";
 import { mkdir } from "../../vfs-actions/mkdir";
 import { ls } from "../../vfs-actions/ls";
 import { rm } from "../../vfs-actions/rm";
+import {
+  uploadFilesToVFS,
+  uploadFolderToVFS,
+} from "../../vfs-actions/uploadToVfs";
 
 interface HistoryEntry {
   time: string;
@@ -43,6 +47,7 @@ export default function Terminal() {
   const [inputState, setInputState] = useState("");
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [historyIndex, setHistoryIndex] = useState<number>(-1);
 
   const terminalMainRef = useRef<HTMLDivElement>(null);
 
@@ -67,10 +72,13 @@ export default function Terminal() {
     cd: { description: "Change directory" },
     touch: { description: "Create file(s)" },
     mkdir: { description: "Create directory(ies)" },
-    rm: { description: "Remove files or directories" },
+    "upload [`file`|`folder`]": {
+      description: "Upload file or folder to the current directory",
+    },
+    "rm | delete": { description: "Remove files or directories recursively" },
     echo: { description: "Print text to output" },
     date: { description: "Show current date and time" },
-    curl: { description: "Fetch a URL via HTTP GET" },
+    "curl | fetch": { description: "Fetch a URL via HTTP GET" },
     clear: { description: "Clear terminal history" },
     history: { description: "Show command history" },
     help: { description: "Show commands and descriptions" },
@@ -167,6 +175,7 @@ export default function Terminal() {
         );
 
       case "rm":
+      case "delete":
         if (!parts[1]) {
           return <ErrorMessage message="No file or directory name provided" />;
         } else if (parts.length > 2) {
@@ -202,7 +211,35 @@ export default function Terminal() {
           return "";
         }
 
+      case "upload":
+        if (!parts[1]) {
+          return (
+            <ErrorMessage message="No upload type (`file`|`folder`) provided" />
+          );
+        } else if (parts.length > 2) {
+          return (
+            <ErrorMessage
+              message={`"upload" command accepts 1 argument but got ${parts.length - 1}`}
+            />
+          );
+        } else if (parts[1] !== "file" && parts[1] !== "folder") {
+          return (
+            <ErrorMessage message="Upload type can only be `file` or `folder`" />
+          );
+        } else {
+          if (parts[1] === "file") {
+            await uploadFilesToVFS(currentPath);
+          }
+
+          if (parts[1] === "folder") {
+            await uploadFolderToVFS(currentPath);
+          }
+
+          return "";
+        }
+
       case "curl":
+      case "fetch":
         if (!parts[1]) {
           return <ErrorMessage message="No URL provided" />;
         } else if (parts.length > 2) {
@@ -287,6 +324,7 @@ export default function Terminal() {
       },
     ]);
 
+    setHistoryIndex(-1);
     setInputState("");
   };
 
@@ -315,6 +353,37 @@ export default function Terminal() {
           value={inputState}
           onChange={(e) => {
             setInputState(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowUp") {
+              e.preventDefault();
+
+              if (commandHistory.length === 0) return;
+
+              const newIndex =
+                historyIndex === -1
+                  ? commandHistory.length - 1
+                  : Math.max(0, historyIndex - 1);
+
+              setHistoryIndex(newIndex);
+              setInputState(commandHistory[newIndex]);
+            }
+
+            if (e.key === "ArrowDown") {
+              e.preventDefault();
+
+              if (historyIndex === -1) return;
+
+              const newIndex = historyIndex + 1;
+
+              if (newIndex >= commandHistory.length) {
+                setHistoryIndex(-1);
+                setInputState("");
+              } else {
+                setHistoryIndex(newIndex);
+                setInputState(commandHistory[newIndex]);
+              }
+            }
           }}
           enterKeyHint="done"
           autoCapitalize="none"
