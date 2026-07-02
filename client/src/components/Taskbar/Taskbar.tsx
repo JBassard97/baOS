@@ -11,8 +11,12 @@ import settingsIcon from "../../assets/icons/settings-icon.svg";
 import baosIcon from "../../assets/icons/baosNeon.png";
 import DevPanel from "../../applications/DevPanel/DevPanel";
 import devPanelIcon from "../../assets/icons/nut.svg";
+import calculatorIcon from "../../assets/icons/calculator.svg";
+import imageViewerIcon from "../../assets/icons/image-viewer.svg";
+import videoPlayerIcon from "../../assets/icons/video-player.svg";
 import Terminal from "../../applications/Terminal/Terminal";
 import FileManager from "../../applications/FileManager/FileManager";
+import meowMasherIcon from "../../assets/icons/meowmasher.png";
 import { getOrientation } from "../../helpers";
 
 function Taskbar() {
@@ -100,6 +104,64 @@ function Taskbar() {
                   dontShowTooltip={true}
                 />
                 <p className="item-name">Terminal</p>
+              </div>
+              <div>
+                <TaskbarItem
+                  icon={calculatorIcon}
+                  title="Calculator"
+                  children={<h2>Calculator</h2>}
+                  dontShowTooltip={true}
+                />
+                <p
+                  className="item-name"
+                  style={{ textDecoration: "line-through" }}
+                >
+                  Calculator
+                </p>
+              </div>
+              <div>
+                <TaskbarItem
+                  icon={imageViewerIcon}
+                  title="Image Viewer"
+                  children={<h2>Image Viewer</h2>}
+                  dontShowTooltip={true}
+                />
+                <p
+                  className="item-name"
+                  style={{ textDecoration: "line-through" }}
+                >
+                  Image Viewer
+                </p>
+              </div>
+              <div>
+                <TaskbarItem
+                  icon={videoPlayerIcon}
+                  title="Video Player"
+                  children={<></>}
+                  dontShowTooltip={true}
+                />
+                <p
+                  className="item-name"
+                  style={{ textDecoration: "line-through" }}
+                >
+                  Video Player
+                </p>
+              </div>
+              <div>
+                <TaskbarItem
+                  icon={meowMasherIcon}
+                  title="Meow Masher"
+                  children={
+                    <iframe
+                      src="https://jbassard97.github.io/MeowMasher/"
+                      width="100%"
+                      height="100%"
+                      style={{ border: "none", display: "block" }}
+                    />
+                  }
+                  dontShowTooltip={true}
+                />
+                <p className="item-name">Meow Masher</p>
               </div>
             </div>
           </div>

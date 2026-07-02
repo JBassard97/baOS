@@ -129,7 +129,6 @@
       }
 
       .right-section {
-        
         font-style: normal;
         height: 100%;
         display: flex;
@@ -168,6 +167,7 @@
         flex-grow: 1;
         padding: 0.5rem;
         display: flex;
+        justify-content: center;
         flex-wrap: wrap;
         gap: 0.5rem;
 
@@ -180,6 +180,7 @@
             font-style: normal;
             width: 100%;
             color: lightgray;
+            line-height: 0.9;
           }
         }
       }
