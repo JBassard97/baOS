@@ -18,6 +18,8 @@ import Terminal from "../../applications/Terminal/Terminal";
 import FileManager from "../../applications/FileManager/FileManager";
 import meowMasherIcon from "../../assets/icons/meowmasher.png";
 import { getOrientation } from "../../helpers";
+import wikipediaIcon from "../../assets/icons/Wikipedia-logo-v2.svg";
+import googleIcon from "../../assets/icons/google-icon.svg";
 
 function Taskbar() {
   const position = useUIStore((s) => s.taskbarPosition);
@@ -162,6 +164,38 @@ function Taskbar() {
                   dontShowTooltip={true}
                 />
                 <p className="item-name">Meow Masher</p>
+              </div>
+              <div>
+                <TaskbarItem
+                  icon={wikipediaIcon}
+                  title="Wikipedia"
+                  children={
+                    <iframe
+                      src="https://www.wikipedia.org/"
+                      width="100%"
+                      height="100%"
+                      style={{ border: "none", display: "block" }}
+                    />
+                  }
+                  dontShowTooltip={true}
+                />
+                <p className="item-name">Wikipedia</p>
+              </div>
+              <div>
+                <TaskbarItem
+                  icon={googleIcon}
+                  title="Google"
+                  children={
+                    <iframe
+                      src="https://www.google.com/webhp?igu=1"
+                      width="100%"
+                      height="100%"
+                      style={{ border: "none", display: "block" }}
+                    />
+                  }
+                  dontShowTooltip={true}
+                />
+                <p className="item-name">Google</p>
               </div>
             </div>
           </div>
