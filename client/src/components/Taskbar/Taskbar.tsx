@@ -47,11 +47,6 @@ function Taskbar() {
             title={"File Manager"}
             children={<FileManager />}
           />
-          <TaskbarItem
-            icon={devPanelIcon}
-            title={"Dev Panel"}
-            children={<DevPanel />}
-          />
         </div>
         <div className="right-or-bottom-group">
           <TaskbarPositionSetter />
@@ -109,6 +104,15 @@ function Taskbar() {
               </div>
               <div>
                 <TaskbarItem
+                  icon={devPanelIcon}
+                  title={"Dev Panel"}
+                  children={<DevPanel />}
+                  dontShowTooltip={true}
+                />
+                <p className="item-name">Dev Panel</p>
+              </div>
+              <div>
+                <TaskbarItem
                   icon={calculatorIcon}
                   title="Calculator"
                   children={<h2>Calculator</h2>}
@@ -161,6 +165,7 @@ function Taskbar() {
                       style={{ border: "none", display: "block" }}
                     />
                   }
+                  isFullscreen={true}
                   dontShowTooltip={true}
                 />
                 <p className="item-name">Meow Masher</p>

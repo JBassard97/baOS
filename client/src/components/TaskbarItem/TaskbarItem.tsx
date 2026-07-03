@@ -21,6 +21,7 @@ export default function TaskbarItem({
   dontShowTooltip = false,
 }: WindowProps) {
   const taskbarPosition = useUIStore((s) => s.taskbarPosition);
+  const setStartMenuOpen = useUIStore((s) => s.setStartMenuOpen);
   const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
   const minimizeWindow = useWindowStore((s) => s.minimizeWindow);
   const restoreWindow = useWindowStore((s) => s.restoreWindow);
@@ -67,6 +68,7 @@ export default function TaskbarItem({
               isFullscreen,
               isFocused: true,
             });
+            setStartMenuOpen(false);
           }
         }}
       >

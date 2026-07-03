@@ -5,6 +5,8 @@ import { useWindowStore, useUIStore } from "../../store";
 import FileManager from "../../applications/FileManager/FileManager";
 import fileManagerIcon from "../../assets/icons/file-manager.svg";
 import { isImageFile, isVideoFile } from "../../helpers";
+import TextEditor from "../../applications/TextEditor/TextEditor";
+import textEditorIcon from "../../assets/icons/text-editor.svg";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -52,6 +54,18 @@ export default function FileEntryIcon({
               ),
               title: "File Manager",
               icon: fileManagerIcon,
+            });
+          } else if (entry.name.endsWith(".txt")) {
+            addActiveWindow({
+              title: "Text Editor",
+              icon: textEditorIcon,
+              isFocused: true,
+              children: (
+                <TextEditor startFilePath={`${parentPath}${entry.name}`} />
+              ),
+              isFullscreen: false,
+              isMinimized: false,
+              id: String(activeWindows.length),
             });
           } else {
             alert(`Attempted to open: \n${parentPath}${entry.name}`);
