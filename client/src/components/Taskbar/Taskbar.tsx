@@ -20,6 +20,8 @@ import meowMasherIcon from "../../assets/icons/meowmasher.png";
 import { getOrientation } from "../../helpers";
 import wikipediaIcon from "../../assets/icons/Wikipedia-logo-v2.svg";
 import googleIcon from "../../assets/icons/google-icon.svg";
+import textEditorIcon from "../../assets/icons/text-editor.svg";
+import TextEditor from "../../applications/TextEditor/TextEditor";
 
 function Taskbar() {
   const position = useUIStore((s) => s.taskbarPosition);
@@ -124,6 +126,15 @@ function Taskbar() {
                 >
                   Calculator
                 </p>
+              </div>
+              <div>
+                <TaskbarItem
+                  icon={textEditorIcon}
+                  title="Text Editor"
+                  children={<TextEditor />}
+                  dontShowTooltip={true}
+                />
+                <p className="item-name">Text Editor</p>
               </div>
               <div>
                 <TaskbarItem

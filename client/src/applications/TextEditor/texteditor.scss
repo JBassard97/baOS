@@ -3,14 +3,44 @@
 .text-editor {
   width: 100%;
   height: 100%;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 
-  input {
-    width: 100%;
-    height: 100%;
+  textarea {
+    flex-grow: 1;
+    resize: none;
+    border: none;
     background-color: white;
     color: black;
     font-family: "Times New Roman", Times, serif;
     font-size: 1rem;
+    overflow-y: auto;
+    padding: 0.5rem;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .file-name-display,
+  .file-path-display {
+    width: 100%;
+    height: 1rem;
+    background-color: black;
+    color: rgb(231, 231, 231);
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    font-family: var(--small-clock-font-family);
+  }
+
+  .file-name-display {
+    justify-content: center;
+    font-style: italic;
+  }
+
+  .file-path-display {
+    justify-content: flex-start;
+    padding: 0 0.7rem;
   }
 }

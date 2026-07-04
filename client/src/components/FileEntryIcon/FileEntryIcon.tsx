@@ -55,7 +55,7 @@ export default function FileEntryIcon({
               title: "File Manager",
               icon: fileManagerIcon,
             });
-          } else if (entry.name.endsWith(".txt")) {
+          } else {
             addActiveWindow({
               title: "Text Editor",
               icon: textEditorIcon,
@@ -67,9 +67,10 @@ export default function FileEntryIcon({
               isMinimized: false,
               id: String(activeWindows.length),
             });
-          } else {
-            alert(`Attempted to open: \n${parentPath}${entry.name}`);
           }
+          // else {
+          //   alert(`Attempted to open: \n${parentPath}${entry.name}`);
+          // }
         }}
         onContextMenu={(e) => {
           e.preventDefault();
