@@ -9,6 +9,8 @@ import TextEditor from "../../applications/TextEditor/TextEditor";
 import textEditorIcon from "../../assets/icons/text-editor.svg";
 import ImageViewer from "../../applications/ImageViewer/ImageViewer";
 import imageViewerIcon from "../../assets/icons/image-viewer.svg";
+import VideoPlayer from "../../applications/VideoPlayer/VideoPlayer";
+import videoPlayerIcon from "../../assets/icons/video-player.svg";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -67,6 +69,18 @@ export default function FileEntryIcon({
               icon: imageViewerIcon,
               children: (
                 <ImageViewer startFilePath={`${parentPath}${entry.name}`} />
+              ),
+            });
+          } else if (isVideoFile(entry.name)) {
+            addActiveWindow({
+              isFullscreen: false,
+              isMinimized: false,
+              id: String(activeWindows.length),
+              isFocused: true,
+              title: "Video Player",
+              icon: videoPlayerIcon,
+              children: (
+                <VideoPlayer startFilePath={`${parentPath}${entry.name}`} />
               ),
             });
           } else {
