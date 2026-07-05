@@ -7,6 +7,8 @@ import fileManagerIcon from "../../assets/icons/file-manager.svg";
 import { isImageFile, isVideoFile } from "../../helpers";
 import TextEditor from "../../applications/TextEditor/TextEditor";
 import textEditorIcon from "../../assets/icons/text-editor.svg";
+import ImageViewer from "../../applications/ImageViewer/ImageViewer";
+import imageViewerIcon from "../../assets/icons/image-viewer.svg";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -54,6 +56,18 @@ export default function FileEntryIcon({
               ),
               title: "File Manager",
               icon: fileManagerIcon,
+            });
+          } else if (isImageFile(entry.name)) {
+            addActiveWindow({
+              isFullscreen: false,
+              isMinimized: false,
+              id: String(activeWindows.length),
+              isFocused: true,
+              title: "Image Viewer",
+              icon: imageViewerIcon,
+              children: (
+                <ImageViewer startFilePath={`${parentPath}${entry.name}`} />
+              ),
             });
           } else {
             addActiveWindow({

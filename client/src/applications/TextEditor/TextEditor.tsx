@@ -29,7 +29,7 @@ export default function TextEditor({
     if (!filePath) return;
     try {
       const file = await getFileFromPath(filePath);
-        const text = await file.text();
+      const text = await file.text();
       setFileContent(text);
       setFileName(file.name);
       console.log("loadFileContent:", { file, text });
@@ -42,7 +42,13 @@ export default function TextEditor({
 
   return (
     <div className="text-editor">
-      <div className="file-name-display">{fileName}</div>
+      <div className="file-name-display">
+        {fileName
+          ? fileName
+          : startFilePath !== null && fileName === null
+            ? "Loading..."
+            : ""}
+      </div>
       <textarea
         value={fileContent ?? ""}
         onChange={(e) => {
