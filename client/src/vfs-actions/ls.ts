@@ -1,6 +1,10 @@
 import { isImageFile, isVideoFile } from "../helpers";
+import { doesDirExist } from "./doesDirExist";
 
 export async function ls(path: string) {
+    const isLegit = await doesDirExist(path)
+    if (!isLegit) { throw new Error(`"${path}" does not exist or is not a dir`) }
+
     const root = await navigator.storage.getDirectory();
 
     const segments = path.split("/").filter(Boolean);

@@ -1,16 +1,9 @@
 import "./fileentryicon.scss";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { getFileIcon } from "../../helpers";
-import { useWindowStore, useUIStore } from "../../store";
-import FileManager from "../../applications/FileManager/FileManager";
-import fileManagerIcon from "../../assets/icons/file-manager.svg";
+import { useUIStore } from "../../store";
 import { isImageFile, isVideoFile } from "../../helpers";
-import TextEditor from "../../applications/TextEditor/TextEditor";
-import textEditorIcon from "../../assets/icons/text-editor.svg";
-import ImageViewer from "../../applications/ImageViewer/ImageViewer";
-import imageViewerIcon from "../../assets/icons/image-viewer.svg";
-import VideoPlayer from "../../applications/VideoPlayer/VideoPlayer";
-import videoPlayerIcon from "../../assets/icons/video-player.svg";
+import { openFile } from "../../utils/openFile";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -33,8 +26,6 @@ export default function FileEntryIcon({
 }: FileEntryIconProps) {
   const isDir = entry.type === "dir";
   const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
-  const activeWindows = useWindowStore((s) => s.activeWindows);
-  const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
 
   return (
     <div style={{ position: "relative" }}>
@@ -45,60 +36,7 @@ export default function FileEntryIcon({
           onSelect();
         }}
         onDoubleClick={() => {
-          if (isDir) {
-            addActiveWindow({
-              isFullscreen: false,
-              isMinimized: false,
-              id: String(activeWindows.length),
-              isFocused: true,
-              children: (
-                <FileManager
-                  startPath={`${parentPath}${isDir ? `${entry.name}/` : entry.name}`}
-                />
-              ),
-              title: "File Manager",
-              icon: fileManagerIcon,
-            });
-          } else if (isImageFile(entry.name)) {
-            addActiveWindow({
-              isFullscreen: false,
-              isMinimized: false,
-              id: String(activeWindows.length),
-              isFocused: true,
-              title: "Image Viewer",
-              icon: imageViewerIcon,
-              children: (
-                <ImageViewer startFilePath={`${parentPath}${entry.name}`} />
-              ),
-            });
-          } else if (isVideoFile(entry.name)) {
-            addActiveWindow({
-              isFullscreen: false,
-              isMinimized: false,
-              id: String(activeWindows.length),
-              isFocused: true,
-              title: "Video Player",
-              icon: videoPlayerIcon,
-              children: (
-                <VideoPlayer startFilePath={`${parentPath}${entry.name}`} />
-              ),
-            });
-          } else {
-            addActiveWindow({
-              title: "Text Editor",
-              icon: textEditorIcon,
-              isFocused: true,
-              children: (
-                <TextEditor startFilePath={`${parentPath}${entry.name}`} />
-              ),
-              isFullscreen: false,
-              isMinimized: false,
-              id: String(activeWindows.length),
-            });
-          }
-          // else {
-          //   alert(`Attempted to open: \n${parentPath}${entry.name}`);
-          // }
+          openFile(`${parentPath}${entry.name}`);
         }}
         onContextMenu={(e) => {
           e.preventDefault();
@@ -136,23 +74,7 @@ export default function FileEntryIcon({
             <div
               className="action"
               onClick={() => {
-                if (isDir) {
-                  addActiveWindow({
-                    isFullscreen: false,
-                    isMinimized: false,
-                    id: String(activeWindows.length),
-                    isFocused: true,
-                    children: (
-                      <FileManager
-                        startPath={`${parentPath}${isDir ? `${entry.name}/` : entry.name}`}
-                      />
-                    ),
-                    title: "File Manager",
-                    icon: fileManagerIcon,
-                  });
-                } else {
-                  alert(`Attempted to open: \n${parentPath}${entry.name}`);
-                }
+                openFile(`${parentPath}${entry.name}`);
               }}
             >
               Open

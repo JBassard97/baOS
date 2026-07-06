@@ -8,9 +8,6 @@ export default function TextEditor({
 }: {
   startFilePath?: string | null;
 }) {
-  // const [currentFilePath, setCurrentFilePath] = useState<string | null>(
-  //   startFilePath,
-  // );
   const [fileContent, setFileContent] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
 
@@ -32,9 +29,7 @@ export default function TextEditor({
       const text = await file.text();
       setFileContent(text);
       setFileName(file.name);
-      console.log("loadFileContent:", { file, text });
     } catch (err) {
-      console.error("Text Editor failed to load file:", err);
       setFileContent(null);
       setFileName(null);
     }

@@ -14,7 +14,6 @@ import {
 import { getValidFileName, getFileIcon, formatBytes } from "../../helpers";
 import homeIcon from "../../assets/icons/home.svg";
 import backIcon from "../../assets/icons/go-back.svg";
-import fileManagerIcon from "../../assets/icons/file-manager.svg";
 import { useFileSystemChanged } from "../../hooks";
 import {
   PlusIcon,
@@ -22,8 +21,9 @@ import {
   FolderIcon,
   DownloadIcon,
 } from "../../icon-components";
-import { useWindowStore, useUIStore } from "../../store";
+import { useUIStore } from "../../store";
 import { isVideoFile, isImageFile } from "../../helpers";
+import { openFile } from "../../utils/openFile";
 
 export default function FileManager({
   startPath,
@@ -43,12 +43,7 @@ export default function FileManager({
   >(null);
 
   const [creatingEntryName, setCreatingEntryName] = useState<string>("");
-
   const [contextMenuOpen, setContextMenuOpen] = useState<number | null>(null);
-
-  const activeWindows = useWindowStore((s) => s.activeWindows);
-  const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
-
   const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
 
   const [storageEstimate, setStorageEstimate] = useState<{
@@ -271,6 +266,13 @@ export default function FileManager({
                       setPathInputState(`${pathFound}${entry.name}/`);
                     }
                   }}
+                  onDoubleClick={() => {
+                    stopCreatingEntry();
+                    setContextMenuOpen(null);
+                    if (entry.type === "file") {
+                      openFile(`${pathFound}${entry.name}`);
+                    }
+                  }}
                   onContextMenu={(e) => {
                     e.preventDefault();
                     stopCreatingEntry();
@@ -313,7 +315,7 @@ export default function FileManager({
                             className="option"
                             onClick={() => {
                               setContextMenuOpen(null);
-                              // TODO: OPEN FILE HERE
+                              openFile(`${pathFound}${entry.name}`);
                             }}
                           >
                             Open
@@ -352,20 +354,7 @@ export default function FileManager({
                               e.preventDefault();
                               e.stopPropagation();
                               setContextMenuOpen(null);
-                              addActiveWindow({
-                                isFullscreen: false,
-                                isMinimized: false,
-                                id: String(activeWindows.length),
-                                isFocused: true,
-                                children: (
-                                  <FileManager
-                                    startPath={`${pathFound}${entry.name}/`}
-                                  />
-                                ),
-                                title: "File Manager",
-                                icon: fileManagerIcon,
-                              });
-                              return;
+                              openFile(`${pathFound}${entry.name}`);
                             }}
                           >
                             Open in new File Manager

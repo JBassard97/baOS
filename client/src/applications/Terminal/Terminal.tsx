@@ -2,6 +2,7 @@ import "./terminal.scss";
 import { useState, useRef, useEffect, type ReactNode } from "react";
 import { useTime } from "../../hooks";
 import { doesDirExist } from "../../vfs-actions/doesDirExist";
+// import { doesFileExist } from "../../vfs-actions/doesFileExist";
 import { touch } from "../../vfs-actions/touch";
 import { mkdir } from "../../vfs-actions/mkdir";
 import { ls } from "../../vfs-actions/ls";
@@ -10,6 +11,8 @@ import {
   uploadFilesToVFS,
   uploadFolderToVFS,
 } from "../../vfs-actions/uploadToVfs";
+import { openFile } from "../../utils/openFile";
+import { getValidFileName } from "../../helpers";
 
 interface HistoryEntry {
   time: string;
@@ -66,22 +69,51 @@ export default function Terminal() {
     });
   }, [history]);
 
-  const COMMANDS: Record<string, { description: string }> = {
+  const COMMANDS: Record<
+    string,
+    { alt?: string; args?: string; description: string }
+  > = {
     pwd: { description: "Print working directory" },
-    ls: { description: "List directory contents" },
-    cd: { description: "Change directory" },
-    touch: { description: "Create file(s)" },
-    mkdir: { description: "Create directory(ies)" },
-    "upload [`file`|`folder`]": {
+    ls: { alt: "whatishere", description: "List directory contents" },
+    cd: {
+      alt: "goto",
+      args: "path?",
+      description: "Change directory",
+    },
+    touch: { alt: "newfile", args: "...files", description: "Create file(s)" },
+    mkdir: {
+      alt: "newfolder",
+      args: "...dirs",
+      description: "Create directory(ies)",
+    },
+    upload: {
+      args: "`file`|`folder`",
       description: "Upload file or folder to the current directory",
     },
-    "rm | delete": { description: "Remove files or directories recursively" },
-    echo: { description: "Print text to output" },
-    date: { description: "Show current date and time" },
-    "curl | fetch": { description: "Fetch a URL via HTTP GET" },
+    rm: {
+      alt: "delete",
+      args: "file|dir",
+      description: "Remove files or directories recursively",
+    },
+    open: {
+      args: "file|dir",
+      description: "Open file or folder with the respective app",
+    },
+    echo: {
+      alt: "print",
+      args: "...args",
+      description: "Print text to output",
+    },
+    date: { alt: "whenisit", description: "Show current date and time" },
+    location: { alt: "whereami", description: "Print IP-derived location" },
+    curl: {
+      alt: "fetch",
+      args: "url",
+      description: "Fetch URL via HTTP GET",
+    },
     clear: { description: "Clear terminal history" },
-    history: { description: "Show command history" },
-    help: { description: "Show commands and descriptions" },
+    history: { alt: "whathappened", description: "Show command history" },
+    help: { alt: "?", description: "Show commands and descriptions" },
   };
 
   const runCommand = async (
@@ -105,6 +137,7 @@ export default function Terminal() {
         return currentPath;
 
       case "history":
+      case "whathappened":
         if (parts.length > 1)
           return (
             <ErrorMessage
@@ -114,11 +147,31 @@ export default function Terminal() {
         if (commandHistory.length === 0) return "";
         return commandHistory.join("\n");
 
+      case "open":
+        if (!parts[1]) {
+          return <ErrorMessage message="No file or directory name provided" />;
+        } else if (parts.length > 2) {
+          return (
+            <ErrorMessage
+              message={`"open" command accepts 1 arguments but got ${parts.length - 1}`}
+            />
+          );
+        } else {
+          try {
+            await openFile(`${currentPath}${parts[1]}`);
+            return "";
+          } catch (err) {
+            return <ErrorMessage message={String(err)} />;
+          }
+        }
+
       case "echo":
+      case "print":
         if (parts.length === 1) return "";
         return parts.slice(1).join(" ");
 
       case "date":
+      case "whenisit":
         if (parts.length > 1) {
           return (
             <ErrorMessage
@@ -129,7 +182,26 @@ export default function Terminal() {
 
         return new Date().toString();
 
+      case "location":
+      case "whereami":
+        if (parts.length > 1) {
+          return (
+            <ErrorMessage
+              message={`"location" command accepts 0 arguments but got ${parts.length - 1}`}
+            />
+          );
+        }
+        try {
+          const res = await fetch("https://ipapi.co/json/");
+          const data = await res.json();
+
+          return `${data.city}\n${data.region}\n${data.country_name}`;
+        } catch (err) {
+          return <ErrorMessage message={String(err)} />;
+        }
+
       case "help":
+      case "?":
         if (parts.length > 1) {
           return (
             <ErrorMessage
@@ -142,14 +214,18 @@ export default function Terminal() {
           <table className="help-table">
             <thead>
               <tr>
-                <th>COMMAND</th>
-                <th>DESCRIPTION</th>
+                <th>CMD</th>
+                <th>ALT</th>
+                <th>ARGS</th>
+                <th>DESC</th>
               </tr>
             </thead>
             <tbody>
               {Object.entries(COMMANDS).map(([cmd, info]) => (
                 <tr key={cmd}>
                   <td className="help-cmd">{cmd}</td>
+                  <td className="help-alt">{info.alt ?? ""}</td>
+                  <td className="help-args">{info.args ?? ""}</td>
                   <td>{info.description}</td>
                 </tr>
               ))}
@@ -158,6 +234,7 @@ export default function Terminal() {
         );
 
       case "ls":
+      case "whatishere":
         const { entries } = await ls(currentPath);
         if (entries.length === 0) return "";
         return (
@@ -190,17 +267,19 @@ export default function Terminal() {
         }
 
       case "touch":
+      case "newfile":
         if (!parts[1]) {
           return <ErrorMessage message="No file name provided" />;
         } else {
           const remainingParts = parts.slice(1);
           for (const part of remainingParts) {
-            await touch(`${currentPath}${part}`);
+            await touch(`${currentPath}${getValidFileName(part)}`);
           }
           return "";
         }
 
       case "mkdir":
+      case "newfolder":
         if (!parts[1]) {
           return <ErrorMessage message="No directory name provided" />;
         } else {
@@ -268,6 +347,7 @@ export default function Terminal() {
         }
 
       case "cd":
+      case "goto":
         if (parts.length > 2) {
           return (
             <span style={{ color: "red" }}>
@@ -406,5 +486,5 @@ function PathDisplay({ path, time }: { path: string; time: string }) {
 }
 
 function ErrorMessage({ message }: { message: string }) {
-  return <span style={{ color: "red" }}>Error: {message}</span>;
+  return <span style={{ color: "red" }}>{message}</span>;
 }
