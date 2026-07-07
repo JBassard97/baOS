@@ -1,9 +1,11 @@
 import "./fileentryicon.scss";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { getFileIcon } from "../../helpers";
-import { useUIStore } from "../../store";
+import { useUIStore, useWindowStore } from "../../store";
 import { isImageFile, isVideoFile } from "../../helpers";
 import { openFile } from "../../utils/openFile";
+import MarkdownViewer from "../../applications/MarkdownViewer/MarkdownViewer";
+import markdownViewerIcon from "../../assets/icons/markdown.svg";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -26,6 +28,8 @@ export default function FileEntryIcon({
 }: FileEntryIconProps) {
   const isDir = entry.type === "dir";
   const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
+  const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
+  const activeWindows = useWindowStore((s) => s.activeWindows);
 
   return (
     <div style={{ position: "relative" }}>
@@ -79,6 +83,28 @@ export default function FileEntryIcon({
             >
               Open
             </div>
+            {entry.name.endsWith(".md") && (
+              <div
+                className="action"
+                onClick={() =>
+                  addActiveWindow({
+                    id: String(activeWindows.length),
+                    title: "Markdown Viewer",
+                    icon: markdownViewerIcon,
+                    children: (
+                      <MarkdownViewer
+                        startFilePath={`${parentPath}${entry.name}`}
+                      />
+                    ),
+                    isMinimized: false,
+                    isFullscreen: false,
+                    isFocused: true,
+                  })
+                }
+              >
+                Open in Markdown Viewer
+              </div>
+            )}
             <div className="action">Rename</div>
             <div
               className="action"

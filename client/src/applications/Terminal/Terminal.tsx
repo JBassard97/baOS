@@ -119,7 +119,7 @@ export default function Terminal() {
   const runCommand = async (
     command: string,
   ): Promise<string | ReactNode | null> => {
-    console.log(`Running command: ${command}`);
+    // console.log(`Running command: ${command}`);
     setCommandHistory((prev) => [...prev, command]);
 
     const parts = command.trim().split(/\s+/);

@@ -1,0 +1,108 @@
+@use "../../scss/variables";
+
+.markdown-viewer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .options-bar {
+    width: 100%;
+    height: 1.5rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    background: black;
+    font-family: var(--small-clock-font-family);
+    padding: 0 0.5rem;
+    gap: 0.25rem;
+
+    select {
+        outline: none;
+    }
+  }
+
+  .markdown-content {
+    flex-grow: 1;
+    // border: 1px solid yellow;
+    background: var(--md-bg);
+    overflow-y: auto;
+    color: var(--md-text);
+    padding: 1rem;
+
+    & > * {
+      margin-bottom: 0.5rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--md-heading);
+    }
+
+    strong {
+      color: var(--md-bold);
+    }
+
+    em {
+      color: var(--md-italic);
+    }
+
+    a {
+      color: var(--md-link);
+    }
+
+    code {
+      color: var(--md-code);
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
+    }
+
+    blockquote {
+      color: var(--md-blockquote);
+      border-left: 3px solid var(--md-blockquote);
+      padding-left: 0.75rem;
+    }
+
+    hr {
+      border-color: var(--md-hr);
+    }
+
+    li {
+      margin-left: 1rem;
+    }
+
+    li::marker {
+      color: var(--md-list-marker);
+    }
+  }
+
+  .file-name-display,
+  .file-path-display {
+    width: 100%;
+    height: 1rem;
+    background-color: black;
+    color: rgb(231, 231, 231);
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    font-family: var(--small-clock-font-family);
+  }
+
+  .file-name-display {
+    justify-content: center;
+    font-style: italic;
+  }
+
+  .file-path-display {
+    justify-content: flex-start;
+    padding: 0 0.7rem;
+    position: absolute;
+    bottom: 0;
+  }
+}
