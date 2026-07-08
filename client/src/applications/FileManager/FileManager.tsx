@@ -5,7 +5,7 @@ import { ls } from "../../vfs-actions/ls";
 import { touch } from "../../vfs-actions/touch";
 import { rm } from "../../vfs-actions/rm";
 import { mkdir } from "../../vfs-actions/mkdir";
-// import { mv } from "../../vfs-actions/mv";
+import { mv } from "../../vfs-actions/mv";
 import {
   uploadFilesToVFS,
   uploadFolderToVFS,
@@ -234,7 +234,16 @@ export default function FileManager({
         onDrop={async (e) => {
           e.preventDefault();
           try {
-            await uploadFromDrop(e.dataTransfer, pathFound);
+            const baosData = e.dataTransfer.getData("application/x-baos-entry");
+            if (baosData) {
+              const entry = JSON.parse(baosData);
+              console.log("x-baos-entry dropped:", entry);
+              const entryPath = entry.path;
+              const entryName = entry.name;
+              await mv(entryPath, `${pathFound}${entryName}`);
+            } else {
+              await uploadFromDrop(e.dataTransfer, pathFound);
+            }
           } catch (err) {
             console.error(err);
           }
@@ -258,6 +267,7 @@ export default function FileManager({
             ) => (
               <div key={index}>
                 <div
+                  draggable
                   className="file-manager-entry"
                   onClick={() => {
                     stopCreatingEntry();
@@ -278,6 +288,15 @@ export default function FileManager({
                     stopCreatingEntry();
                     setContextMenuOpen(index);
                   }}
+                  onDragStart={(e) =>
+                    e.dataTransfer.setData(
+                      "application/x-baos-entry",
+                      JSON.stringify({
+                        path: `${pathFound}${entry.name}`,
+                        name: entry.name,
+                      }),
+                    )
+                  }
                 >
                   {entry.previewType === "video" ? (
                     <video

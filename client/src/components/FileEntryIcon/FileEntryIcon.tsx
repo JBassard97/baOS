@@ -34,6 +34,7 @@ export default function FileEntryIcon({
   return (
     <div style={{ position: "relative" }}>
       <div
+        draggable
         className={isSelected ? "file-entry selected" : "file-entry"}
         onClick={(e) => {
           e.stopPropagation();
@@ -47,6 +48,15 @@ export default function FileEntryIcon({
           e.stopPropagation();
           onContextMenuOpen(e.clientX, e.clientY);
         }}
+        onDragStart={(e) =>
+          e.dataTransfer.setData(
+            "application/x-baos-entry",
+            JSON.stringify({
+              path: `${parentPath}${entry.name}`,
+              name: entry.name,
+            }),
+          )
+        }
       >
         {/* ICON */}
         {entry.previewType === "video" ? (

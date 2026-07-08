@@ -3,6 +3,7 @@ import { ls } from "../../vfs-actions/ls";
 import { touch } from "../../vfs-actions/touch";
 import { mkdir } from "../../vfs-actions/mkdir";
 import { rm } from "../../vfs-actions/rm";
+import { mv } from "../../vfs-actions/mv";
 import { ensureOpfsExists } from "../../vfs-actions/ensureOpfsExists";
 import {
   useUIStore,
@@ -171,7 +172,16 @@ export default function DesktopFilesContainer() {
             isCreatingDesktopEntry: false,
             creatingType: null,
           });
-          await uploadFromDrop(e.dataTransfer, "/Desktop/");
+          const baosData = e.dataTransfer.getData("application/x-baos-entry");
+          if (baosData) {
+            const entry = JSON.parse(baosData);
+            console.log("x-baos-entry dropped:", entry);
+            const entryPath = entry.path;
+            const entryName = entry.name;
+            await mv(entryPath, `/Desktop/${entryName}`);
+          } else {
+            await uploadFromDrop(e.dataTransfer, "/Desktop/");
+          }
         } catch (err) {
           console.error(err);
         }

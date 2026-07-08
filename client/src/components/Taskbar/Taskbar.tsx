@@ -82,6 +82,9 @@ function Taskbar() {
               </div>
             </div>
           </div>
+
+          <div className="start-menu-middle"></div>
+
           <div className="main-sections">
             <div className="start-menu-section">
               <div className="section-title-bar">
