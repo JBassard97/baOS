@@ -31,11 +31,11 @@ export default function FileEntryIcon({
   const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
   const activeWindows = useWindowStore((s) => s.activeWindows);
 
-  document.addEventListener("keydown", (e) => {
-    e.preventDefault();
-    if (e.key.toLowerCase() !== "delete") return;
-    if (isSelected) onDelete();
-  });
+  // document.addEventListener("keydown", (e) => {
+  //   e.preventDefault();
+  //   if (e.key.toLowerCase() !== "delete") return;
+  //   if (isSelected) onDelete();
+  // });
 
   return (
     <div style={{ position: "relative" }}>

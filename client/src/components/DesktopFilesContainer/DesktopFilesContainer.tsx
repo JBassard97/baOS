@@ -149,6 +149,24 @@ export default function DesktopFilesContainer() {
     loadDesktopEntries();
   }, [backendAvailable]);
 
+  useEffect(() => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
+      if (e.key !== "Delete") return;
+
+      if (!selectedEntry) return;
+
+      e.preventDefault();
+
+      await handleDelete(selectedEntry);
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedEntry]);
+
   const sortedEntries = [...desktopEntries].sort((a, b) =>
     a.name.localeCompare(b.name),
   );
@@ -177,8 +195,9 @@ export default function DesktopFilesContainer() {
             const entry = JSON.parse(baosData);
             console.log("x-baos-entry dropped:", entry);
             const entryPath: string = entry.path;
-            if (entryPath.startsWith("/Desktop")) return;
             const entryName = entry.name;
+            if (entryPath.startsWith(`/Desktop/${entryName}`)) return;
+
             await mv(entryPath, `/Desktop/${entryName}`);
           } else {
             await uploadFromDrop(e.dataTransfer, "/Desktop/");

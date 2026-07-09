@@ -24,6 +24,27 @@ import googleIcon from "../../assets/icons/google-icon.svg";
 import textEditorIcon from "../../assets/icons/text-editor.svg";
 import TextEditor from "../../applications/TextEditor/TextEditor";
 
+const iframeApps = {
+  google: {
+    icon: googleIcon,
+    title: "Google",
+    src: "https://www.google.com/webhp?igu=1",
+    isFullscreen: true,
+  },
+  wikipedia: {
+    icon: wikipediaIcon,
+    title: "Wikipedia",
+    src: "https://www.wikipedia.org/",
+    isFullscreen: false,
+  },
+  meowMasher: {
+    icon: meowMasherIcon,
+    title: "Meow Masher",
+    src: "https://jbassard97.github.io/MeowMasher/",
+    isFullscreen: true,
+  },
+};
+
 function Taskbar() {
   const position = useUIStore((s) => s.taskbarPosition);
   const startMenuOpen = useUIStore((s) => s.startMenuOpen);
@@ -167,55 +188,25 @@ function Taskbar() {
                 <span>Applications</span>
               </div>
               <div className="section-container">
-                <div>
-                  <TaskbarItem
-                    icon={meowMasherIcon}
-                    title="Meow Masher"
-                    children={
-                      <iframe
-                        src="https://jbassard97.github.io/MeowMasher/"
-                        width="100%"
-                        height="100%"
-                        style={{ border: "none", display: "block" }}
-                      />
-                    }
-                    isFullscreen={true}
-                    dontShowTooltip={true}
-                  />
-                  <p className="item-name">Meow Masher</p>
-                </div>
-                <div>
-                  <TaskbarItem
-                    icon={wikipediaIcon}
-                    title="Wikipedia"
-                    children={
-                      <iframe
-                        src="https://www.wikipedia.org/"
-                        width="100%"
-                        height="100%"
-                        style={{ border: "none", display: "block" }}
-                      />
-                    }
-                    dontShowTooltip={true}
-                  />
-                  <p className="item-name">Wikipedia</p>
-                </div>
-                <div>
-                  <TaskbarItem
-                    icon={googleIcon}
-                    title="Google"
-                    children={
-                      <iframe
-                        src="https://www.google.com/webhp?igu=1"
-                        width="100%"
-                        height="100%"
-                        style={{ border: "none", display: "block" }}
-                      />
-                    }
-                    dontShowTooltip={true}
-                  />
-                  <p className="item-name">Google</p>
-                </div>
+                {Object.values(iframeApps).map((app, index) => (
+                  <div key={index}>
+                    <TaskbarItem
+                      icon={app.icon}
+                      title={app.title}
+                      children={
+                        <iframe
+                          src={app.src}
+                          width="100%"
+                          height="100%"
+                          style={{ border: "none", display: "block" }}
+                        />
+                      }
+                      isFullscreen={app.isFullscreen ?? false}
+                      dontShowTooltip={true}
+                    />
+                    <p className="item-name">{app.title}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

@@ -19,6 +19,11 @@ export default function VideoPlayer({
     if (!filePath) return;
     try {
       const file = await getFileFromPath(filePath);
+
+      if (videoSrc) {
+        URL.revokeObjectURL(videoSrc);
+      }
+
       const imageUrl = URL.createObjectURL(file);
       setVideoSrc(imageUrl);
       setFileName(file.name);

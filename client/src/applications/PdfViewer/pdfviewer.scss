@@ -1,0 +1,32 @@
+@use "../../scss/variables";
+
+.pdf-viewer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .file-name-display,
+  .file-path-display {
+    width: 100%;
+    min-height: 1rem;
+    background-color: black;
+    color: rgb(231, 231, 231);
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    font-family: var(--small-clock-font-family);
+  }
+
+  .file-name-display {
+    justify-content: center;
+    font-style: italic;
+  }
+
+  .file-path-display {
+    justify-content: flex-start;
+    padding: 0 0.7rem;
+    position: absolute;
+    bottom: 0;
+  }
+}

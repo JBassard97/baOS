@@ -1,32 +1,31 @@
-import "./imageviewer.scss";
+import "./pdfviewer.scss";
 import { useState, useEffect } from "react";
 import { getFileFromPath } from "../../vfs-actions/getFileFromPath";
 
-export default function ImageViewer({
+export default function PdfViewer({
   startFilePath = null,
 }: {
   startFilePath?: string | null;
 }) {
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [pdfSrc, setPdfSrc] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
 
   useEffect(() => {
     if (!startFilePath) return;
-    loadImage(startFilePath);
+    loadPdf(startFilePath);
   }, [startFilePath]);
 
-  async function loadImage(filePath: string) {
-    if (!filePath) return;
+  async function loadPdf(filePath: string) {
     try {
       const file = await getFileFromPath(filePath);
 
-      if (imageSrc) {
-        URL.revokeObjectURL(imageSrc);
+      if (pdfSrc) {
+        URL.revokeObjectURL(pdfSrc);
       }
 
-      const imageUrl = URL.createObjectURL(file);
-      
-      setImageSrc(imageUrl);
+      const url = URL.createObjectURL(file);
+
+      setPdfSrc(url);
       setFileName(file.name);
     } catch (err) {
       console.error(err);
@@ -34,7 +33,7 @@ export default function ImageViewer({
   }
 
   return (
-    <div className="image-viewer">
+    <div className="pdf-viewer">
       <div className="file-name-display">
         {fileName
           ? fileName
@@ -42,9 +41,12 @@ export default function ImageViewer({
             ? "Loading..."
             : ""}
       </div>
-      <div className="image-container">
-        <img src={imageSrc ?? ""} />
-      </div>
+      <iframe
+        src={pdfSrc ?? ""}
+        width="100%"
+        height="100%"
+        style={{ border: "none", display: "block" }}
+      />
       <div className="file-path-display">
         {startFilePath === null ? "No file provided..." : `"${startFilePath}"`}
       </div>

@@ -9,7 +9,8 @@ import imageViewerIcon from "../assets/icons/image-viewer.svg";
 import ImageViewer from "../applications/ImageViewer/ImageViewer";
 import videoPlayerIcon from "../assets/icons/video-player.svg";
 import VideoPlayer from "../applications/VideoPlayer/VideoPlayer";
-// import pdfViewerIcon from "../assets/icons/pdf.svg";
+import pdfViewerIcon from "../assets/icons/pdf.svg";
+import PdfViewer from "../applications/PdfViewer/PdfViewer";
 import { isImageFile, isVideoFile } from "../helpers";
 
 export async function openFile(filePath: string) {
@@ -55,6 +56,16 @@ export async function openFile(filePath: string) {
       title: "Video Player",
       icon: videoPlayerIcon,
       children: <VideoPlayer startFilePath={filePath} />,
+    });
+  } else if (filePath.endsWith(".pdf")) {
+    useWindowStore.getState().addActiveWindow({
+      title: "PDF Viewer",
+      icon: pdfViewerIcon,
+      isFocused: true,
+      isFullscreen: false,
+      isMinimized: false,
+      id: String(useWindowStore.getState().activeWindows.length),
+      children: <PdfViewer startFilePath={filePath} />,
     });
   } else {
     useWindowStore.getState().addActiveWindow({
