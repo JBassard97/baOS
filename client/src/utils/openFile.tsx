@@ -9,6 +9,7 @@ import imageViewerIcon from "../assets/icons/image-viewer.svg";
 import ImageViewer from "../applications/ImageViewer/ImageViewer";
 import videoPlayerIcon from "../assets/icons/video-player.svg";
 import VideoPlayer from "../applications/VideoPlayer/VideoPlayer";
+// import pdfViewerIcon from "../assets/icons/pdf.svg";
 import { isImageFile, isVideoFile } from "../helpers";
 
 export async function openFile(filePath: string) {

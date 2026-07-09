@@ -31,6 +31,12 @@ export default function FileEntryIcon({
   const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
   const activeWindows = useWindowStore((s) => s.activeWindows);
 
+  document.addEventListener("keydown", (e) => {
+    e.preventDefault();
+    if (e.key.toLowerCase() !== "delete") return;
+    if (isSelected) onDelete();
+  });
+
   return (
     <div style={{ position: "relative" }}>
       <div
@@ -138,7 +144,11 @@ export default function FileEntryIcon({
               </div>
             )}
             {/* ALWAYS SHOWS */}
-            <div className="action" onClick={onDelete}>
+            <div
+              className="action"
+              onClick={onDelete}
+              style={{ color: "pink" }}
+            >
               Delete
             </div>
           </div>

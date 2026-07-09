@@ -62,7 +62,7 @@
     bottom: -75px;
     width: fit-content;
     // max-width: 100%;
-    padding: 0.25rem 0;
+    // padding: 0.25rem 0;
     font-size: 0.8rem;
     transform: translateY(-0.5rem);
     // text-align: center;
@@ -76,8 +76,21 @@
     &:hover {
       cursor: pointer;
     }
+
     .action {
       padding: 0.1rem 0.5rem;
+
+      &:first-of-type {
+        padding-top: 0.25rem;
+      }
+
+      &:last-of-type {
+        padding-bottom: 0.25rem;
+      }
+
+      &:nth-child(2n) {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
 
       &:hover {
         text-decoration: underline;

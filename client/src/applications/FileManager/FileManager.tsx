@@ -238,7 +238,8 @@ export default function FileManager({
             if (baosData) {
               const entry = JSON.parse(baosData);
               console.log("x-baos-entry dropped:", entry);
-              const entryPath = entry.path;
+              const entryPath: string = entry.path;
+              if (entryPath.startsWith(pathFound)) return;
               const entryName = entry.name;
               await mv(entryPath, `${pathFound}${entryName}`);
             } else {
