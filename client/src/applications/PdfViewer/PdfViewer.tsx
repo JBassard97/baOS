@@ -19,11 +19,13 @@ export default function PdfViewer({
     try {
       const file = await getFileFromPath(filePath);
 
+      const pdfFile = new File([file], file.name, { type: "application/pdf" });
+
       if (pdfSrc) {
         URL.revokeObjectURL(pdfSrc);
       }
 
-      const url = URL.createObjectURL(file);
+      const url = URL.createObjectURL(pdfFile);
 
       setPdfSrc(url);
       setFileName(file.name);
