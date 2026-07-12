@@ -43,11 +43,11 @@ export default function PdfViewer({
             ? "Loading..."
             : ""}
       </div>
-      <iframe
+      <embed
         src={pdfSrc ?? ""}
+        type="application/pdf"
         width="100%"
         height="100%"
-        style={{ border: "none", display: "block" }}
       />
       <div className="file-path-display">
         {startFilePath === null ? "No file provided..." : `"${startFilePath}"`}
