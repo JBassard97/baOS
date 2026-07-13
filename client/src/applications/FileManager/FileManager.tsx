@@ -21,9 +21,11 @@ import {
   FolderIcon,
   DownloadIcon,
 } from "../../icon-components";
-import { useUIStore } from "../../store";
+import { useUIStore, useWindowStore } from "../../store";
 import { isVideoFile, isImageFile } from "../../helpers";
 import { openFile } from "../../utils/openFile";
+import HtmlViewer from "../HtmlViewer/HtmlViewer";
+import htmlViewerIcon from "../../assets/icons/html.svg";
 
 export default function FileManager({
   startPath,
@@ -45,6 +47,8 @@ export default function FileManager({
   const [creatingEntryName, setCreatingEntryName] = useState<string>("");
   const [contextMenuOpen, setContextMenuOpen] = useState<number | null>(null);
   const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
+  const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
+  const activeWindows = useWindowStore((s) => s.activeWindows);
 
   const [storageEstimate, setStorageEstimate] = useState<{
     quota: number;
@@ -353,6 +357,29 @@ export default function FileManager({
                               }}
                             >
                               Set as Background
+                            </div>
+                          )}
+                          {entry.name.endsWith(".html") && (
+                            <div
+                              className="option"
+                              onClick={() => {
+                                setContextMenuOpen(null);
+                                addActiveWindow({
+                                  title: "HTML Viewer",
+                                  icon: htmlViewerIcon,
+                                  isFocused: true,
+                                  isFullscreen: false,
+                                  isMinimized: false,
+                                  id: String(activeWindows.length),
+                                  children: (
+                                    <HtmlViewer
+                                      startFilePath={`${pathFound}${entry.name}`}
+                                    />
+                                  ),
+                                });
+                              }}
+                            >
+                              Open in HTML Viewer
                             </div>
                           )}
                         </>

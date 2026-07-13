@@ -82,7 +82,11 @@ export default function Window({
         </div>
       </div>
 
-      <div className="window-main">{children}</div>
+      <div
+        className="window-main"
+      >
+        {children}
+      </div>
     </div>
   );
 }

@@ -8,7 +8,7 @@ export default function BackgroundLayer() {
   const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
   const currentBackground = useUIStore((state) => state.currentBackground);
   const DEFAULT_BG_PATH = "/Images/Backgrounds/serene.png";
-  const [src, setSrc] = useState<string>("");
+  const [src, setSrc] = useState<string | null>(null);
 
   useEffect(() => {
     if (!currentBackground) return;
@@ -39,9 +39,9 @@ export default function BackgroundLayer() {
   return (
     <div className="background-layer">
       {isVideo ? (
-        <video src={src} autoPlay loop muted playsInline />
+        <video src={src ?? undefined} autoPlay loop muted playsInline />
       ) : (
-        <img src={src} />
+        <img src={src ?? undefined} />
       )}
     </div>
   );

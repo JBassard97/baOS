@@ -99,7 +99,7 @@ export default function DesktopFilesContainer() {
     if (backendAvailable === null) return;
     await ensureOpfsExists();
     const result = await ls(path);
-    console.log("ls output:", result.entries);
+    // console.log("ls output:", result.entries);
     setDesktopEntries(result.entries);
   };
 
@@ -258,6 +258,7 @@ export default function DesktopFilesContainer() {
                 isCreatingDesktopEntry: false,
                 creatingType: null,
               });
+              setContextMenuEntry(null);
               setTempEntryName("");
             }}
             onContextMenuOpen={() => {

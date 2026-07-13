@@ -11,6 +11,8 @@ import videoPlayerIcon from "../assets/icons/video-player.svg";
 import VideoPlayer from "../applications/VideoPlayer/VideoPlayer";
 import pdfViewerIcon from "../assets/icons/pdf.svg";
 import PdfViewer from "../applications/PdfViewer/PdfViewer";
+// import HtmlViewer from "../applications/HtmlViewer/HtmlViewer";
+// import htmlViewerIcon from "../assets/icons/html.svg";
 import { isImageFile, isVideoFile } from "../helpers";
 
 export async function openFile(filePath: string) {

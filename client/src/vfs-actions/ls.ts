@@ -46,7 +46,7 @@ export async function ls(path: string) {
         entries.push(entry);
     }
 
-    console.log("opfs ls:", { path, entries })
+    // console.log("opfs ls:", { path, entries })
 
     return {
         path,
