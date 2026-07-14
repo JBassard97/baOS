@@ -33,8 +33,11 @@ function Action({ label, onClick, children, danger = false }: ActionProps) {
   return (
     <div
       className="action-wrapper"
-      onMouseEnter={() => setSubmenuOpen(true)}
-      onMouseLeave={() => setSubmenuOpen(false)}
+      onClick={(e) => {
+        e.stopPropagation();
+        setSubmenuOpen(true);
+      }}
+      // onMouseLeave={() => setSubmenuOpen(false)}
     >
       <div
         className="action"
