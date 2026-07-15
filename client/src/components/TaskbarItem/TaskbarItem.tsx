@@ -60,7 +60,7 @@ export default function TaskbarItem({
 
           if (existingWindows.length === 0) {
             addActiveWindow({
-              id: String(activeWindows.length),
+              id: crypto.randomUUID(),
               icon,
               children,
               title,

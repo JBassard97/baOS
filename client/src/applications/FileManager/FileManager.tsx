@@ -48,7 +48,6 @@ export default function FileManager({
   const [contextMenuOpen, setContextMenuOpen] = useState<number | null>(null);
   const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
   const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
-  const activeWindows = useWindowStore((s) => s.activeWindows);
 
   const [storageEstimate, setStorageEstimate] = useState<{
     quota: number;
@@ -370,7 +369,7 @@ export default function FileManager({
                                   isFocused: true,
                                   isFullscreen: false,
                                   isMinimized: false,
-                                  id: String(activeWindows.length),
+                                  id: crypto.randomUUID(),
                                   children: (
                                     <HtmlViewer
                                       startFilePath={`${pathFound}${entry.name}`}

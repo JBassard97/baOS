@@ -29,7 +29,7 @@ export async function openFile(filePath: string) {
     useWindowStore.getState().addActiveWindow({
       isFullscreen: false,
       isMinimized: false,
-      id: String(useWindowStore.getState().activeWindows.length),
+      id: crypto.randomUUID(),
       isFocused: true,
       children: (
         <FileManager
@@ -43,7 +43,7 @@ export async function openFile(filePath: string) {
     useWindowStore.getState().addActiveWindow({
       isFullscreen: false,
       isMinimized: false,
-      id: String(useWindowStore.getState().activeWindows.length),
+      id: crypto.randomUUID(),
       isFocused: true,
       title: "Image Viewer",
       icon: imageViewerIcon,
@@ -53,7 +53,7 @@ export async function openFile(filePath: string) {
     useWindowStore.getState().addActiveWindow({
       isFullscreen: false,
       isMinimized: false,
-      id: String(useWindowStore.getState().activeWindows.length),
+      id: crypto.randomUUID(),
       isFocused: true,
       title: "Video Player",
       icon: videoPlayerIcon,
@@ -66,7 +66,7 @@ export async function openFile(filePath: string) {
       isFocused: true,
       isFullscreen: false,
       isMinimized: false,
-      id: String(useWindowStore.getState().activeWindows.length),
+      id: crypto.randomUUID(),
       children: <PdfViewer startFilePath={filePath} />,
     });
   } else {
@@ -77,7 +77,7 @@ export async function openFile(filePath: string) {
       children: <TextEditor startFilePath={filePath} />,
       isFullscreen: false,
       isMinimized: false,
-      id: String(useWindowStore.getState().activeWindows.length),
+      id: crypto.randomUUID(),
     });
   }
 }

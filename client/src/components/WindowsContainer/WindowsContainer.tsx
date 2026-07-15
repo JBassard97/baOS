@@ -11,7 +11,7 @@ export default function WindowsContainer() {
       {activeWindows.length > 0 &&
         activeWindows.map((window, index) => (
           <Window
-            key={index}
+            key={window.id}
             index={index}
             id={window.id}
             icon={window.icon}

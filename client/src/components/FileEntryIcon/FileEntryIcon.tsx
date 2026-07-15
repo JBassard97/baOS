@@ -91,7 +91,6 @@ export default function FileEntryIcon({
   const isDir = entry.type === "dir";
   const setCurrentBackground = useUIStore((s) => s.setCurrentBackground);
   const addActiveWindow = useWindowStore((s) => s.addActiveWindow);
-  const activeWindows = useWindowStore((s) => s.activeWindows);
 
   document.addEventListener("keydown", (e) => {
     if (e.key.toLowerCase() === "delete" && isSelected) onDelete();
@@ -164,7 +163,7 @@ export default function FileEntryIcon({
                   label="HTML Viewer"
                   onClick={() =>
                     addActiveWindow({
-                      id: String(activeWindows.length),
+                      id: crypto.randomUUID(),
                       title: "HTML Viewer",
                       icon: htmlViewerIcon,
                       children: (
@@ -193,7 +192,7 @@ export default function FileEntryIcon({
                   label="Markdown Viewer"
                   onClick={() =>
                     addActiveWindow({
-                      id: String(activeWindows.length),
+                      id: crypto.randomUUID(),
                       title: "Markdown Viewer",
                       icon: markdownViewerIcon,
                       children: (

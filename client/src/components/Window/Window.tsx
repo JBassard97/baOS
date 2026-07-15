@@ -1,10 +1,15 @@
 import "./window.scss";
 import { useUIStore, useWindowStore } from "../../store";
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import fullscreenIcon from "../../assets/icons/fullscreen.svg";
 import exitFullscreenIcon from "../../assets/icons/exit-fullscreen.svg";
 import closeIcon from "../../assets/icons/close-x.svg";
 import minimizeIcon from "../../assets/icons/minimize.svg";
+import left50 from "../../assets/icons/left-50.svg";
+import right50 from "../../assets/icons/right-50.svg";
+import top50 from "../../assets/icons/top-50.svg";
+import bottom50 from "../../assets/icons/bottom-50.svg";
+import type { TaskbarPosition } from "../../types/TaskbarPosition";
 
 interface WindowProps {
   index: number;
@@ -33,18 +38,45 @@ export default function Window({
   const minimizeWindow = useWindowStore((s) => s.minimizeWindow);
   const focusWindow = useWindowStore((s) => s.focusWindow);
   const [isFullScreenLocal, setIsFullScreen] = useState<boolean>(isFullscreen);
+  const [moveMenuOpen, setMoveMenuOpen] = useState<boolean>(false);
+  const [halfPortion, setHalfPortion] = useState<TaskbarPosition | null>(null);
+
+  useEffect(() => {
+    console.log("moveMenuOpen:", moveMenuOpen);
+  }, [moveMenuOpen]);
+
+  useEffect(() => {
+    if (!isFocused) setMoveMenuOpen(false);
+  }, [isFocused]);
 
   return (
     <div
       className={`window ${taskbarPosition} ${isFullScreenLocal ? "fullscreen" : ""} ${isMinimized ? "minimized" : ""} ${isFocused ? "focused" : ""}`}
       style={{
-        top: isFullScreenLocal ? 0 : `${index * 2}rem`,
-        left: isFullScreenLocal ? 0 : `${index * 0}rem`,
+        top: isFullScreenLocal || halfPortion === "top" ? 0 : "",
+        bottom: halfPortion === "bottom" ? 0 : "",
+        left: isFullScreenLocal || halfPortion === "left" ? 0 : "",
+        right: halfPortion === "right" ? 0 : "",
 
-        // left: isFullScreenLocal ? 0 : `${index * 2}rem`,
+        width: ["left", "right"].includes(String(halfPortion))
+          ? "50%"
+          : ["top", "bottom"].includes(String(halfPortion))
+            ? "100%"
+            : "",
+        height: ["left", "right"].includes(String(halfPortion))
+          ? "100%"
+          : ["top", "bottom"].includes(String(halfPortion))
+            ? "50%"
+            : "",
+
         zIndex: isFocused ? activeWindows.length : index,
       }}
       onClick={() => {
+        focusWindow(id);
+        setMoveMenuOpen(false);
+      }}
+      onContextMenu={(e) => {
+        e.preventDefault();
         focusWindow(id);
       }}
     >
@@ -71,10 +103,56 @@ export default function Window({
               setIsFullScreen(!isFullScreenLocal);
               focusWindow(id);
             }}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              setMoveMenuOpen(true);
+            }}
           >
             <img
               src={isFullScreenLocal ? exitFullscreenIcon : fullscreenIcon}
             />
+            {moveMenuOpen && (
+              <div
+                className="move-menu"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMoveMenuOpen(false);
+                }}
+              >
+                <div
+                  className="section"
+                  onClick={() => {
+                    setHalfPortion("top");
+                  }}
+                >
+                  <img src={top50} />
+                </div>
+                <div
+                  className="section"
+                  onClick={() => {
+                    setHalfPortion("right");
+                  }}
+                >
+                  <img src={right50} />
+                </div>
+                <div
+                  className="section"
+                  onClick={() => {
+                    setHalfPortion("left");
+                  }}
+                >
+                  <img src={left50} />
+                </div>
+                <div
+                  className="section"
+                  onClick={() => {
+                    setHalfPortion("bottom");
+                  }}
+                >
+                  <img src={bottom50} />
+                </div>
+              </div>
+            )}
           </div>
           <div className="window-close" onClick={() => removeActiveWindow(id)}>
             <img src={closeIcon} />
@@ -82,11 +160,7 @@ export default function Window({
         </div>
       </div>
 
-      <div
-        className="window-main"
-      >
-        {children}
-      </div>
+      <div className="window-main">{children}</div>
     </div>
   );
 }
