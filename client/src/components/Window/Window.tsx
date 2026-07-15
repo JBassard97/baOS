@@ -58,16 +58,20 @@ export default function Window({
         left: isFullScreenLocal || halfPortion === "left" ? 0 : "",
         right: halfPortion === "right" ? 0 : "",
 
-        width: ["left", "right"].includes(String(halfPortion))
-          ? "50%"
-          : ["top", "bottom"].includes(String(halfPortion))
-            ? "100%"
-            : "",
-        height: ["left", "right"].includes(String(halfPortion))
+        width: isFullScreenLocal
           ? "100%"
-          : ["top", "bottom"].includes(String(halfPortion))
+          : ["left", "right"].includes(String(halfPortion))
             ? "50%"
-            : "",
+            : ["top", "bottom"].includes(String(halfPortion))
+              ? "100%"
+              : "",
+        height: isFullScreenLocal
+          ? "100%"
+          : ["left", "right"].includes(String(halfPortion))
+            ? "100%"
+            : ["top", "bottom"].includes(String(halfPortion))
+              ? "50%"
+              : "",
 
         zIndex: isFocused ? activeWindows.length : index,
       }}
@@ -117,6 +121,7 @@ export default function Window({
                 onClick={(e) => {
                   e.stopPropagation();
                   setMoveMenuOpen(false);
+                  setIsFullScreen(false);
                 }}
               >
                 <div
