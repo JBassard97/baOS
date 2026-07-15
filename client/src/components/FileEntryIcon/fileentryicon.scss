@@ -85,6 +85,8 @@
 
       &:last-child .action {
         padding-bottom: 0.4rem;
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
       }
 
       &:nth-child(even) .action {
@@ -106,10 +108,10 @@
       &:hover {
         text-decoration: underline;
       }
-    }
 
-    .submenu-arrow {
-      font-size: 0.5rem;
+      .submenu-arrow {
+        font-size: 0.5rem;
+      }
     }
 
     .submenu {
@@ -118,12 +120,22 @@
       top: 0;
 
       width: fit-content;
+      min-width: 5rem;
 
       background-color: rgb(0, 75, 128);
       border-radius: var(--taskbar-item-border-radius);
       box-shadow: var(--file-entry-actions-box-shadow);
+      overflow: hidden;
 
       z-index: 9999;
+
+      .action-wrapper {
+        &:nth-child(even) .action {
+          background-color: rgb(0, 75, 128);
+        }
+
+        width: fit-content;
+      }
     }
   }
 }

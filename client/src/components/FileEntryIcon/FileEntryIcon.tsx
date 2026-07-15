@@ -1,12 +1,14 @@
 import "./fileentryicon.scss";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { getFileIcon } from "../../helpers";
-import { useUIStore, useWindowStore } from "../../store";
+import { useUIStore, useWindowStore, useDesktopStore } from "../../store";
 import { isImageFile, isVideoFile } from "../../helpers";
 import { openFile } from "../../utils/openFile";
 import MarkdownViewer from "../../applications/MarkdownViewer/MarkdownViewer";
 import markdownViewerIcon from "../../assets/icons/markdown.svg";
 import { useState } from "react";
+import HtmlViewer from "../../applications/HtmlViewer/HtmlViewer";
+import htmlViewerIcon from "../../assets/icons/html.svg";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -27,6 +29,10 @@ interface ActionProps {
 
 function Action({ label, onClick, children, danger = false }: ActionProps) {
   const [submenuOpen, setSubmenuOpen] = useState(false);
+  const setSelectedEntry = useDesktopStore((state) => state.setSelectedEntry);
+  const setContextMenuEntry = useDesktopStore(
+    (state) => state.setContextMenuEntry,
+  );
 
   const hasChildren = !!children;
 
@@ -34,8 +40,10 @@ function Action({ label, onClick, children, danger = false }: ActionProps) {
     <div
       className="action-wrapper"
       onClick={(e) => {
-        e.stopPropagation();
-        setSubmenuOpen(true);
+        if (hasChildren) {
+          e.stopPropagation();
+          setSubmenuOpen(true);
+        }
       }}
       // onMouseLeave={() => setSubmenuOpen(false)}
     >
@@ -47,6 +55,8 @@ function Action({ label, onClick, children, danger = false }: ActionProps) {
             setSubmenuOpen((prev) => !prev);
           } else {
             onClick?.();
+            setContextMenuEntry(null);
+            setSelectedEntry(null);
           }
         }}
       >
@@ -64,7 +74,7 @@ function Action({ label, onClick, children, danger = false }: ActionProps) {
         >
           {children}
         </div>
-      )}{" "}
+      )}
     </div>
   );
 }
@@ -147,6 +157,35 @@ export default function FileEntryIcon({
                 openFile(`${parentPath}${entry.name}`);
               }}
             />
+
+            {entry.name.endsWith(".html") && (
+              <Action label="Open With">
+                <Action
+                  label="HTML Viewer"
+                  onClick={() =>
+                    addActiveWindow({
+                      id: String(activeWindows.length),
+                      title: "HTML Viewer",
+                      icon: htmlViewerIcon,
+                      children: (
+                        <HtmlViewer
+                          startFilePath={`${parentPath}${entry.name}`}
+                        />
+                      ),
+                      isMinimized: false,
+                      isFullscreen: false,
+                      isFocused: true,
+                    })
+                  }
+                />
+                <Action
+                  label="Text Editor"
+                  onClick={() => {
+                    openFile(`${parentPath}${entry.name}`);
+                  }}
+                />
+              </Action>
+            )}
 
             {entry.name.endsWith(".md") && (
               <Action label="Open With">
