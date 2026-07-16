@@ -15,7 +15,10 @@
   pointer-events: all;
   display: flex;
   flex-direction: column;
-  transition: var(--taskbar-item-hover-transition);
+  transition:
+    width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: absolute;
 
   &.fullscreen {
@@ -46,6 +49,9 @@
     justify-content: space-between;
     align-items: center;
     transition: var(--taskbar-item-hover-transition);
+    user-select: none;
+    touch-action: none;
+    container-type: inline-size;
 
     &:hover {
       cursor: pointer;
@@ -57,10 +63,10 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      flex: 1;
+      width: fit-content;
 
       .window-icon {
-        margin-left: 0.7rem;
+        margin-left: 0.6rem;
         // border: 1px solid red;
         height: 1rem;
         width: 1rem;
@@ -78,7 +84,7 @@
         min-width: none;
         // overflow: hidden;
         font-family: var(--small-clock-font-family);
-        font-size: 0.8rem;
+        font-size: clamp(0.6rem, 3cqw, 1rem);
         @include no-select-no-drag;
       }
     }
@@ -94,7 +100,7 @@
       .window-fullscreen,
       .window-close {
         height: 100%;
-        width: 3rem;
+        width: 2.8rem;
         // border: 1px solid white;
         display: flex;
         justify-content: center;
