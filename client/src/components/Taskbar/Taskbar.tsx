@@ -23,6 +23,7 @@ import wikipediaIcon from "../../assets/icons/Wikipedia-logo-v2.svg";
 import googleIcon from "../../assets/icons/google-icon.svg";
 import textEditorIcon from "../../assets/icons/text-editor.svg";
 import TextEditor from "../../applications/TextEditor/TextEditor";
+import strudelLogo from "../../assets/icons/strudel-logo.png";
 
 const iframeApps = {
   google: {
@@ -41,6 +42,12 @@ const iframeApps = {
     icon: meowMasherIcon,
     title: "Meow Masher",
     src: "https://jbassard97.github.io/MeowMasher/",
+    isFullscreen: true,
+  },
+  strudel: {
+    icon: strudelLogo,
+    title: "Strudel",
+    src: "https://strudel.cc",
     isFullscreen: true,
   },
 };

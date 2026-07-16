@@ -82,9 +82,8 @@
         color: whitesmoke;
         width: fit-content;
         min-width: none;
-        // overflow: hidden;
         font-family: var(--small-clock-font-family);
-        font-size: clamp(0.6rem, 3cqw, 1rem);
+        font-size: clamp(0.5rem, 3cqw, 1rem);
         @include no-select-no-drag;
       }
     }
