@@ -9,6 +9,8 @@ import markdownViewerIcon from "../../assets/icons/markdown.svg";
 import { useState } from "react";
 import HtmlViewer from "../../applications/HtmlViewer/HtmlViewer";
 import htmlViewerIcon from "../../assets/icons/html.svg";
+import TextEditor from "../../applications/TextEditor/TextEditor";
+import textEditorIcon from "../../assets/icons/text-editor.svg";
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -215,7 +217,36 @@ export default function FileEntryIcon({
               </Action>
             )}
 
-            <Action label="Rename" />
+            {entry.name.endsWith(".svg") && (
+              <Action label="Open With">
+                <Action
+                  label="Text Editor"
+                  onClick={() =>
+                    addActiveWindow({
+                      id: crypto.randomUUID(),
+                      title: "Text Editor",
+                      icon: textEditorIcon,
+                      children: (
+                        <TextEditor
+                          startFilePath={`${parentPath}${entry.name}`}
+                        />
+                      ),
+                      isMinimized: false,
+                      isFullscreen: false,
+                      isFocused: true,
+                    })
+                  }
+                />
+                <Action
+                  label="Image Viewer"
+                  onClick={() => {
+                    openFile(`${parentPath}${entry.name}`);
+                  }}
+                />
+              </Action>
+            )}
+
+            {/* <Action label="Rename" /> */}
 
             <Action
               label="Copy Path"

@@ -224,7 +224,7 @@
         font-family: var(--small-clock-font-family);
         border-radius: var(--taskbar-item-border-radius);
         transform: translateY(-0.5rem);
-        padding: 0.25rem 0;
+        // padding: 0.25rem 0;
         font-size: 0.9rem;
         background-color: rgb(0, 75, 128);
         box-shadow: var(--file-entry-actions-box-shadow);
@@ -232,11 +232,72 @@
         &:hover {
           cursor: pointer;
         }
-        .option {
-          padding: 0.1rem 0.5rem;
+        // .option {
+        //   padding: 0.1rem 0.5rem;
+
+        //   &:hover {
+        //     text-decoration: underline;
+        //   }
+        // }
+        .action-wrapper {
+          position: relative;
+
+          &:first-child .action {
+            padding-top: 0.4rem;
+          }
+
+          &:last-child .action {
+            padding-bottom: 0.4rem;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+          }
+
+          &:nth-child(even) .action {
+            background: rgba(0, 0, 0, 0.3);
+          }
+        }
+
+        .action {
+          padding: 0.2rem 0.5rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.4rem;
+
+          &:nth-child(even) {
+            background-color: black;
+          }
 
           &:hover {
             text-decoration: underline;
+          }
+
+          .submenu-arrow {
+            font-size: 0.5rem;
+          }
+        }
+
+        .submenu {
+          position: absolute;
+          left: 100%;
+          top: 0;
+
+          width: fit-content;
+          min-width: 4.5rem;
+
+          background-color: rgb(0, 75, 128);
+          border-radius: var(--taskbar-item-border-radius);
+          box-shadow: var(--file-entry-actions-box-shadow);
+          overflow: hidden;
+
+          z-index: 9999;
+
+          .action-wrapper {
+            &:nth-child(even) .action {
+              background-color: rgb(0, 75, 128);
+            }
+
+            width: fit-content;
           }
         }
       }

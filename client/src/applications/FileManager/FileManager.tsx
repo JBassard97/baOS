@@ -26,6 +26,62 @@ import { isVideoFile, isImageFile } from "../../helpers";
 import { openFile } from "../../utils/openFile";
 import HtmlViewer from "../HtmlViewer/HtmlViewer";
 import htmlViewerIcon from "../../assets/icons/html.svg";
+import TextEditor from "../TextEditor/TextEditor";
+import textEditorIcon from "../../assets/icons/text-editor.svg";
+import MarkdownViewer from "../MarkdownViewer/MarkdownViewer";
+import markdownViewerIcon from "../../assets/icons/markdown.svg";
+
+interface ActionProps {
+  label: string;
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  children?: React.ReactNode;
+  danger?: boolean;
+}
+
+function Action({ label, onClick, children, danger = false }: ActionProps) {
+  const [submenuOpen, setSubmenuOpen] = useState(false);
+  const hasChildren = !!children;
+
+  return (
+    <div
+      className="action-wrapper"
+      onClick={(e) => {
+        if (hasChildren) {
+          e.stopPropagation();
+          setSubmenuOpen(true);
+        }
+      }}
+      // onMouseLeave={() => setSubmenuOpen(false)}
+    >
+      <div
+        className="action"
+        style={danger ? { color: "pink" } : undefined}
+        onClick={(e) => {
+          if (hasChildren) {
+            setSubmenuOpen((prev) => !prev);
+          } else {
+            onClick?.(e);
+          }
+        }}
+      >
+        <span>{label}</span>
+        {hasChildren && <span className="submenu-arrow">▶</span>}
+      </div>
+      {hasChildren && (
+        <div
+          className="submenu"
+          style={{
+            visibility: submenuOpen ? "visible" : "hidden",
+            opacity: submenuOpen ? 1 : 0,
+            pointerEvents: submenuOpen ? "auto" : "none",
+          }}
+        >
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function FileManager({
   startPath,
@@ -276,10 +332,10 @@ export default function FileManager({
                   className="file-manager-entry"
                   onClick={() => {
                     stopCreatingEntry();
-                    setContextMenuOpen(null);
                     if (entry.type === "dir") {
                       setPathInputState(`${pathFound}${entry.name}/`);
                     }
+                    setContextMenuOpen(null);
                   }}
                   onDoubleClick={() => {
                     stopCreatingEntry();
@@ -331,93 +387,163 @@ export default function FileManager({
                   </div>
 
                   {contextMenuOpen === index && (
-                    <div className="file-manager-context-menu">
+                    <div
+                      className="file-manager-context-menu"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
                       {/* File options */}
                       {entry.type === "file" && (
                         <>
-                          <div
-                            className="option"
+                          <Action
+                            label="Open"
                             onClick={() => {
                               setContextMenuOpen(null);
                               openFile(`${pathFound}${entry.name}`);
                             }}
-                          >
-                            Open
-                          </div>
+                          />
+
+                          {/* Specialty File Options */}
+
+                          {entry.name.endsWith(".html") && (
+                            <Action label="Open With">
+                              <Action
+                                label="HTML Viewer"
+                                onClick={() => {
+                                  setContextMenuOpen(null);
+                                  addActiveWindow({
+                                    id: crypto.randomUUID(),
+                                    title: "HTML Viewer",
+                                    icon: htmlViewerIcon,
+                                    children: (
+                                      <HtmlViewer
+                                        startFilePath={`${pathFound}${entry.name}`}
+                                      />
+                                    ),
+                                    isMinimized: false,
+                                    isFullscreen: false,
+                                    isFocused: true,
+                                  });
+                                }}
+                              />
+                              <Action
+                                label="Text Editor"
+                                onClick={() => {
+                                  setContextMenuOpen(null);
+                                  openFile(`${pathFound}${entry.name}`);
+                                }}
+                              />
+                            </Action>
+                          )}
+
+                          {entry.name.endsWith(".md") && (
+                            <Action label="Open With">
+                              <Action
+                                label="Markdown Viewer"
+                                onClick={() => {
+                                  setContextMenuOpen(null);
+                                  addActiveWindow({
+                                    id: crypto.randomUUID(),
+                                    title: "Markdown Viewer",
+                                    icon: markdownViewerIcon,
+                                    children: (
+                                      <MarkdownViewer
+                                        startFilePath={`${pathFound}${entry.name}`}
+                                      />
+                                    ),
+                                    isMinimized: false,
+                                    isFullscreen: false,
+                                    isFocused: true,
+                                  });
+                                }}
+                              />
+                              <Action
+                                label="Text Editor"
+                                onClick={() => {
+                                  setContextMenuOpen(null);
+                                  openFile(`${pathFound}${entry.name}`);
+                                }}
+                              />
+                            </Action>
+                          )}
+
+                          {entry.name.endsWith(".svg") && (
+                            <Action label="Open With">
+                              <Action
+                                label="Text Editor"
+                                onClick={() => {
+                                  setContextMenuOpen(null);
+
+                                  addActiveWindow({
+                                    id: crypto.randomUUID(),
+                                    title: "Text Editor",
+                                    icon: textEditorIcon,
+                                    children: (
+                                      <TextEditor
+                                        startFilePath={`${pathFound}${entry.name}`}
+                                      />
+                                    ),
+                                    isMinimized: false,
+                                    isFullscreen: false,
+                                    isFocused: true,
+                                  });
+                                }}
+                              />
+                              <Action
+                                label="Image Viewer"
+                                onClick={() => {
+                                  setContextMenuOpen(null);
+                                  openFile(`${pathFound}${entry.name}`);
+                                }}
+                              />
+                            </Action>
+                          )}
+
                           {(isImageFile(entry.name) ||
                             isVideoFile(entry.name)) && (
-                            <div
-                              className="option"
+                            <Action
+                              label="Set as Background"
                               onClick={() => {
                                 setContextMenuOpen(null);
                                 setCurrentBackground(
                                   `${pathFound}${entry.name}`,
                                 );
                               }}
-                            >
-                              Set as Background
-                            </div>
-                          )}
-                          {entry.name.endsWith(".html") && (
-                            <div
-                              className="option"
-                              onClick={() => {
-                                setContextMenuOpen(null);
-                                addActiveWindow({
-                                  title: "HTML Viewer",
-                                  icon: htmlViewerIcon,
-                                  isFocused: true,
-                                  isFullscreen: false,
-                                  isMinimized: false,
-                                  id: crypto.randomUUID(),
-                                  children: (
-                                    <HtmlViewer
-                                      startFilePath={`${pathFound}${entry.name}`}
-                                    />
-                                  ),
-                                });
-                              }}
-                            >
-                              Open in HTML Viewer
-                            </div>
+                            />
                           )}
                         </>
                       )}
                       {/* Dir options */}
                       {entry.type === "dir" && (
                         <>
-                          <div
-                            className="option"
-                            onClick={(e) => {
+                          <Action
+                            label="Navigate"
+                            onClick={() => {
                               setContextMenuOpen(null);
-                              e.currentTarget.click();
+                              setPathInputState(`${pathFound}${entry.name}`);
                             }}
-                          >
-                            Navigate
-                          </div>
-                          <div
-                            className="option"
+                          />
+                          <Action
+                            label="Open in new File Manager"
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
                               setContextMenuOpen(null);
                               openFile(`${pathFound}${entry.name}`);
                             }}
-                          >
-                            Open in new File Manager
-                          </div>
+                          />
                         </>
                       )}
                       {/* Always appears */}
-                      <div
-                        className="option"
+                      <Action
+                        label="Delete"
+                        danger={true}
                         onClick={() => {
                           handleDelete(entry.name);
                           setContextMenuOpen(null);
                         }}
-                      >
-                        Delete
-                      </div>
+                      />
                     </div>
                   )}
                 </div>
