@@ -5,9 +5,25 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  min-height: 0;
+
+  .editor-area {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+
+    .cm-scroller {
+      min-height: 100%;
+      // border: 1px solid lime;
+      overflow-x: scroll;
+      scrollbar-width: none;
+    }
+  }
 
   textarea {
     flex-grow: 1;
+    // min-height: 100%;
     resize: none;
     border: none;
     background-color: white;
@@ -42,5 +58,7 @@
   .file-path-display {
     justify-content: flex-start;
     padding: 0 0.7rem;
+    position: absolute;
+    bottom: 0;
   }
 }
