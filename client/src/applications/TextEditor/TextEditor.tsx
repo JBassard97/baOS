@@ -1,5 +1,5 @@
 import "./texteditor.scss";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { getFileFromPath } from "../../vfs-actions/getFileFromPath";
 import { touch } from "../../vfs-actions/touch";
 import CodeMirror from "@uiw/react-codemirror";
@@ -113,6 +113,9 @@ export default function TextEditor({
     (localStorage.getItem("text-editor-code-theme") as ThemeName) ??
       "VS Code Dark",
   );
+  const [editorBackground, setEditorBackground] =
+    useState<string>("transparent");
+  const editorContainerRef = useRef<HTMLDivElement>(null);
 
   const languageExtensions = useMemo(
     () => getLanguageExtension(fileName),
@@ -123,6 +126,7 @@ export default function TextEditor({
     Array.isArray(languageExtensions) && languageExtensions.length > 0;
 
   const currentTheme = editorThemes[selectedTheme];
+  console.log(currentTheme);
 
   useEffect(() => {
     if (!startFilePath) return;
@@ -134,6 +138,16 @@ export default function TextEditor({
     if (fileContent === null) return;
     touch(startFilePath, fileContent);
   }, [fileContent]);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      const editor = editorContainerRef.current?.querySelector(".cm-editor");
+
+      if (editor) {
+        setEditorBackground(getComputedStyle(editor).backgroundColor);
+      }
+    });
+  }, [selectedTheme, hasLanguageSupport]);
 
   async function loadFileContent(filePath: string) {
     if (!filePath) return;
@@ -182,7 +196,11 @@ export default function TextEditor({
       </div>
 
       {hasLanguageSupport && (
-        <div className="editor-area">
+        <div
+          ref={editorContainerRef}
+          className="editor-area"
+          style={{ backgroundColor: editorBackground }}
+        >
           <CodeMirror
             width="100%"
             height="100%"

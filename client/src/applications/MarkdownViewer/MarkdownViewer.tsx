@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { getFileFromPath } from "../../vfs-actions/getFileFromPath";
 import ReactMarkdown from "react-markdown";
 import * as themes from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useFileSystemChanged } from "../../hooks";
 
 const themeNames: string[] = [];
 const themeMap: Record<string, any> = {};
@@ -100,6 +101,11 @@ export default function MarkdownViewer({
     () => getThemeVars(themeMap[currentTheme]),
     [currentTheme],
   );
+
+  useFileSystemChanged(async () => {
+    if (!startFilePath) return;
+    await loadFileContent(startFilePath);
+  });
 
   return (
     <div className="markdown-viewer">
