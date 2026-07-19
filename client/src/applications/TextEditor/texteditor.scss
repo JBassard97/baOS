@@ -1,4 +1,5 @@
 @use "../../scss/variables";
+@use "../../scss/mixins" as *;
 
 .text-editor {
   width: 100%;
@@ -6,6 +7,48 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+
+  .options-bar {
+    background: black;
+    width: 100%;
+    height: 1.5rem;
+    color: whitesmoke;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: var(--small-clock-font-family);
+    // gap: 0.7rem;
+
+    div {
+      height: 100%;
+      display: flex;
+    }
+
+    select {
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .option {
+      height: 100%;
+      width: fit-content;
+      border: 1px solid var(--taskbar-item-border-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 0.5rem;
+      transition: var(--taskbar-item-hover-transition);
+      font-size: 0.85rem;
+      @include no-select-no-drag;
+
+      &:hover {
+        cursor: pointer;
+        background-color: whitesmoke;
+        color: black;
+      }
+    }
+  }
 
   .editor-area {
     flex: 1;
@@ -16,6 +59,7 @@
     .cm-scroller {
       min-height: 100%;
       // border: 1px solid lime;
+
       overflow-x: scroll;
       scrollbar-width: none;
     }
