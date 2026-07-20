@@ -47,15 +47,15 @@ BAOS applications currently come in 3 varieties:
 <iframe src="https://wikipedia.com" />
 ```
 
-- While many of your favorite sites refuse to be rendered inside another site's iframe, BAOS has precurated a number of reliable URLs that won't throw CORS inside of iframes
+- While many of your favorite sites refuse to be rendered inside another site's iframe, BAOS has curated a number of reliable URLs that won't throw CORS errors
 - Click events will <i>NOT</i> bubble up to parent from the iframe, so window-focusing must be done by touching the window's title bar
 - Examples: <b>Google, Wikipedia</b>
 
 ### ~~Custom Apps~~ (WIP)
 
-- Users can create an HTML file and register it using the "`reg-app`" command in the Terminal
+- Users can create an HTML file and register it using the `reg-app` command in the Terminal
 - This HTML file can have linked CSS stylesheets, JS scripts, and icon files as you normally would, and BAOS service-worker resolves each request with the correct file from OPFS
-- Linked scripts can be `type="module"` and `import` statements will work
+- Linked scripts can be `type="module"` and `import` statements will work as expected
 - At it's core the Custom App's HTML file is rendered within an `iframe`, so click events will not focus the window
 
 ## Applications

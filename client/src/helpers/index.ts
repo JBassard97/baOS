@@ -6,3 +6,4 @@ export { getValidFileName } from "./getValidFileName";
 export { isHorizontal } from "./isHorizontal";
 export { isImageFile } from "./isImageFile";
 export { isVideoFile } from "./isVideoFile";
+export { isAudioFile } from "./isAudioFile";

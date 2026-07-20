@@ -11,9 +11,11 @@ import videoPlayerIcon from "../assets/icons/video-player.svg";
 import VideoPlayer from "../applications/VideoPlayer/VideoPlayer";
 import pdfViewerIcon from "../assets/icons/pdf.svg";
 import PdfViewer from "../applications/PdfViewer/PdfViewer";
+import AudioPlayer from "../applications/AudioPlayer/AudioPlayer";
+import audioPlayerIcon from "../assets/icons/audio-player-icon.svg";
 // import HtmlViewer from "../applications/HtmlViewer/HtmlViewer";
 // import htmlViewerIcon from "../assets/icons/html.svg";
-import { isImageFile, isVideoFile } from "../helpers";
+import { isImageFile, isVideoFile, isAudioFile } from "../helpers";
 
 export async function openFile(filePath: string) {
   if (!filePath) return;
@@ -58,6 +60,16 @@ export async function openFile(filePath: string) {
       title: "Video Player",
       icon: videoPlayerIcon,
       children: <VideoPlayer startFilePath={filePath} />,
+    });
+  } else if (isAudioFile(filePath)) {
+    useWindowStore.getState().addActiveWindow({
+      title: "Audio Player",
+      icon: audioPlayerIcon,
+      isFocused: true,
+      isFullscreen: false,
+      isMinimized: false,
+      id: crypto.randomUUID(),
+      children: <AudioPlayer startFilePath={filePath} />,
     });
   } else if (filePath.endsWith(".pdf")) {
     useWindowStore.getState().addActiveWindow({
