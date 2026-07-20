@@ -53,9 +53,10 @@ export default function AudioPlayer({
 
     if (!audio || !canvas) return;
 
-    // Already initialized
     if (audioContextRef.current) {
-      audioContextRef.current.resume();
+      if (audioContextRef.current.state === "suspended") {
+        audioContextRef.current.resume();
+      }
       return;
     }
 
@@ -73,6 +74,8 @@ export default function AudioPlayer({
     audioContextRef.current = ctx;
     analyserRef.current = analyser;
     sourceRef.current = source;
+
+    ctx.resume();
 
     drawVisualizer();
   }
@@ -176,6 +179,7 @@ export default function AudioPlayer({
           ref={audioRef}
           src={audioSrc ?? undefined}
           controls
+          autoPlay
           onPlay={setupVisualizer}
         />
       </div>
