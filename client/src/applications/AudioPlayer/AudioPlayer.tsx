@@ -42,99 +42,99 @@ export default function AudioPlayer({
     };
   }, [startFilePath]);
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    const canvas = canvasRef.current;
+  // useEffect(() => {
+  //   const audio = audioRef.current;
+  //   const canvas = canvasRef.current;
 
-    if (!audio || !canvas || !audioSrc) return;
+  //   if (!audio || !canvas || !audioSrc) return;
 
-    const ctx = new AudioContext();
+  //   const ctx = new AudioContext();
 
-    const source = ctx.createMediaElementSource(audio);
+  //   const source = ctx.createMediaElementSource(audio);
 
-    const analyser = ctx.createAnalyser();
-    // analyser.fftSize = 256;
-    analyser.fftSize = 1024;
-    analyser.smoothingTimeConstant = 0.85;
+  //   const analyser = ctx.createAnalyser();
+  //   // analyser.fftSize = 256;
+  //   analyser.fftSize = 1024;
+  //   analyser.smoothingTimeConstant = 0.85;
 
-    source.connect(analyser);
-    analyser.connect(ctx.destination);
+  //   source.connect(analyser);
+  //   analyser.connect(ctx.destination);
 
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
+  //   const bufferLength = analyser.frequencyBinCount;
+  //   const dataArray = new Uint8Array(bufferLength);
 
-    const canvasCtx = canvas.getContext("2d");
+  //   const canvasCtx = canvas.getContext("2d");
 
-    if (!canvasCtx) return;
+  //   if (!canvasCtx) return;
 
-    let animationFrameId: number;
+  //   let animationFrameId: number;
 
-    const draw = () => {
-      animationFrameId = requestAnimationFrame(draw);
+  //   const draw = () => {
+  //     animationFrameId = requestAnimationFrame(draw);
 
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
+  //     const width = canvas.clientWidth;
+  //     const height = canvas.clientHeight;
 
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-      }
+  //     if (canvas.width !== width || canvas.height !== height) {
+  //       canvas.width = width;
+  //       canvas.height = height;
+  //     }
 
-      canvasCtx.clearRect(0, 0, width, height);
+  //     canvasCtx.clearRect(0, 0, width, height);
 
-      canvasCtx.fillStyle = "white";
-      canvasCtx.strokeStyle = "white";
+  //     canvasCtx.fillStyle = "white";
+  //     canvasCtx.strokeStyle = "white";
 
-      if (audio.paused) {
-        return;
-      }
+  //     if (audio.paused) {
+  //       return;
+  //     }
 
-      analyser.getByteFrequencyData(dataArray);
+  //     analyser.getByteFrequencyData(dataArray);
 
-      const bars = 64;
+  //     const bars = 64;
 
-      const step = Math.max(1, Math.floor(bufferLength / bars));
+  //     const step = Math.max(1, Math.floor(bufferLength / bars));
 
-      // Visualizer occupies 90% of canvas width
-      const visualizerWidth = width * 0.77;
+  //     // Visualizer occupies 90% of canvas width
+  //     const visualizerWidth = width * 0.77;
 
-      const startX = (width - visualizerWidth) / 2;
+  //     const startX = (width - visualizerWidth) / 2;
 
-      // Responsive gap and bar sizing
-      const barGap = visualizerWidth * 0.004;
+  //     // Responsive gap and bar sizing
+  //     const barGap = visualizerWidth * 0.004;
 
-      const barWidth = (visualizerWidth - (bars - 1) * barGap) / bars;
+  //     const barWidth = (visualizerWidth - (bars - 1) * barGap) / bars;
 
-      for (let i = 0; i < bars; i++) {
-        const value = dataArray[i * step];
+  //     for (let i = 0; i < bars; i++) {
+  //       const value = dataArray[i * step];
 
-        const barHeight = (value / 255) * height;
+  //       const barHeight = (value / 255) * height;
 
-        canvasCtx.fillRect(
-          startX + i * (barWidth + barGap),
-          height - barHeight,
-          barWidth,
-          barHeight,
-        );
-      }
-    };
+  //       canvasCtx.fillRect(
+  //         startX + i * (barWidth + barGap),
+  //         height - barHeight,
+  //         barWidth,
+  //         barHeight,
+  //       );
+  //     }
+  //   };
 
-    draw();
+  //   draw();
 
-    const resumeAudioContext = () => {
-      if (ctx.state === "suspended") {
-        ctx.resume();
-      }
-    };
+  //   const resumeAudioContext = () => {
+  //     if (ctx.state === "suspended") {
+  //       ctx.resume();
+  //     }
+  //   };
 
-    audio.addEventListener("play", resumeAudioContext);
+  //   audio.addEventListener("play", resumeAudioContext);
 
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      audio.removeEventListener("play", resumeAudioContext);
-      ctx.close();
-    };
-  }, [audioSrc]);
+  //   return () => {
+  //     cancelAnimationFrame(animationFrameId);
+  //     audio.removeEventListener("play", resumeAudioContext);
+  //     ctx.close();
+  //   };
+  // }, [audioSrc]);
 
   return (
     <div className="audio-player">
