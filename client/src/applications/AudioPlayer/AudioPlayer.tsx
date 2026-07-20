@@ -156,7 +156,7 @@ export default function AudioPlayer({
           }}
         />
 
-        <audio ref={audioRef} src={audioSrc ?? undefined} controls autoPlay />
+        <audio ref={audioRef} src={audioSrc ?? undefined} controls />
       </div>
 
       <div className="file-path-display">
