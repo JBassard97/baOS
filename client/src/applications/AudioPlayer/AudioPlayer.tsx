@@ -96,7 +96,7 @@ export default function AudioPlayer({
       const step = Math.max(1, Math.floor(bufferLength / bars));
 
       // Visualizer occupies 90% of canvas width
-      const visualizerWidth = width * 0.8;
+      const visualizerWidth = width * 0.77;
 
       const startX = (width - visualizerWidth) / 2;
 
