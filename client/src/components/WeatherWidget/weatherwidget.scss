@@ -1,0 +1,19 @@
+@use "../../scss/variables";
+
+.weather-widget {
+  //   border: 1px solid aquamarine;
+  height: 100%;
+  width: 100%;
+  color: rgba(245, 245, 245, 0.7);
+  position: relative;
+
+  .location-name {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.3rem;
+    border-bottom: 1px solid var(--taskbar-item-border-color);
+    font-size: 0.8rem;
+  }
+}

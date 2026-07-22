@@ -1,78 +1,164 @@
-import { javascript } from "@codemirror/lang-javascript";
-import { html } from "@codemirror/lang-html";
-import { css } from "@codemirror/lang-css";
-import { sass } from "@codemirror/lang-sass";
-import { markdown } from "@codemirror/lang-markdown";
-import { json } from "@codemirror/lang-json";
-import { xml } from "@codemirror/lang-xml";
-import { python } from "@codemirror/lang-python";
-import { java } from "@codemirror/lang-java";
-import { cpp } from "@codemirror/lang-cpp";
-import { sql } from "@codemirror/lang-sql";
-import { rust } from "@codemirror/lang-rust";
-import { php } from "@codemirror/lang-php";
-
-const extensionMap: Record<string, () => any[]> = {
+const extensionMap: Record<string, () => Promise<any[]>> = {
     // JavaScript / TypeScript
-    js: () => [javascript()],
-    mjs: () => [javascript()],
-    cjs: () => [javascript()],
-    jsx: () => [javascript({ jsx: true })],
+    js: async () => {
+        const { javascript } = await import("@codemirror/lang-javascript");
+        return [javascript()];
+    },
 
-    ts: () => [javascript({ typescript: true })],
-    tsx: () => [
-        javascript({
-            jsx: true,
-            typescript: true,
-        }),
-    ],
+    mjs: async () => {
+        const { javascript } = await import("@codemirror/lang-javascript");
+        return [javascript()];
+    },
+
+    cjs: async () => {
+        const { javascript } = await import("@codemirror/lang-javascript");
+        return [javascript()];
+    },
+
+    jsx: async () => {
+        const { javascript } = await import("@codemirror/lang-javascript");
+        return [javascript({ jsx: true })];
+    },
+
+    ts: async () => {
+        const { javascript } = await import("@codemirror/lang-javascript");
+        return [javascript({ typescript: true })];
+    },
+
+    tsx: async () => {
+        const { javascript } = await import("@codemirror/lang-javascript");
+
+        return [
+            javascript({
+                jsx: true,
+                typescript: true,
+            }),
+        ];
+    },
 
     // Web
-    html: () => [html()],
-    htm: () => [html()],
-    svg: () => [html()],
+    html: async () => {
+        const { html } = await import("@codemirror/lang-html");
+        return [html()];
+    },
 
-    css: () => [css()],
-    scss: () => [sass()],
-    sass: () => [sass()],
+    htm: async () => {
+        const { html } = await import("@codemirror/lang-html");
+        return [html()];
+    },
 
-    xml: () => [xml()],
+    svg: async () => {
+        const { html } = await import("@codemirror/lang-html");
+        return [html()];
+    },
+
+    css: async () => {
+        const { css } = await import("@codemirror/lang-css");
+        return [css()];
+    },
+
+    scss: async () => {
+        const { sass } = await import("@codemirror/lang-sass");
+        return [sass()];
+    },
+
+    sass: async () => {
+        const { sass } = await import("@codemirror/lang-sass");
+        return [sass()];
+    },
+
+    xml: async () => {
+        const { xml } = await import("@codemirror/lang-xml");
+        return [xml()];
+    },
 
     // Data
-    json: () => [json()],
-    geojson: () => [json()],
+    json: async () => {
+        const { json } = await import("@codemirror/lang-json");
+        return [json()];
+    },
+
+    geojson: async () => {
+        const { json } = await import("@codemirror/lang-json");
+        return [json()];
+    },
 
     // Markdown
-    md: () => [markdown()],
-    markdown: () => [markdown()],
+    md: async () => {
+        const { markdown } = await import("@codemirror/lang-markdown");
+        return [markdown()];
+    },
+
+    markdown: async () => {
+        const { markdown } = await import("@codemirror/lang-markdown");
+        return [markdown()];
+    },
 
     // Python
-    py: () => [python()],
+    py: async () => {
+        const { python } = await import("@codemirror/lang-python");
+        return [python()];
+    },
 
     // Java
-    java: () => [java()],
+    java: async () => {
+        const { java } = await import("@codemirror/lang-java");
+        return [java()];
+    },
 
     // C / C++
-    c: () => [cpp()],
-    h: () => [cpp()],
-    cpp: () => [cpp()],
-    cxx: () => [cpp()],
-    cc: () => [cpp()],
-    hpp: () => [cpp()],
+    c: async () => {
+        const { cpp } = await import("@codemirror/lang-cpp");
+        return [cpp()];
+    },
+
+    h: async () => {
+        const { cpp } = await import("@codemirror/lang-cpp");
+        return [cpp()];
+    },
+
+    cpp: async () => {
+        const { cpp } = await import("@codemirror/lang-cpp");
+        return [cpp()];
+    },
+
+    cxx: async () => {
+        const { cpp } = await import("@codemirror/lang-cpp");
+        return [cpp()];
+    },
+
+    cc: async () => {
+        const { cpp } = await import("@codemirror/lang-cpp");
+        return [cpp()];
+    },
+
+    hpp: async () => {
+        const { cpp } = await import("@codemirror/lang-cpp");
+        return [cpp()];
+    },
 
     // Rust
-    rs: () => [rust()],
+    rs: async () => {
+        const { rust } = await import("@codemirror/lang-rust");
+        return [rust()];
+    },
 
     // PHP
-    php: () => [php()],
+    php: async () => {
+        const { php } = await import("@codemirror/lang-php");
+        return [php()];
+    },
 
     // SQL
-    sql: () => [sql()],
+    sql: async () => {
+        const { sql } = await import("@codemirror/lang-sql");
+        return [sql()];
+    },
 };
 
-export function getLanguageExtension(
+export async function getLanguageExtension(
     fileName?: string | null
-) {
+): Promise<any[]> {
     if (!fileName) return [];
 
     const extension = fileName
@@ -82,5 +168,5 @@ export function getLanguageExtension(
 
     if (!extension) return [];
 
-    return extensionMap[extension]?.() ?? [];
+    return (await extensionMap[extension]?.()) ?? [];
 }

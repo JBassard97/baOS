@@ -2,19 +2,11 @@ import { useWindowStore } from "../store";
 import { doesDirExist } from "../vfs-actions/doesDirExist";
 import { doesFileExist } from "../vfs-actions/doesFileExist";
 import fileManagerIcon from "../assets/icons/file-manager.svg";
-import FileManager from "../applications/FileManager/FileManager";
 import textEditorIcon from "../assets/icons/text-editor.svg";
-import TextEditor from "../applications/TextEditor/TextEditor";
 import imageViewerIcon from "../assets/icons/image-viewer.svg";
-import ImageViewer from "../applications/ImageViewer/ImageViewer";
 import videoPlayerIcon from "../assets/icons/video-player.svg";
-import VideoPlayer from "../applications/VideoPlayer/VideoPlayer";
 import pdfViewerIcon from "../assets/icons/pdf.svg";
-import PdfViewer from "../applications/PdfViewer/PdfViewer";
-import AudioPlayer from "../applications/AudioPlayer/AudioPlayer";
 import audioPlayerIcon from "../assets/icons/audio-player-icon.svg";
-// import HtmlViewer from "../applications/HtmlViewer/HtmlViewer";
-// import htmlViewerIcon from "../assets/icons/html.svg";
 import { isImageFile, isVideoFile, isAudioFile } from "../helpers";
 
 export async function openFile(filePath: string) {
@@ -28,6 +20,9 @@ export async function openFile(filePath: string) {
   }
 
   if (isDir) {
+    const { default: FileManager } =
+      await import("../applications/FileManager/FileManager");
+
     useWindowStore.getState().addActiveWindow({
       isFullscreen: false,
       isMinimized: false,
@@ -42,6 +37,9 @@ export async function openFile(filePath: string) {
       icon: fileManagerIcon,
     });
   } else if (isImageFile(filePath)) {
+    const { default: ImageViewer } =
+      await import("../applications/ImageViewer/ImageViewer");
+
     useWindowStore.getState().addActiveWindow({
       isFullscreen: false,
       isMinimized: false,
@@ -52,6 +50,9 @@ export async function openFile(filePath: string) {
       children: <ImageViewer startFilePath={filePath} />,
     });
   } else if (isVideoFile(filePath)) {
+    const { default: VideoPlayer } =
+      await import("../applications/VideoPlayer/VideoPlayer");
+
     useWindowStore.getState().addActiveWindow({
       isFullscreen: false,
       isMinimized: false,
@@ -62,6 +63,9 @@ export async function openFile(filePath: string) {
       children: <VideoPlayer startFilePath={filePath} />,
     });
   } else if (isAudioFile(filePath)) {
+    const { default: AudioPlayer } =
+      await import("../applications/AudioPlayer/AudioPlayer");
+
     useWindowStore.getState().addActiveWindow({
       title: "Audio Player",
       icon: audioPlayerIcon,
@@ -72,6 +76,9 @@ export async function openFile(filePath: string) {
       children: <AudioPlayer startFilePath={filePath} />,
     });
   } else if (filePath.endsWith(".pdf")) {
+    const { default: PdfViewer } =
+      await import("../applications/PdfViewer/PdfViewer");
+
     useWindowStore.getState().addActiveWindow({
       title: "PDF Viewer",
       icon: pdfViewerIcon,
@@ -82,6 +89,9 @@ export async function openFile(filePath: string) {
       children: <PdfViewer startFilePath={filePath} />,
     });
   } else {
+    const { default: TextEditor } =
+      await import("../applications/TextEditor/TextEditor");
+
     useWindowStore.getState().addActiveWindow({
       title: "Text Editor",
       icon: textEditorIcon,

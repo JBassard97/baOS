@@ -65,7 +65,7 @@ export default function AudioPlayer({
     const source = ctx.createMediaElementSource(audio);
 
     const analyser = ctx.createAnalyser();
-    analyser.fftSize = 1024;
+    analyser.fftSize = 2048;
     analyser.smoothingTimeConstant = 0.85;
 
     source.connect(analyser);

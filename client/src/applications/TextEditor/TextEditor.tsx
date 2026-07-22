@@ -1,5 +1,5 @@
 import "./texteditor.scss";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getFileFromPath } from "../../vfs-actions/getFileFromPath";
 import { touch } from "../../vfs-actions/touch";
 import CodeMirror from "@uiw/react-codemirror";
@@ -115,18 +115,31 @@ export default function TextEditor({
   );
   const [editorBackground, setEditorBackground] =
     useState<string>("transparent");
-  const editorContainerRef = useRef<HTMLDivElement>(null);
+  const [languageExtensions, setLanguageExtensions] = useState<any[]>([]);
 
-  const languageExtensions = useMemo(
-    () => getLanguageExtension(fileName),
-    [fileName],
-  );
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadLanguageExtension() {
+      const extensions = await getLanguageExtension(fileName);
+
+      if (!cancelled) {
+        setLanguageExtensions(extensions);
+      }
+    }
+
+    loadLanguageExtension();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [fileName]);
+  const editorContainerRef = useRef<HTMLDivElement>(null);
 
   const hasLanguageSupport =
     Array.isArray(languageExtensions) && languageExtensions.length > 0;
 
   const currentTheme = editorThemes[selectedTheme];
-  console.log(currentTheme);
 
   useEffect(() => {
     if (!startFilePath) return;

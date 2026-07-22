@@ -1,16 +1,31 @@
+import { lazy, Suspense, useState } from "react";
 import "./fileentryicon.scss";
 import type { FileEntry } from "../../interfaces/FileEntry";
 import { getFileIcon } from "../../helpers";
 import { useUIStore, useWindowStore, useDesktopStore } from "../../store";
 import { isImageFile, isVideoFile } from "../../helpers";
 import { openFile } from "../../utils/openFile";
-import MarkdownViewer from "../../applications/MarkdownViewer/MarkdownViewer";
 import markdownViewerIcon from "../../assets/icons/markdown.svg";
-import { useState } from "react";
-import HtmlViewer from "../../applications/HtmlViewer/HtmlViewer";
 import htmlViewerIcon from "../../assets/icons/html.svg";
-import TextEditor from "../../applications/TextEditor/TextEditor";
 import textEditorIcon from "../../assets/icons/text-editor.svg";
+
+const LazyMarkdownViewer = lazy(
+  () => import("../../applications/MarkdownViewer/MarkdownViewer"),
+);
+const LazyHtmlViewer = lazy(
+  () => import("../../applications/HtmlViewer/HtmlViewer"),
+);
+const LazyTextEditor = lazy(
+  () => import("../../applications/TextEditor/TextEditor"),
+);
+
+function LazyLoadedWindow({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<div className="window-loading">Loading…</div>}>
+      {children}
+    </Suspense>
+  );
+}
 
 interface FileEntryIconProps {
   entry: FileEntry;
@@ -169,9 +184,11 @@ export default function FileEntryIcon({
                       title: "HTML Viewer",
                       icon: htmlViewerIcon,
                       children: (
-                        <HtmlViewer
-                          startFilePath={`${parentPath}${entry.name}`}
-                        />
+                        <LazyLoadedWindow>
+                          <LazyHtmlViewer
+                            startFilePath={`${parentPath}${entry.name}`}
+                          />
+                        </LazyLoadedWindow>
                       ),
                       isMinimized: false,
                       isFullscreen: false,
@@ -198,9 +215,11 @@ export default function FileEntryIcon({
                       title: "Markdown Viewer",
                       icon: markdownViewerIcon,
                       children: (
-                        <MarkdownViewer
-                          startFilePath={`${parentPath}${entry.name}`}
-                        />
+                        <LazyLoadedWindow>
+                          <LazyMarkdownViewer
+                            startFilePath={`${parentPath}${entry.name}`}
+                          />
+                        </LazyLoadedWindow>
                       ),
                       isMinimized: false,
                       isFullscreen: false,
@@ -227,9 +246,11 @@ export default function FileEntryIcon({
                       title: "Text Editor",
                       icon: textEditorIcon,
                       children: (
-                        <TextEditor
-                          startFilePath={`${parentPath}${entry.name}`}
-                        />
+                        <LazyLoadedWindow>
+                          <LazyTextEditor
+                            startFilePath={`${parentPath}${entry.name}`}
+                          />
+                        </LazyLoadedWindow>
                       ),
                       isMinimized: false,
                       isFullscreen: false,

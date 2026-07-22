@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import "./taskbar.scss";
 import StartButton from "../StartButton/StartButton";
 import SmallDateClock from "../SmallDateClock/SmallDateClock";
@@ -9,21 +10,43 @@ import fileManagerIcon from "../../assets/icons/file-manager.svg";
 import terminalIcon from "../../assets/icons/terminal.svg";
 import settingsIcon from "../../assets/icons/settings-icon.svg";
 import baosIcon from "../../assets/icons/baosNeon.png";
-import DevPanel from "../../applications/DevPanel/DevPanel";
 import devPanelIcon from "../../assets/icons/nut.svg";
 import calculatorIcon from "../../assets/icons/calculator.svg";
 import imageViewerIcon from "../../assets/icons/image-viewer.svg";
 import videoPlayerIcon from "../../assets/icons/video-player.svg";
-import VideoPlayer from "../../applications/VideoPlayer/VideoPlayer";
-import Terminal from "../../applications/Terminal/Terminal";
-import FileManager from "../../applications/FileManager/FileManager";
 import meowMasherIcon from "../../assets/icons/meowmasher.png";
 import { getOrientation } from "../../helpers";
 import wikipediaIcon from "../../assets/icons/Wikipedia-logo-v2.svg";
 import googleIcon from "../../assets/icons/google-icon.svg";
 import textEditorIcon from "../../assets/icons/text-editor.svg";
-import TextEditor from "../../applications/TextEditor/TextEditor";
 import strudelLogo from "../../assets/icons/strudel-logo.png";
+
+const LazyFileManager = lazy(
+  () => import("../../applications/FileManager/FileManager"),
+);
+const LazyTerminal = lazy(() => import("../../applications/Terminal/Terminal"));
+const LazyDevPanel = lazy(() => import("../../applications/DevPanel/DevPanel"));
+const LazyTextEditor = lazy(
+  () => import("../../applications/TextEditor/TextEditor"),
+);
+const LazyVideoPlayer = lazy(
+  () => import("../../applications/VideoPlayer/VideoPlayer"),
+);
+
+function LazyLoadedWindow({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className="window-loading"
+          style={{ width: "100%", height: "100%", background: "black" }}
+        ></div>
+      }
+    >
+      {children}
+    </Suspense>
+  );
+}
 
 const iframeApps = {
   google: {
@@ -76,7 +99,11 @@ function Taskbar() {
           <TaskbarItem
             icon={fileManagerIcon}
             title={"File Manager"}
-            children={<FileManager />}
+            children={
+              <LazyLoadedWindow>
+                <LazyFileManager />
+              </LazyLoadedWindow>
+            }
           />
         </div>
         <div className="right-or-bottom-group">
@@ -123,7 +150,11 @@ function Taskbar() {
                   <TaskbarItem
                     icon={fileManagerIcon}
                     title={"File Manager"}
-                    children={<FileManager />}
+                    children={
+                      <LazyLoadedWindow>
+                        <LazyFileManager />
+                      </LazyLoadedWindow>
+                    }
                     dontShowTooltip={true}
                   />
                   <p className="item-name">File Manager</p>
@@ -132,7 +163,11 @@ function Taskbar() {
                   <TaskbarItem
                     icon={terminalIcon}
                     title={"Terminal"}
-                    children={<Terminal />}
+                    children={
+                      <LazyLoadedWindow>
+                        <LazyTerminal />
+                      </LazyLoadedWindow>
+                    }
                     dontShowTooltip={true}
                   />
                   <p className="item-name">Terminal</p>
@@ -141,7 +176,11 @@ function Taskbar() {
                   <TaskbarItem
                     icon={devPanelIcon}
                     title={"Dev Panel"}
-                    children={<DevPanel />}
+                    children={
+                      <LazyLoadedWindow>
+                        <LazyDevPanel />
+                      </LazyLoadedWindow>
+                    }
                     dontShowTooltip={true}
                   />
                   <p className="item-name">Dev Panel</p>
@@ -164,7 +203,11 @@ function Taskbar() {
                   <TaskbarItem
                     icon={textEditorIcon}
                     title="Text Editor"
-                    children={<TextEditor />}
+                    children={
+                      <LazyLoadedWindow>
+                        <LazyTextEditor />
+                      </LazyLoadedWindow>
+                    }
                     dontShowTooltip={true}
                   />
                   <p className="item-name">Text Editor</p>
@@ -182,7 +225,11 @@ function Taskbar() {
                   <TaskbarItem
                     icon={videoPlayerIcon}
                     title="Video Player"
-                    children={<VideoPlayer />}
+                    children={
+                      <LazyLoadedWindow>
+                        <LazyVideoPlayer />
+                      </LazyLoadedWindow>
+                    }
                     dontShowTooltip={true}
                   />
                   <p className="item-name">Video Player</p>

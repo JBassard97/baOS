@@ -13,6 +13,7 @@ import jsonIcon from "../assets/icons/json.svg";
 import javaIcon from "../assets/icons/java.svg";
 import goIcon from "../assets/icons/go.svg";
 import mdIcon from "../assets/icons/markdown.svg";
+import audioIcon from "../assets/icons/audio-player-icon.svg";
 
 const iconMap: Record<string, string> = {
     ".html": htmlIcon,
@@ -29,6 +30,7 @@ const iconMap: Record<string, string> = {
     ".java": javaIcon,
     ".go": goIcon,
     ".md": mdIcon,
+    ".mp3": audioIcon
 }
 
 export function getFileIcon(fileName: string, isDir: boolean) {
