@@ -13,14 +13,22 @@
     // flex-grow: 1;
     border: none;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 0.1rem;
 
     img {
       max-width: 100%;
       max-height: 70%;
       width: auto;
       height: auto;
+    }
+
+    .image-info {
+      font-family: var(--small-clock-font-family);
+      font-size: 0.7rem;
+      color: rgba(245, 245, 245, 0.77);
     }
   }
 

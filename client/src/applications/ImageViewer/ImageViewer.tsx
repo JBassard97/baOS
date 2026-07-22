@@ -9,6 +9,10 @@ export default function ImageViewer({
 }) {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [dimensions, setDimensions] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
 
   useEffect(() => {
     if (!startFilePath) return;
@@ -25,7 +29,7 @@ export default function ImageViewer({
       }
 
       const imageUrl = URL.createObjectURL(file);
-      
+
       setImageSrc(imageUrl);
       setFileName(file.name);
     } catch (err) {
@@ -43,7 +47,18 @@ export default function ImageViewer({
             : ""}
       </div>
       <div className="image-container">
-        <img src={imageSrc ?? ""} />
+        <img
+          src={imageSrc ?? ""}
+          onLoad={(e) => {
+            setDimensions({
+              width: e.currentTarget.naturalWidth,
+              height: e.currentTarget.naturalHeight,
+            });
+          }}
+        />
+        <div className="image-info">
+          {dimensions ? `${dimensions.width} × ${dimensions.height}` : ""}
+        </div>
       </div>
       <div className="file-path-display">
         {startFilePath === null ? "No file provided..." : `"${startFilePath}"`}
