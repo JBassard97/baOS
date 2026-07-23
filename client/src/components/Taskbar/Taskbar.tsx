@@ -32,6 +32,7 @@ const LazyTextEditor = lazy(
 const LazyVideoPlayer = lazy(
   () => import("../../applications/VideoPlayer/VideoPlayer"),
 );
+const LazySettings = lazy(() => import("../../applications/Settings/Settings"));
 
 function LazyLoadedWindow({ children }: { children: React.ReactNode }) {
   return (
@@ -130,8 +131,11 @@ function Taskbar() {
                 <TaskbarItem
                   icon={settingsIcon}
                   title="Settings"
-                  children={<></>}
-                  // isMinimized={true}
+                  children={
+                    <LazyLoadedWindow>
+                      <LazySettings />
+                    </LazyLoadedWindow>
+                  }
                   isFullscreen={true}
                 />
               </div>

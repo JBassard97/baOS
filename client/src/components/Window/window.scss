@@ -5,8 +5,8 @@
   // border: 1px solid var(--taskbar-item-hover-bg);
   // resize: both;
   background: transparent;
-  // min-width: 20rem;
-  // min-height: 20rem;
+  min-width: 13rem;
+  min-height: 13rem;
   width: 20rem;
   height: 20rem;
   border-radius: var(--backend-status-display-border-radius);
@@ -16,10 +16,11 @@
   display: flex;
   flex-direction: column;
   transition:
-    width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    height 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    // width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    // height 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: absolute;
+  resize: both;
 
   &.fullscreen {
     width: 100%;

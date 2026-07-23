@@ -1,0 +1,65 @@
+@use "../../scss/variables";
+@use "../../scss/mixins" as *;
+
+.settings {
+  height: 100%;
+  width: 100%;
+  background-color: darkslategray;
+  color: white;
+  font-family: var(--small-clock-font-family);
+  overflow-y: auto;
+
+  .settings-header {
+    font-family: var(--small-clock-font-family);
+    padding-left: 0.5rem;
+    padding-bottom: 0.5rem;
+    text-decoration: underline;
+  }
+
+  details {
+    border: 1px solid red;
+
+    @include no-select-no-drag;
+
+    summary {
+      padding: 0.5rem;
+    }
+
+    .permission-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.5rem;
+    }
+
+    .permission-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 12px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.05);
+      transition: var(--taskbar-item-hover-transition);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+      }
+
+      span {
+        opacity: 0.7;
+        font-size: 0.7rem;
+      }
+
+      button {
+        cursor: pointer;
+      }
+    }
+  }
+}

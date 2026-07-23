@@ -21,7 +21,14 @@ const LazyTextEditor = lazy(
 
 function LazyLoadedWindow({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<div className="window-loading">Loading…</div>}>
+    <Suspense
+      fallback={
+        <div
+          className="window-loading"
+          style={{ width: "100%", height: "100%", background: "black" }}
+        ></div>
+      }
+    >
       {children}
     </Suspense>
   );
