@@ -25,14 +25,38 @@ export default function Settings() {
         name: "microphone" as PermissionName,
       });
 
-      const notifications = await navigator.permissions.query({
-        name: "notifications" as PermissionName,
-      });
+      let notificationsPermission: PermissionState =
+        typeof Notification === "undefined"
+          ? "unsupported"
+          : Notification.permission === "default"
+            ? "prompt"
+            : Notification.permission;
+
+      try {
+        const notifications = await navigator.permissions.query({
+          name: "notifications" as PermissionName,
+        });
+
+        notificationsPermission = notifications.state;
+
+        notifications.onchange = () =>
+          setPermissions((p) => ({
+            ...p,
+            notifications: notifications.state,
+          }));
+      } catch {
+        notificationsPermission =
+          typeof Notification === "undefined"
+            ? "unsupported"
+            : Notification.permission === "default"
+              ? "prompt"
+              : Notification.permission;
+      }
 
       setPermissions({
         camera: camera.state,
         microphone: microphone.state,
-        notifications: notifications.state,
+        notifications: notificationsPermission,
       });
 
       // update if browser changes permissions externally
@@ -47,12 +71,6 @@ export default function Settings() {
           ...p,
           microphone: microphone.state,
         }));
-
-      notifications.onchange = () =>
-        setPermissions((p) => ({
-          ...p,
-          notifications: notifications.state,
-        }));
     } catch (err) {
       console.error(err);
     }
@@ -65,7 +83,9 @@ export default function Settings() {
       });
 
       updatePermissions();
-    } catch {}
+    } catch (err) {
+      console.warn("Camera permission was not granted.", err);
+    }
   }
 
   async function enableMicrophone() {
@@ -75,11 +95,21 @@ export default function Settings() {
       });
 
       updatePermissions();
-    } catch {}
+    } catch (err) {
+      console.warn("Microphone permission was not granted.", err);
+    }
   }
 
   async function enableNotifications() {
-    await Notification.requestPermission();
+    if (typeof Notification === "undefined") {
+      setPermissions((p) => ({
+        ...p,
+        notifications: "unsupported",
+      }));
+      return;
+    }
+
+    await sendNotification("baOS", { body: "Testing!" });
     updatePermissions();
   }
 
@@ -91,6 +121,8 @@ export default function Settings() {
         return "Denied";
       case "prompt":
         return "Awaiting Prompt";
+      case "unsupported":
+        return "Unsupported";
       default:
         return "Unknown";
     }
@@ -129,8 +161,9 @@ export default function Settings() {
               <strong>Notifications</strong>
               {permissions.notifications === "granted" && (
                 <button
-                  onClick={() => {
-                    sendNotification("baOS", { body: "Testing!" });
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    void sendNotification("baOS", { body: "Testing!" });
                   }}
                 >
                   Test

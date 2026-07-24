@@ -1,30 +1,39 @@
-// import baosIcon from "../assets/icons/baosNeon.png";
+import baosIcon from "../assets/icons/baosNeon.png";
 
 export async function sendNotification(
     title: string,
     options: NotificationOptions = {}
-) {
+): Promise<boolean> {
     const notificationOptions: NotificationOptions = {
-        // icon: baosIcon,
+        icon: baosIcon,
+        badge: baosIcon,
         ...options,
     };
 
     if (!("Notification" in window)) {
-        return;
-    }
-
-    if (Notification.permission === "granted") {
-        new Notification(title, notificationOptions);
-        return;
+        console.warn("[sendNotification] Notification API is unavailable in this browser.");
+        return false;
     }
 
     if (Notification.permission === "denied") {
-        return;
+        console.warn(
+            "[sendNotification] Notification permission is denied. The browser will not show a notification.",
+            { title, options },
+        );
+        return false;
     }
 
-    const permission = await Notification.requestPermission();
+    if (Notification.permission === "default") {
+        const permission = await Notification.requestPermission();
+        console.info("[sendNotification] Notification permission result:", permission);
 
-    if (permission === "granted") {
-        new Notification(title, notificationOptions);
+        if (permission !== "granted") {
+            return false;
+        }
     }
+
+    const notification = new Notification(title, notificationOptions);
+    console.info("[sendNotification] Notification created.", notification);
+
+    return true;
 }

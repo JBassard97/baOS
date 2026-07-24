@@ -1,4 +1,5 @@
 @use "../../scss/variables";
+@use "../../scss/mixins" as *;
 
 .weather-widget {
   //   border: 1px solid aquamarine;
@@ -6,14 +7,140 @@
   width: 100%;
   color: rgba(245, 245, 245, 0.7);
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   .location-name {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    padding: 0.3rem;
+    padding: 0.5rem;
     border-bottom: 1px solid var(--taskbar-item-border-color);
     font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .celsius-toggle {
+      background: transparent;
+      font-style: normal;
+      height: 100%;
+      width: 2rem;
+      aspect-ratio: 1;
+      border: 1px solid var(--taskbar-item-border-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+  }
+
+  // -----------------------------------
+
+  .ww-main {
+    // border: 1px solid red;
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    .ww-current {
+      width: 50%;
+      height: 100%;
+      border-right: 1px solid var(--taskbar-item-border-color);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      .header {
+        border-bottom: 1px solid var(--taskbar-item-border-color);
+        width: 100%;
+        padding: 0.1rem;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+      }
+
+      .current-main {
+        flex: 1;
+        display: flex;
+
+        .icon-container {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          width: 40%;
+          padding: 0 0.5rem;
+
+          img {
+            border-radius: 50%;
+            width: 90%;
+            box-shadow: 0 0 8px lightgray;
+            @include no-select-no-drag;
+          }
+        }
+
+        .current-data {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          div {
+            width: 100%;
+            // border: 1px solid white;
+            text-align: center;
+            font-size: 0.7rem;
+          }
+        }
+      }
+    }
+
+    .ww-forecast {
+      width: 50%;
+      height: 100%;
+      // border: 1px solid cyan;
+      display: flex;
+
+      div {
+        width: 50%;
+        height: 100%;
+        // position: relative;
+
+        &:first-child {
+          border-right: 1px solid var(--taskbar-item-border-color);
+        }
+
+        .header {
+          border-bottom: 1px solid var(--taskbar-item-border-color);
+          width: 100%;
+          padding: 0.1rem;
+          overflow: hidden;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 1rem;
+        }
+
+        .main {
+          width: 100%;
+          height: 100%;
+          // border: 1px solid red;
+          display: flex;
+          flex-direction: column;
+          // justify-content: center;
+          padding: 0.5rem 0;
+          align-items: center;
+
+          div {
+            width: 100%;
+            height: fit-content;
+            text-align: center;
+            font-size: 0.6rem;
+          }
+        }
+      }
+    }
   }
 }

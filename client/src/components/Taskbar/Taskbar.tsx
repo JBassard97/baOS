@@ -5,6 +5,7 @@ import SmallDateClock from "../SmallDateClock/SmallDateClock";
 import FullscreenButton from "../FullscreenButton/FullscreenButton";
 import TaskbarPositionSetter from "../TaskbarPositionSetter/TaskbarPositionSetter";
 import TaskbarItem from "../TaskbarItem/TaskbarItem";
+import WeatherWidget from "../WeatherWidget/WeatherWidget";
 import { useUIStore } from "../../store";
 import fileManagerIcon from "../../assets/icons/file-manager.svg";
 import terminalIcon from "../../assets/icons/terminal.svg";
@@ -20,6 +21,7 @@ import wikipediaIcon from "../../assets/icons/Wikipedia-logo-v2.svg";
 import googleIcon from "../../assets/icons/google-icon.svg";
 import textEditorIcon from "../../assets/icons/text-editor.svg";
 import strudelLogo from "../../assets/icons/strudel-logo.png";
+import audioPlayerIcon from "../../assets/icons/audio-player-icon.svg";
 
 const LazyFileManager = lazy(
   () => import("../../applications/FileManager/FileManager"),
@@ -31,6 +33,9 @@ const LazyTextEditor = lazy(
 );
 const LazyVideoPlayer = lazy(
   () => import("../../applications/VideoPlayer/VideoPlayer"),
+);
+const LazyAudioPlayer = lazy(
+  () => import("../../applications/AudioPlayer/AudioPlayer"),
 );
 const LazySettings = lazy(() => import("../../applications/Settings/Settings"));
 
@@ -142,7 +147,9 @@ function Taskbar() {
             </div>
           </div>
 
-          <div className="start-menu-middle"></div>
+          <div className="start-menu-middle">
+            <WeatherWidget />
+          </div>
 
           <div className="main-sections">
             <div className="start-menu-section">
@@ -237,6 +244,19 @@ function Taskbar() {
                     dontShowTooltip={true}
                   />
                   <p className="item-name">Video Player</p>
+                </div>
+                <div>
+                  <TaskbarItem
+                    icon={audioPlayerIcon}
+                    title="Audio Player"
+                    children={
+                      <LazyLoadedWindow>
+                        <LazyAudioPlayer />
+                      </LazyLoadedWindow>
+                    }
+                    dontShowTooltip={true}
+                  />
+                  <p className="item-name">Audio Player</p>
                 </div>
               </div>
             </div>

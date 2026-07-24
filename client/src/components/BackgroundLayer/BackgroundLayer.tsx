@@ -2,6 +2,7 @@ import "./backgroundlayer.scss";
 import { useUIStore } from "../../store";
 import { useEffect, useState } from "react";
 import { getFileFromPath } from "../../vfs-actions/getFileFromPath";
+import { ensureOpfsExists } from "../../vfs-actions/ensureOpfsExists";
 import { isVideoFile } from "../../helpers";
 
 export default function BackgroundLayer() {
@@ -21,6 +22,7 @@ export default function BackgroundLayer() {
         file = await getFileFromPath(currentBackground);
       } catch {
         // ! Fallback when the currentBackground file is deleted
+        await ensureOpfsExists();
         file = await getFileFromPath(DEFAULT_BG_PATH);
         setCurrentBackground(DEFAULT_BG_PATH);
       }
