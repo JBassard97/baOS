@@ -22,6 +22,7 @@ import googleIcon from "../../assets/icons/google-icon.svg";
 import textEditorIcon from "../../assets/icons/text-editor.svg";
 import strudelLogo from "../../assets/icons/strudel-logo.png";
 import audioPlayerIcon from "../../assets/icons/audio-player-icon.svg";
+import desmosScientificIcon from "../../assets/icons/desmos-scientific.png";
 
 const LazyFileManager = lazy(
   () => import("../../applications/FileManager/FileManager"),
@@ -78,6 +79,12 @@ const iframeApps = {
     title: "Strudel",
     src: "https://strudel.cc",
     isFullscreen: true,
+  },
+  desmosScientific: {
+    icon: desmosScientificIcon,
+    title: "Desmos Scientific",
+    src: "https://www.desmos.com/scientific",
+    isFullscreen: false,
   },
 };
 

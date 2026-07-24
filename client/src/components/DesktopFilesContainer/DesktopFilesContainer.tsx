@@ -149,24 +149,6 @@ export default function DesktopFilesContainer() {
     loadDesktopEntries();
   }, [backendAvailable]);
 
-  useEffect(() => {
-    const handleKeyDown = async (e: KeyboardEvent) => {
-      if (e.key !== "Delete") return;
-
-      if (!selectedEntry) return;
-
-      e.preventDefault();
-
-      await handleDelete(selectedEntry);
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [selectedEntry]);
-
   const sortedEntries = [...desktopEntries].sort((a, b) =>
     a.name.localeCompare(b.name),
   );

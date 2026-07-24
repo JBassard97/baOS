@@ -29,9 +29,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-
       border-radius: 10px;
       font-size: 1rem;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 
@@ -78,8 +81,14 @@
             border-radius: 50%;
             min-width: 3.5rem;
             max-width: 3.5rem;
-            box-shadow: 0 0 8px lightgray;
+            box-shadow: 0 0 6px lightgray;
+            transition: var(--taskbar-item-hover-transition);
             @include no-select-no-drag;
+
+            &:hover {
+              filter: brightness(150%);
+              box-shadow: 0 0 15px whitesmoke;
+            }
           }
         }
 
